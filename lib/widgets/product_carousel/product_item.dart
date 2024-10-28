@@ -81,22 +81,46 @@ Widget _buildProductItem(
     BuildContext context, Product product, Animation<double> animation) {
   final bool isExpanded =
       animation.value >= CupertinoContextMenu.animationOpensAt;
+
+  final boxShadow = BoxShadow(
+    color: CupertinoColors.systemGrey.withOpacity(0.5),
+    offset: const Offset(0, 4),
+    blurRadius: 4,
+    spreadRadius: 0,
+  );
+
   return Container(
     width: isExpanded ? MediaQuery.of(context).size.width : 160,
     height: isExpanded ? 300 : 220,
     decoration: BoxDecoration(
       color: CupertinoColors.white,
       borderRadius: BorderRadius.circular(12),
+      boxShadow: [boxShadow],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          child: ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: Image.asset(
-              product.imageUrl,
-              fit: BoxFit.cover,
+          child: Transform.translate(
+            offset: const Offset(0, -8), // Push the image up
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [boxShadow],
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                  bottom: Radius.circular(8), // Added bottom radius
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                  bottom: Radius.circular(8), // Match container's bottom radius
+                ),
+                child: Image.asset(
+                  product.imageUrl,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
             ),
           ),
         ),

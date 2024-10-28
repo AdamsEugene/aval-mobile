@@ -67,14 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ProductCarousel(
           isPromo: false,
           ourChoice: false,
-          categories: ['Appliances'],
+          categories: ['Toys'],
           isProductTile: true,
         ),
         SliverToBoxAdapter(child: SizedBox(height: 12)),
         ProductCarousel(
           isPromo: false,
           ourChoice: false,
-          categories: ['Appliances'],
+          categories: ['Aval Choice'],
           isProductTile: true,
         ),
         SliverToBoxAdapter(child: SizedBox(height: 12)),
