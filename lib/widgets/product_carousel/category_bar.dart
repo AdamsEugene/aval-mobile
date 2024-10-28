@@ -13,15 +13,16 @@ class CategoryBar extends StatefulWidget {
   final Function(String) onCategorySelected;
   final bool? isPromo;
   final bool? ourChoice;
+  final bool? isProductTile;
 
-  const CategoryBar({
-    super.key,
-    required this.categories,
-    required this.selectedCategory,
-    required this.onCategorySelected,
-    this.isPromo,
-    this.ourChoice,
-  });
+  const CategoryBar(
+      {super.key,
+      required this.categories,
+      required this.selectedCategory,
+      required this.onCategorySelected,
+      this.isPromo,
+      this.ourChoice,
+      this.isProductTile});
 
   @override
   CategoryBarState createState() => CategoryBarState();
@@ -85,7 +86,10 @@ class CategoryBarState extends State<CategoryBar> {
             whenFalse: ConditionalWidget(
               condition: widget.ourChoice,
               whenTrue: const TitleDisplay(title: "Aval Choice"),
-              whenFalse: TimerDisplay(secondsRemaining: _secondsRemaining),
+              whenFalse: ConditionalWidget(
+                  condition: widget.isProductTile,
+                  whenTrue: SizedBox.shrink(),
+                  whenFalse: TimerDisplay(secondsRemaining: _secondsRemaining)),
             ),
           ),
         ],

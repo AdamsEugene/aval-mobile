@@ -57,6 +57,27 @@ class _HomeScreenState extends State<HomeScreen> {
         SliverToBoxAdapter(child: SizedBox(height: 12)),
         ProductCarousel(isPromo: true, ourChoice: false),
         SliverToBoxAdapter(child: SizedBox(height: 12)),
+        ProductCarousel(
+          isPromo: false,
+          ourChoice: false,
+          categories: ['Appliances'],
+          isProductTile: true,
+        ),
+        SliverToBoxAdapter(child: SizedBox(height: 12)),
+        ProductCarousel(
+          isPromo: false,
+          ourChoice: false,
+          categories: ['Appliances'],
+          isProductTile: true,
+        ),
+        SliverToBoxAdapter(child: SizedBox(height: 12)),
+        ProductCarousel(
+          isPromo: false,
+          ourChoice: false,
+          categories: ['Appliances'],
+          isProductTile: true,
+        ),
+        SliverToBoxAdapter(child: SizedBox(height: 12)),
       ],
     );
   }

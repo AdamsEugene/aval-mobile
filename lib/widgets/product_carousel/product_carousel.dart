@@ -6,16 +6,23 @@ import 'package:e_commerce_app/widgets/product_carousel/product_item.dart';
 class ProductCarousel extends StatefulWidget {
   final bool? isPromo;
   final bool? ourChoice;
+  final List<String>? categories;
+  final bool? isProductTile;
 
-  const ProductCarousel({super.key, this.isPromo, this.ourChoice});
+  const ProductCarousel(
+      {super.key,
+      this.isPromo,
+      this.ourChoice,
+      this.categories,
+      this.isProductTile});
 
   @override
   ProductCarouselState createState() => ProductCarouselState();
 }
 
 class ProductCarouselState extends State<ProductCarousel> {
-  String _selectedCategory = 'Appliances';
-  final List<String> categories = ['Appliances', 'Car Parts', 'Toys'];
+  late String _selectedCategory;
+  late final List<String> _categories;
 
   final List<Product> products = [
     Product('Ladies bag 15', 'assets/images/a.png', 'Fashion'),
@@ -53,6 +60,13 @@ class ProductCarouselState extends State<ProductCarousel> {
     ),
   );
 
+  @override
+  void initState() {
+    super.initState();
+    _categories = widget.categories ?? ['Appliances', 'Car Parts', 'Toys'];
+    _selectedCategory = _categories.first;
+  }
+
   Animation<Decoration> _boxDecorationAnimation(Animation<double> animation) {
     return _tween.animate(
       CurvedAnimation(
@@ -73,7 +87,8 @@ class ProductCarouselState extends State<ProductCarousel> {
           CategoryBar(
             isPromo: widget.isPromo,
             ourChoice: widget.ourChoice,
-            categories: categories,
+            isProductTile: widget.isProductTile,
+            categories: _categories,
             selectedCategory: _selectedCategory,
             onCategorySelected: (category) {
               setState(() {
