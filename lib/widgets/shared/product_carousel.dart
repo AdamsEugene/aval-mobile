@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'dart:async';
-
 import 'package:e_commerce_app/widgets/common/conditional_widget.dart';
 
 class ProductCarousel extends StatefulWidget {
@@ -19,50 +19,71 @@ class ProductCarouselState extends State<ProductCarousel> {
   final List<String> categories = ['Appliances', 'Car Parts', 'Toys'];
 
   final List<Product> products = [
-    Product('Ladies bag 15', 'assets/images/a.jpg', 'Fashion'),
-    Product('Shoes 55', 'assets/images/c.jpg', 'Fashion'),
-    Product('Dress blue', 'assets/images/f.jpg', 'Fashion'),
-    Product('Watch 3', 'assets/images/e.jpg', 'Fashion'),
-    Product('Watch 3', 'assets/images/e.jpg', 'Car Parts'),
-    Product('Shoes 55', 'assets/images/c.jpg', 'Car Parts'),
-    Product('Dress blue', 'assets/images/f.jpg', 'Car Parts'),
-    Product('Ladies bag 15', 'assets/images/a.jpg', 'Car Parts'),
-    Product('Shoes 55', 'assets/images/c.jpg', 'Toys'),
-    Product('Ladies bag 15', 'assets/images/a.jpg', 'Toys'),
-    Product('Dress blue', 'assets/images/f.jpg', 'Toys'),
-    Product('Watch 3', 'assets/images/e.jpg', 'Toys'),
-    Product('Watch 3', 'assets/images/e.jpg', 'Appliances'),
-    Product('Shoes 55', 'assets/images/c.jpg', 'Appliances'),
-    Product('Dress blue', 'assets/images/f.jpg', 'Appliances'),
-    Product('Ladies bag 15', 'assets/images/a.jpg', 'Appliances'),
-    Product('Shoes 55', 'assets/images/c.jpg', 'Aval Choice'),
-    Product('Ladies bag 15', 'assets/images/a.jpg', 'Aval Choice'),
-    Product('Watch 3', 'assets/images/e.jpg', 'Aval Choice'),
-    Product('Dress blue', 'assets/images/f.jpg', 'Aval Choice'),
+    Product('Ladies bag 15', 'assets/images/a.png', 'Fashion'),
+    Product('Shoes 55', 'assets/images/b.png', 'Fashion'),
+    Product('Dress blue', 'assets/images/c.png', 'Fashion'),
+    Product('Watch 3', 'assets/images/d.png', 'Fashion'),
+    Product('Watch 3', 'assets/images/e.png', 'Car Parts'),
+    Product('Shoes 55', 'assets/images/f.png', 'Car Parts'),
+    Product('Dress blue', 'assets/images/g.png', 'Car Parts'),
+    Product('Ladies bag 15', 'assets/images/h.png', 'Car Parts'),
+    Product('Shoes 55', 'assets/images/i.png', 'Toys'),
+    Product('Ladies bag 15', 'assets/images/j.png', 'Toys'),
+    Product('Dress blue', 'assets/images/l.png', 'Toys'),
+    Product('Watch 3', 'assets/images/m.png', 'Toys'),
+    Product('Watch 3', 'assets/images/n.png', 'Appliances'),
+    Product('Shoes 55', 'assets/images/o.png', 'Appliances'),
+    Product('Dress blue', 'assets/images/p.png', 'Appliances'),
+    Product('Ladies bag 15', 'assets/images/q.png', 'Appliances'),
+    Product('Shoes 55', 'assets/images/c.png', 'Aval Choice'),
+    Product('Ladies bag 15', 'assets/images/a.png', 'Aval Choice'),
+    Product('Watch 3', 'assets/images/e.png', 'Aval Choice'),
+    Product('Dress blue', 'assets/images/f.png', 'Aval Choice'),
   ];
+
+  final DecorationTween _tween = DecorationTween(
+    begin: BoxDecoration(
+      color: CupertinoColors.white,
+      boxShadow: const <BoxShadow>[],
+      borderRadius: BorderRadius.circular(12),
+    ),
+    end: BoxDecoration(
+      color: CupertinoColors.white,
+      boxShadow: CupertinoContextMenu.kEndBoxShadow,
+      borderRadius: BorderRadius.circular(12),
+    ),
+  );
+
+  Animation<Decoration> _boxDecorationAnimation(Animation<double> animation) {
+    return _tween.animate(
+      CurvedAnimation(
+        parent: animation,
+        curve: Interval(
+          0.0,
+          CupertinoContextMenu.animationOpensAt,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(0),
-            child: CategoryBar(
-              isPromo: widget.isPromo,
-              ourChoice: widget.ourChoice,
-              categories: categories,
-              selectedCategory: _selectedCategory,
-              onCategorySelected: (category) {
-                setState(() {
-                  _selectedCategory = category;
-                });
-              },
-            ),
+          CategoryBar(
+            isPromo: widget.isPromo,
+            ourChoice: widget.ourChoice,
+            categories: categories,
+            selectedCategory: _selectedCategory,
+            onCategorySelected: (category) {
+              setState(() {
+                _selectedCategory = category;
+              });
+            },
           ),
           Container(
             color: const Color(0xFFDBDCDD),
-            // padding: const EdgeInsets.symmetric(vertical: 16),
             child: SizedBox(
               height: 220,
               child: ListView.builder(
@@ -75,65 +96,62 @@ class ProductCarouselState extends State<ProductCarousel> {
                       .where((p) => p.category == _selectedCategory)
                       .toList()[index];
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: SizedBox(
                       width: 160,
-                      margin: const EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: CupertinoColors.systemGrey.withOpacity(0.5),
-                            spreadRadius: 0,
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
+                      child: CupertinoContextMenu.builder(
+                        actions: [
+                          CupertinoContextMenuAction(
+                            trailingIcon: CupertinoIcons.heart,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Like'),
+                          ),
+                          CupertinoContextMenuAction(
+                            trailingIcon: CupertinoIcons.share,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Share'),
+                          ),
+                          CupertinoContextMenuAction(
+                            isDefaultAction: true,
+                            trailingIcon: CupertinoIcons.cart_badge_plus,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Add to Cart'),
+                          ),
+                          CupertinoContextMenuAction(
+                            trailingIcon: CupertinoIcons.bag,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Buy Now'),
+                          ),
+                          CupertinoContextMenuAction(
+                            trailingIcon: CupertinoIcons.ellipsis,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('More'),
                           ),
                         ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(12),
-                            ),
-                            child: Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: CupertinoColors.systemGrey
-                                        .withOpacity(0.5),
-                                    spreadRadius: 0,
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                                borderRadius: const BorderRadius.only(
-                                    bottomLeft: Radius.circular(20),
-                                    bottomRight: Radius.circular(20)),
-                              ),
-                              child: Image.asset(
-                                product.imageUrl,
-                                height: 150,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              product.name,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
+                        builder: (BuildContext context,
+                            Animation<double> animation) {
+                          final Animation<Decoration> boxDecorationAnimation =
+                              _boxDecorationAnimation(animation);
+                          return Container(
+                            decoration: animation.value <
+                                    CupertinoContextMenu.animationOpensAt
+                                ? boxDecorationAnimation.value
+                                : null,
+                            child:
+                                _buildProductItem(context, product, animation),
+                          );
+                        },
                       ),
                     ),
                   );
@@ -147,6 +165,45 @@ class ProductCarouselState extends State<ProductCarousel> {
   }
 }
 
+Widget _buildProductItem(
+    BuildContext context, Product product, Animation<double> animation) {
+  final bool isExpanded =
+      animation.value >= CupertinoContextMenu.animationOpensAt;
+  return Container(
+    width: isExpanded ? MediaQuery.of(context).size.width : 160,
+    height: isExpanded ? 300 : 220,
+    decoration: BoxDecoration(
+      color: CupertinoColors.white,
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            child: Image.asset(
+              product.imageUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            product.name,
+            style: TextStyle(
+              fontSize: isExpanded ? 16 : 14,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 class CategoryBar extends StatefulWidget {
   final List<String> categories;
   final String selectedCategory;
@@ -154,13 +211,14 @@ class CategoryBar extends StatefulWidget {
   final bool? isPromo;
   final bool? ourChoice;
 
-  const CategoryBar(
-      {super.key,
-      required this.categories,
-      required this.selectedCategory,
-      required this.onCategorySelected,
-      this.isPromo,
-      this.ourChoice});
+  const CategoryBar({
+    super.key,
+    required this.categories,
+    required this.selectedCategory,
+    required this.onCategorySelected,
+    this.isPromo,
+    this.ourChoice,
+  });
 
   @override
   CategoryBarState createState() => CategoryBarState();

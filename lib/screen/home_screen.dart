@@ -7,7 +7,7 @@ import 'package:e_commerce_app/widgets/shared/category_scroll_list.dart';
 import 'package:e_commerce_app/widgets/shared/main_banner_carousel.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
 import 'package:e_commerce_app/widgets/shared/main_search_bar.dart';
-import 'package:e_commerce_app/widgets/shared/product_carousel.dart';
+import 'package:e_commerce_app/widgets/product_carousel/product_carousel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,8 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
         CustomTabItem(
             icon: CupertinoIcons.chat_bubble, label: 'Chat', data: 'chat'),
         CustomTabItem(icon: CupertinoIcons.cart, label: 'Cart', data: 'cart'),
-        CustomTabItem(
-            icon: CupertinoIcons.person, label: 'Account', data: 'account'),
         CustomTabItem(
             icon: CupertinoIcons.ellipsis_vertical,
             label: 'More',

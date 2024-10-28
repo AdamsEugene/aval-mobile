@@ -7,26 +7,25 @@ class ServiceFeatures extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: SizedBox(
-        height: 80,
+        height: 48,
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: const [
             FeatureItem(
-                icon: CupertinoIcons.money_dollar_circle, label: 'Cash\nBack'),
-            FeatureItem(icon: CupertinoIcons.cube_box, label: 'Free\nShipping'),
-            FeatureItem(
-                icon: CupertinoIcons.shield, label: 'Buyer\nProtection'),
+                icon: CupertinoIcons.money_dollar_circle, label: 'Cash Back'),
+            FeatureItem(icon: CupertinoIcons.cube_box, label: 'Free Shipping'),
+            FeatureItem(icon: CupertinoIcons.shield, label: 'Buyer Protection'),
             FeatureItem(
                 icon: CupertinoIcons.checkmark_seal,
-                label: 'Quality\nAssurance'),
+                label: 'Quality Assurance'),
             FeatureItem(icon: CupertinoIcons.creditcard, label: 'Payflex'),
             FeatureItem(
                 icon: CupertinoIcons.arrowshape_turn_up_left_circle,
-                label: 'Quick\nDelivery'),
+                label: 'Quick Delivery'),
             FeatureItem(
-                icon: CupertinoIcons.doc_checkmark, label: 'Pro-Tect\nCert.'),
+                icon: CupertinoIcons.doc_checkmark, label: 'Pro-Tect Cert.'),
             FeatureItem(
-                icon: CupertinoIcons.arrow_2_circlepath, label: 'Easy\nReturn'),
+                icon: CupertinoIcons.arrow_2_circlepath, label: 'Easy Return'),
           ],
         ),
       ),
@@ -56,14 +55,14 @@ class FeatureItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: CupertinoColors.activeOrange, size: 24),
+          Icon(icon, color: CupertinoColors.activeOrange, size: 16),
           const SizedBox(height: 4),
           Text(
             label,
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: CupertinoColors.white,
-              fontSize: 10,
+              fontSize: 8,
               fontWeight: FontWeight.w500,
             ),
           ),
