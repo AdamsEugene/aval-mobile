@@ -88,7 +88,7 @@ class CategoryBarState extends State<CategoryBar> {
               whenTrue: const TitleDisplay(title: "Aval Choice"),
               whenFalse: ConditionalWidget(
                   condition: widget.isProductTile,
-                  whenTrue: SizedBox.shrink(),
+                  whenTrue: const SizedBox.shrink(),
                   whenFalse: TimerDisplay(secondsRemaining: _secondsRemaining)),
             ),
           ),

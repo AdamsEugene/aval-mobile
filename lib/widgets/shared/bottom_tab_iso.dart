@@ -1,22 +1,38 @@
+import 'package:e_commerce_app/screen/cart_screen.dart';
+import 'package:e_commerce_app/screen/chat_screen.dart';
+import 'package:e_commerce_app/screen/more_screen.dart';
+import 'package:e_commerce_app/screen/reseller_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class ButtonTabISO<T> extends StatelessWidget {
-  final List<CustomTabItem<T>> tabItems;
-  final List<Widget> slivers;
+  final Widget slivers;
   final Color backgroundColor;
   final Color tabBarBackgroundColor;
   final Color activeColor;
   final Color inactiveColor;
 
-  const ButtonTabISO({
+  ButtonTabISO({
     super.key,
-    required this.tabItems,
     required this.slivers,
     this.backgroundColor = const Color(0xFFEEEFF1),
     this.tabBarBackgroundColor = const Color(0xFF05001E),
     this.activeColor = CupertinoColors.white,
     this.inactiveColor = CupertinoColors.systemGrey,
   });
+
+  final List<CustomTabItem<String>> tabItems = [
+    CustomTabItem(icon: CupertinoIcons.home, label: 'Home', data: 'home'),
+    CustomTabItem(
+      icon: CupertinoIcons.shopping_cart,
+      label: 'Reseller',
+      data: 'reseller',
+    ),
+    CustomTabItem(
+        icon: CupertinoIcons.chat_bubble, label: 'Chat', data: 'chat'),
+    CustomTabItem(icon: CupertinoIcons.cart, label: 'Cart', data: 'cart'),
+    CustomTabItem(
+        icon: CupertinoIcons.ellipsis_vertical, label: 'More', data: 'more'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +47,21 @@ class ButtonTabISO<T> extends StatelessWidget {
       tabBuilder: (BuildContext context, int index) {
         return CupertinoTabView(
           builder: (BuildContext context) {
-            return CupertinoPageScaffold(
-              backgroundColor: backgroundColor,
-              child: SafeArea(
-                child: CustomScrollView(
-                  slivers: slivers,
-                ),
-              ),
-            );
+            // Return different screens based on the tab index
+            switch (tabItems[index].data) {
+              case 'home':
+                return slivers;
+              case 'reseller':
+                return const ResellerScreen();
+              case 'chat':
+                return const ChatScreen();
+              case 'cart':
+                return const CartScreen();
+              case 'more':
+                return const MoreScreen();
+              default:
+                return slivers;
+            }
           },
         );
       },

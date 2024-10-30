@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+
 import 'package:e_commerce_app/models/product.dart';
 import 'package:e_commerce_app/widgets/product_carousel/category_bar.dart';
 import 'package:e_commerce_app/widgets/product_carousel/product_item.dart';
+import 'package:e_commerce_app/data/product_data.dart';
 
 class ProductCarousel extends StatefulWidget {
   final bool? isPromo;
@@ -24,28 +26,7 @@ class ProductCarouselState extends State<ProductCarousel> {
   late String _selectedCategory;
   late final List<String> _categories;
 
-  final List<Product> products = [
-    Product('Ladies bag 15', 'assets/images/a.png', 'Fashion'),
-    Product('Shoes 55', 'assets/images/b.png', 'Fashion'),
-    Product('Dress blue', 'assets/images/c.png', 'Fashion'),
-    Product('Watch 3', 'assets/images/f.png', 'Fashion'),
-    Product('Watch 3', 'assets/images/f.png', 'Car Parts'),
-    Product('Shoes 55', 'assets/images/a.png', 'Car Parts'),
-    Product('Dress blue', 'assets/images/g.png', 'Car Parts'),
-    Product('Ladies bag 15', 'assets/images/h.png', 'Car Parts'),
-    Product('Shoes 55', 'assets/images/i.png', 'Toys'),
-    Product('Ladies bag 15', 'assets/images/j.png', 'Toys'),
-    Product('Dress blue', 'assets/images/l.png', 'Toys'),
-    Product('Watch 3', 'assets/images/m.png', 'Toys'),
-    Product('Watch 3', 'assets/images/n.png', 'Appliances'),
-    Product('Shoes 55', 'assets/images/o.png', 'Appliances'),
-    Product('Dress blue', 'assets/images/p.png', 'Appliances'),
-    Product('Ladies bag 15', 'assets/images/q.png', 'Appliances'),
-    Product('Shoes 55', 'assets/images/c.png', 'Aval Choice'),
-    Product('Ladies bag 15', 'assets/images/a.png', 'Aval Choice'),
-    Product('Watch 3', 'assets/images/e.png', 'Aval Choice'),
-    Product('Dress blue', 'assets/images/f.png', 'Aval Choice'),
-  ];
+  final List<Product> products = ProductData.products;
 
   final DecorationTween _tween = DecorationTween(
     begin: BoxDecoration(

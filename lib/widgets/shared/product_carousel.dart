@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import 'dart:async';
 import 'package:e_commerce_app/widgets/common/conditional_widget.dart';

@@ -1,6 +1,68 @@
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/models/product.dart';
 
+// Extracted Context Menu Widget
+class ProductContextMenu extends StatelessWidget {
+  const ProductContextMenu({
+    super.key,
+  });
+
+  List<CupertinoContextMenuAction> _buildContextMenuActions(
+      BuildContext context) {
+    void handleMenuAction(VoidCallback action) {
+      action();
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+
+    return [
+      CupertinoContextMenuAction(
+        trailingIcon: CupertinoIcons.heart,
+        onPressed: () => handleMenuAction(() {
+          // Add your like logic here
+        }),
+        child: const Text('Like'),
+      ),
+      CupertinoContextMenuAction(
+        trailingIcon: CupertinoIcons.share,
+        onPressed: () => handleMenuAction(() {
+          // Add your share logic here
+        }),
+        child: const Text('Share'),
+      ),
+      CupertinoContextMenuAction(
+        isDefaultAction: true,
+        trailingIcon: CupertinoIcons.cart_badge_plus,
+        onPressed: () => handleMenuAction(() {
+          // Add your add to cart logic here
+        }),
+        child: const Text('Add to Cart'),
+      ),
+      CupertinoContextMenuAction(
+        trailingIcon: CupertinoIcons.bag,
+        onPressed: () => handleMenuAction(() {
+          // Add your buy now logic here
+        }),
+        child: const Text('Buy Now'),
+      ),
+      CupertinoContextMenuAction(
+        trailingIcon: CupertinoIcons.ellipsis,
+        onPressed: () => handleMenuAction(() {
+          // Add your more options logic here
+        }),
+        child: const Text('More'),
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoContextMenu(
+      actions: _buildContextMenuActions(context),
+      child: Container(), // This will be replaced by previewBuilder
+    );
+  }
+}
+
 class ProductItemWrapper extends StatelessWidget {
   final Product product;
   final Animation<Decoration> Function(Animation<double>)
@@ -19,7 +81,7 @@ class ProductItemWrapper extends StatelessWidget {
       child: SizedBox(
         width: 160,
         child: CupertinoContextMenu.builder(
-          actions: _buildContextMenuActions(context),
+          actions: const ProductContextMenu()._buildContextMenuActions(context),
           builder: (BuildContext context, Animation<double> animation) {
             final Animation<Decoration> decorationAnimation =
                 boxDecorationAnimation(animation);
@@ -34,46 +96,6 @@ class ProductItemWrapper extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  List<CupertinoContextMenuAction> _buildContextMenuActions(
-      BuildContext context) {
-    return [
-      CupertinoContextMenuAction(
-        trailingIcon: CupertinoIcons.heart,
-        onPressed: () => Navigator.pop(context),
-        child: const Text('Like'),
-      ),
-      CupertinoContextMenuAction(
-        trailingIcon: CupertinoIcons.share,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text('Share'),
-      ),
-      CupertinoContextMenuAction(
-        isDefaultAction: true,
-        trailingIcon: CupertinoIcons.cart_badge_plus,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text('Add to Cart'),
-      ),
-      CupertinoContextMenuAction(
-        trailingIcon: CupertinoIcons.bag,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text('Buy Now'),
-      ),
-      CupertinoContextMenuAction(
-        trailingIcon: CupertinoIcons.ellipsis,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text('More'),
-      ),
-    ];
   }
 }
 
@@ -90,6 +112,7 @@ Widget _buildProductItem(
   );
 
   return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
     width: isExpanded ? MediaQuery.of(context).size.width : 160,
     height: isExpanded ? 300 : 220,
     decoration: BoxDecoration(
@@ -101,25 +124,22 @@ Widget _buildProductItem(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          child: Transform.translate(
-            offset: const Offset(0, -8), // Push the image up
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: [boxShadow],
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(12),
-                  bottom: Radius.circular(8), // Added bottom radius
-                ),
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [boxShadow],
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
+                bottom: Radius.circular(8),
               ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(12),
-                  bottom: Radius.circular(8), // Match container's bottom radius
-                ),
-                child: Image.asset(
-                  product.imageUrl,
-                  fit: BoxFit.fitHeight,
-                ),
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
+                bottom: Radius.circular(8),
+              ),
+              child: Image.asset(
+                product.imageUrl,
+                fit: BoxFit.cover,
               ),
             ),
           ),
