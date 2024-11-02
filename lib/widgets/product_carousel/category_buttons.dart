@@ -19,18 +19,18 @@ class CategoryButtons extends StatelessWidget {
       children: List.generate(categories.length, (index) {
         bool isSelected = selectedCategory == categories[index];
         return Positioned(
-          left: index * 90.0,
+          left: index * 110.0,
           child: GestureDetector(
             onTap: () => onCategorySelected(categories[index]),
             child: Container(
-              width: 96,
+              width: 120,
               decoration: BoxDecoration(
                 color: isSelected
                     ? CupertinoColors.activeOrange
                     : CupertinoColors.white,
                 borderRadius: BorderRadius.only(
                   bottomLeft:
-                      index == 0 ? const Radius.circular(25) : Radius.zero,
+                      index == 0 ? const Radius.circular(12) : Radius.zero,
                   topRight: index + 1 == categories.length
                       ? const Radius.circular(25)
                       : Radius.zero,

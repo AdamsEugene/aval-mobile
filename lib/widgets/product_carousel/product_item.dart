@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/widgets/others/shimmer_loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/models/product.dart';
 
@@ -137,9 +138,34 @@ Widget _buildProductItem(
                 top: Radius.circular(12),
                 bottom: Radius.circular(8),
               ),
-              child: Image.asset(
-                product.imageUrl,
-                fit: BoxFit.cover,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  const ShimmerLoading(
+                    width: double.infinity,
+                    height: double.infinity,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(12),
+                      bottom: Radius.circular(8),
+                    ),
+                  ),
+                  Image.network(
+                    product.imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: CupertinoColors.systemGrey6,
+                        child: const Center(
+                          child: Icon(
+                            CupertinoIcons.photo,
+                            size: 32,
+                            color: CupertinoColors.systemGrey,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),

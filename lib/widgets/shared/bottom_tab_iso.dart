@@ -11,7 +11,7 @@ class ButtonTabISO<T> extends StatelessWidget {
   final Color activeColor;
   final Color inactiveColor;
 
-  ButtonTabISO({
+  const ButtonTabISO({
     super.key,
     required this.slivers,
     this.backgroundColor = const Color(0xFFEEEFF1),
@@ -20,19 +20,21 @@ class ButtonTabISO<T> extends StatelessWidget {
     this.inactiveColor = CupertinoColors.systemGrey,
   });
 
-  final List<CustomTabItem<String>> tabItems = [
-    CustomTabItem(icon: CupertinoIcons.home, label: 'Home', data: 'home'),
-    CustomTabItem(
-      icon: CupertinoIcons.shopping_cart,
-      label: 'Reseller',
-      data: 'reseller',
-    ),
-    CustomTabItem(
-        icon: CupertinoIcons.chat_bubble, label: 'Chat', data: 'chat'),
-    CustomTabItem(icon: CupertinoIcons.cart, label: 'Cart', data: 'cart'),
-    CustomTabItem(
-        icon: CupertinoIcons.ellipsis_vertical, label: 'More', data: 'more'),
-  ];
+  List<CustomTabItem<String>> get tabItems => [
+        CustomTabItem(icon: CupertinoIcons.home, label: 'Home', data: 'home'),
+        CustomTabItem(
+          icon: CupertinoIcons.shopping_cart,
+          label: 'Reseller',
+          data: 'reseller',
+        ),
+        CustomTabItem(
+            icon: CupertinoIcons.chat_bubble, label: 'Chat', data: 'chat'),
+        CustomTabItem(icon: CupertinoIcons.cart, label: 'Cart', data: 'cart'),
+        CustomTabItem(
+            icon: CupertinoIcons.ellipsis_vertical,
+            label: 'More',
+            data: 'more'),
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +49,12 @@ class ButtonTabISO<T> extends StatelessWidget {
       tabBuilder: (BuildContext context, int index) {
         return CupertinoTabView(
           builder: (BuildContext context) {
-            // Return different screens based on the tab index
             switch (tabItems[index].data) {
               case 'home':
-                return slivers;
+                return CupertinoPageScaffold(
+                  backgroundColor: backgroundColor,
+                  child: slivers,
+                );
               case 'reseller':
                 return const ResellerScreen();
               case 'chat':
@@ -60,7 +64,10 @@ class ButtonTabISO<T> extends StatelessWidget {
               case 'more':
                 return const MoreScreen();
               default:
-                return slivers;
+                return CupertinoPageScaffold(
+                  backgroundColor: backgroundColor,
+                  child: slivers,
+                );
             }
           },
         );
@@ -74,7 +81,11 @@ class CustomTabItem<T> {
   final String label;
   final T data;
 
-  CustomTabItem({required this.icon, required this.label, required this.data});
+  CustomTabItem({
+    required this.icon,
+    required this.label,
+    required this.data,
+  });
 
   BottomNavigationBarItem toBottomNavigationBarItem() {
     return BottomNavigationBarItem(

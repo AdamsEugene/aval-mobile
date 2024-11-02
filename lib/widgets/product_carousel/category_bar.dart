@@ -71,10 +71,12 @@ class CategoryBarState extends State<CategoryBar> {
       child: Row(
         children: [
           Expanded(
-            child: CategoryButtons(
-              categories: widget.categories,
-              selectedCategory: widget.selectedCategory,
-              onCategorySelected: widget.onCategorySelected,
+            child: Center(
+              child: CategoryButtons(
+                categories: widget.categories,
+                selectedCategory: widget.selectedCategory,
+                onCategorySelected: widget.onCategorySelected,
+              ),
             ),
           ),
           ConditionalWidget(
