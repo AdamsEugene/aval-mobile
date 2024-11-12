@@ -1,7 +1,8 @@
+import 'package:e_commerce_app/screen/auth/login_screen.dart';
 import 'package:e_commerce_app/screen/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:e_commerce_app/screen/home_screen.dart';
+// import 'package:e_commerce_app/screen/home_screen.dart';
 
 void main() => runApp(const PageScaffoldApp());
 
@@ -22,7 +23,7 @@ class PageScaffoldApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SplashScreen();
           } else {
-            return const HomeScreen();
+            return const LoginScreen();
           }
         },
       ),

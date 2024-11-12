@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+
 import 'package:e_commerce_app/widgets/shared/sliver_app_bar_delegate.dart';
+import 'package:e_commerce_app/screen/account_screen.dart';
 
 class MainHeader extends StatelessWidget {
   const MainHeader({super.key});
@@ -71,7 +73,13 @@ class MainHeader extends StatelessWidget {
                     // const SizedBox(width: 8),
                     ElevatedIconButton(
                       icon: CupertinoIcons.person,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: false).push(
+                          CupertinoPageRoute(
+                            builder: (context) => const AccountScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
