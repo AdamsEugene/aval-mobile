@@ -30,7 +30,7 @@ class AccountScreen extends StatelessWidget {
               title,
               style: const TextStyle(
                 color: Color(0xFF05001E),
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
