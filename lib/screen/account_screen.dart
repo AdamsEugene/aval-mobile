@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:e_commerce_app/widgets/shared/header_delegate.dart';
+import 'package:e_commerce_app/screen/auth/login_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -45,7 +46,7 @@ class AccountScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSignOutButton() {
+  Widget _buildSignOutButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Container(
@@ -60,7 +61,14 @@ class AccountScreen extends StatelessWidget {
         ),
         child: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+              CupertinoPageRoute(
+                builder: (context) => const LoginScreen(),
+              ),
+              (route) => false, // This removes all previous routes
+            );
+          },
           child: const Text(
             'Sign out',
             style: TextStyle(
@@ -133,7 +141,7 @@ class AccountScreen extends StatelessWidget {
                 icon: CupertinoIcons.question_circle,
                 title: 'FAQ',
               ),
-              _buildSignOutButton(),
+              _buildSignOutButton(context),
               _buildPromoBanner(),
             ]),
           ),

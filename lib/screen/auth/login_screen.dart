@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //     fontWeight: FontWeight.w500,
         //   ),
         // ),
-        const SizedBox(height: 8),
+        // const SizedBox(height: 8),
         Container(
           decoration: const BoxDecoration(
             border: Border(
@@ -79,10 +79,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 )
               else
-                const Icon(
-                  CupertinoIcons.mail,
-                  color: Color(0xFFFDC202),
-                ),
+                CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {},
+                  child: const Icon(
+                    CupertinoIcons.mail,
+                    color: Color(0xFFFDC202),
+                  ),
+                )
             ],
           ),
         ),

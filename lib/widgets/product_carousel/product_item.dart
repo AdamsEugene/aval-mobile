@@ -115,7 +115,7 @@ Widget _buildProductItem(
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
     width: isExpanded ? MediaQuery.of(context).size.width : 160,
-    height: isExpanded ? 300 : 220,
+    height: isExpanded ? 440 : 220,
     decoration: BoxDecoration(
       color: CupertinoColors.white,
       borderRadius: BorderRadius.circular(12),
