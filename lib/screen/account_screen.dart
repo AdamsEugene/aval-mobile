@@ -37,7 +37,7 @@ class AccountScreen extends StatelessWidget {
             const Spacer(),
             const Icon(
               CupertinoIcons.chevron_right,
-              color: CupertinoColors.systemGrey3,
+              color: Color(0xFFFDC202),
               size: 20,
             ),
           ],
