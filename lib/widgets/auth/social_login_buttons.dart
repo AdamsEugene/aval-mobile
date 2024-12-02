@@ -5,18 +5,23 @@ class SocialLoginButton extends StatelessWidget {
   final String text;
   final Widget icon;
   final VoidCallback onPressed;
+  final bool? insideDrawer;
 
   const SocialLoginButton({
     super.key,
     required this.text,
     required this.icon,
     required this.onPressed,
+    this.insideDrawer,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(
+        horizontal: insideDrawer == true ? 24 : 0,
+        vertical: 8,
+      ),
       child: Container(
         width: double.infinity,
         height: 50,
@@ -29,7 +34,6 @@ class SocialLoginButton extends StatelessWidget {
           onPressed: onPressed,
           child: Stack(
             children: [
-              // Icon on the left
               Positioned(
                 left: 16,
                 top: 0,
@@ -40,7 +44,6 @@ class SocialLoginButton extends StatelessWidget {
                   child: Center(child: icon),
                 ),
               ),
-              // Centered text
               Center(
                 child: Text(
                   text,
@@ -60,7 +63,12 @@ class SocialLoginButton extends StatelessWidget {
 }
 
 class SocialLoginButtons extends StatelessWidget {
-  const SocialLoginButtons({super.key});
+  final bool? insideDrawer;
+
+  const SocialLoginButtons({
+    super.key,
+    this.insideDrawer,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,22 +90,34 @@ class SocialLoginButtons extends StatelessWidget {
         SocialLoginButton(
           text: 'Google',
           icon: Image.asset('assets/icons/google.png'),
+          insideDrawer: insideDrawer,
           onPressed: () {
             // Handle Google login
+            if (insideDrawer == true) {
+              Navigator.pop(context);
+            }
           },
         ),
         SocialLoginButton(
           text: 'Facebook',
           icon: Image.asset('assets/icons/facebook.png'),
+          insideDrawer: insideDrawer,
           onPressed: () {
             // Handle Facebook login
+            if (insideDrawer == true) {
+              Navigator.pop(context);
+            }
           },
         ),
         SocialLoginButton(
           text: 'X',
           icon: Image.asset('assets/icons/x.png'),
+          insideDrawer: insideDrawer,
           onPressed: () {
             // Handle X login
+            if (insideDrawer == true) {
+              Navigator.pop(context);
+            }
           },
         ),
       ],

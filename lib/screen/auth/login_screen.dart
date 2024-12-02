@@ -1,4 +1,5 @@
 // lib/screens/auth/login_screen.dart
+import 'package:e_commerce_app/widgets/auth/social_login_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:e_commerce_app/widgets/shared/header_delegate.dart';
@@ -178,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       CupertinoButton(
                         padding: EdgeInsets.zero,
                         onPressed: () {
-                          // Handle create account
+                          SocialLoginDrawer.show(context);
                         },
                         child: const Text(
                           'Create one.',
