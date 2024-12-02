@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:e_commerce_app/widgets/shared/header_delegate.dart';
 import 'package:e_commerce_app/screen/home_screen.dart';
+import 'package:e_commerce_app/widgets/auth/social_login_buttons.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,15 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Text(
-        //   label,
-        //   style: const TextStyle(
-        //     fontSize: 16,
-        //     color: Color(0xFF05001E),
-        //     fontWeight: FontWeight.w500,
-        //   ),
-        // ),
-        // const SizedBox(height: 8),
         Container(
           decoration: const BoxDecoration(
             border: Border(
@@ -139,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
             delegate: HeaderDelegate(
               showProfile: false,
               fontSize: 64,
-              extent: 300,
+              extent: 250,
               title: 'Aval',
             ),
           ),
@@ -149,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 64),
+                  const SizedBox(height: 32),
                   _buildTextField(
                     label: 'Email:',
                     controller: _emailController,
@@ -199,6 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+                  const SocialLoginButtons(), // Add social login buttons here
                 ],
               ),
             ),
