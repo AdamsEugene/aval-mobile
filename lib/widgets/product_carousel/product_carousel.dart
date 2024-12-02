@@ -1,5 +1,8 @@
-import 'package:e_commerce_app/widgets/others/shimmer_loading.dart';
+// lib/widgets/product_carousel/product_carousel.dart
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
+import 'package:e_commerce_app/widgets/others/shimmer_loading.dart';
 import 'package:e_commerce_app/models/product.dart';
 import 'package:e_commerce_app/widgets/product_carousel/category_bar.dart';
 import 'package:e_commerce_app/widgets/product_carousel/product_item.dart';
@@ -30,13 +33,22 @@ class ProductCarouselState extends State<ProductCarousel> {
 
   final DecorationTween _tween = DecorationTween(
     begin: BoxDecoration(
-      color: CupertinoColors.white,
+      color: Colors.white,
       boxShadow: const <BoxShadow>[],
       borderRadius: BorderRadius.circular(12),
     ),
     end: BoxDecoration(
-      color: CupertinoColors.white,
-      boxShadow: CupertinoContextMenu.kEndBoxShadow,
+      color: Colors.white,
+      boxShadow: Platform.isIOS
+          ? CupertinoContextMenu.kEndBoxShadow
+          : [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 8,
+                spreadRadius: 1,
+                offset: const Offset(0, 4),
+              ),
+            ],
       borderRadius: BorderRadius.circular(12),
     ),
   );
@@ -49,14 +61,24 @@ class ProductCarouselState extends State<ProductCarousel> {
     _productsFuture = ProductService.fetchProducts();
   }
 
-  Animation<Decoration> _boxDecorationAnimation(Animation<double> animation) {
+  Animation<Decoration> _boxDecorationAnimation(Animation<double>? animation) {
+    if (animation == null) {
+      return _tween.animate(
+        CurvedAnimation(
+          parent: const AlwaysStoppedAnimation<double>(1.0),
+          curve: Platform.isIOS
+              ? Interval(0.0, CupertinoContextMenu.animationOpensAt)
+              : const Interval(0.0, 0.5, curve: Curves.easeInOut),
+        ),
+      );
+    }
+
     return _tween.animate(
       CurvedAnimation(
         parent: animation,
-        curve: Interval(
-          0.0,
-          CupertinoContextMenu.animationOpensAt,
-        ),
+        curve: Platform.isIOS
+            ? Interval(0.0, CupertinoContextMenu.animationOpensAt)
+            : const Interval(0.0, 0.5, curve: Curves.easeInOut),
       ),
     );
   }
@@ -66,20 +88,39 @@ class ProductCarouselState extends State<ProductCarousel> {
         products.where((p) => p.category == _selectedCategory).toList();
 
     if (filteredProducts.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
           'No products available',
-          style: TextStyle(color: CupertinoColors.systemGrey),
+          style: TextStyle(
+            color: Platform.isIOS ? CupertinoColors.systemGrey : Colors.grey,
+          ),
         ),
       );
     }
 
     return ListView.builder(
       scrollDirection: Axis.horizontal,
+      physics: Platform.isIOS
+          ? const AlwaysScrollableScrollPhysics()
+          : const BouncingScrollPhysics(),
       itemCount: filteredProducts.length,
       itemBuilder: (context, index) {
+        if (index >= filteredProducts.length) {
+          return null; // Return null if the index is out of bounds
+        }
+
+        if (filteredProducts.isEmpty) {
+          return const SizedBox
+              .shrink(); // Return an empty widget if the list is empty
+        }
+
+        final product = filteredProducts[index];
+
+        print("product is printing");
+        print(product);
+
         return ProductItemWrapper(
-          product: filteredProducts[index],
+          product: product,
           boxDecorationAnimation: _boxDecorationAnimation,
         );
       },
@@ -89,7 +130,10 @@ class ProductCarouselState extends State<ProductCarousel> {
   Widget _buildLoadingState() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemCount: 4, // Show 4 shimmer loading items
+      physics: Platform.isIOS
+          ? const AlwaysScrollableScrollPhysics()
+          : const BouncingScrollPhysics(),
+      itemCount: 4,
       itemBuilder: (context, index) {
         return const Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -100,6 +144,17 @@ class ProductCarouselState extends State<ProductCarousel> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildError(String error) {
+    return Center(
+      child: Text(
+        'Error loading products: $error',
+        style: TextStyle(
+          color: Platform.isIOS ? CupertinoColors.destructiveRed : Colors.red,
+        ),
+      ),
     );
   }
 
@@ -132,25 +187,24 @@ class ProductCarouselState extends State<ProductCarousel> {
                   }
 
                   if (snapshot.hasError) {
+                    return _buildError(snapshot.error.toString());
+                  }
+
+                  final products = snapshot.data ?? [];
+                  if (products.isEmpty) {
                     return Center(
                       child: Text(
-                        'Error loading products: ${snapshot.error}',
-                        style: const TextStyle(
-                            color: CupertinoColors.destructiveRed),
-                      ),
-                    );
-                  }
-
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(
-                      child: Text(
                         'No products available',
-                        style: TextStyle(color: CupertinoColors.systemGrey),
+                        style: TextStyle(
+                          color: Platform.isIOS
+                              ? CupertinoColors.systemGrey
+                              : Colors.grey,
+                        ),
                       ),
                     );
                   }
 
-                  return _buildProductList(snapshot.data!);
+                  return _buildProductList(products);
                 },
               ),
             ),

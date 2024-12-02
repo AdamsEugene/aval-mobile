@@ -1,7 +1,10 @@
 // lib/screens/auth/login_screen.dart
 import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 import 'package:e_commerce_app/widgets/shared/header_delegate.dart';
+import 'package:e_commerce_app/widgets/auth/custom_text_field.dart';
+import 'package:e_commerce_app/screen/auth/login_button.dart';
 import 'package:e_commerce_app/screen/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -23,188 +26,155 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Widget _buildTextField({
-    required String label,
-    required TextEditingController controller,
-    bool isPassword = false,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Text(
-        //   label,
-        //   style: const TextStyle(
-        //     fontSize: 16,
-        //     color: Color(0xFF05001E),
-        //     fontWeight: FontWeight.w500,
-        //   ),
-        // ),
-        // const SizedBox(height: 8),
-        Container(
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0xFF05001E),
-                width: 1,
-              ),
-            ),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: CupertinoTextField.borderless(
-                  controller: controller,
-                  obscureText: isPassword && _obscurePassword,
-                  placeholder: label,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  style: const TextStyle(
-                    color: Color(0xFF05001E),
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              if (isPassword)
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
-                  child: Icon(
-                    _obscurePassword
-                        ? CupertinoIcons.eye
-                        : CupertinoIcons.eye_slash,
-                    color: const Color(0xFFFDC202),
-                  ),
-                )
-              else
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {},
-                  child: const Icon(
-                    CupertinoIcons.mail,
-                    color: Color(0xFFFDC202),
-                  ),
-                )
-            ],
-          ),
+  void _handleLogin() {
+    if (Platform.isIOS) {
+      Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+        CupertinoPageRoute(
+          builder: (context) => const HomeScreen(),
         ),
-      ],
-    );
+        (route) => false,
+      );
+    } else {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+        (route) => false,
+      );
+    }
   }
 
-  Widget _buildLoginButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24),
-      child: Container(
-        width: double.infinity,
-        height: 50,
-        decoration: BoxDecoration(
-          color: const Color(0xFF05001E),
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: CupertinoButton(
-          padding: EdgeInsets.zero,
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-              CupertinoPageRoute(
-                builder: (context) => const HomeScreen(),
+  Widget _buildBottomSection() {
+    final textButton = Platform.isIOS
+        ? CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {},
+            child: const Text(
+              'Create one.',
+              style: TextStyle(
+                color: Color(0xFFFDC202),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
               ),
-              (route) => false, // This removes all previous routes
-            );
-          },
-          child: const Text(
-            'Login',
-            style: TextStyle(
-              color: CupertinoColors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
             ),
+          )
+        : TextButton(
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            onPressed: () {},
+            child: const Text(
+              'Create one.',
+              style: TextStyle(
+                color: Color(0xFFFDC202),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'No account? ',
+          style: TextStyle(
+            color: Color(0xFF05001E),
+            fontSize: 14,
           ),
         ),
-      ),
+        textButton,
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.white,
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: HeaderDelegate(
-              showProfile: false,
-              fontSize: 64,
-              extent: 300,
-              title: 'Aval',
-            ),
+    final scaffold = Platform.isIOS
+        ? CupertinoPageScaffold(
+            backgroundColor: Colors.white,
+            child: _buildContent(),
+          )
+        : Scaffold(
+            backgroundColor: Colors.white,
+            body: _buildContent(),
+          );
+
+    return scaffold;
+  }
+
+  Widget _buildContent() {
+    return CustomScrollView(
+      physics: Platform.isIOS
+          ? const BouncingScrollPhysics()
+          : const AlwaysScrollableScrollPhysics(),
+      slivers: [
+        SliverPersistentHeader(
+          pinned: true,
+          delegate: HeaderDelegate(
+            showProfile: false,
+            fontSize: 64,
+            extent: 300,
+            title: 'Aval',
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 64),
-                  _buildTextField(
-                    label: 'Email:',
-                    controller: _emailController,
-                  ),
-                  const SizedBox(height: 24),
-                  _buildTextField(
-                    label: 'PASSWORD:',
-                    controller: _passwordController,
-                    isPassword: true,
-                  ),
-                  const SizedBox(height: 16),
-                  CupertinoButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {},
-                    child: const Text(
-                      'Forgotten your password?',
-                      style: TextStyle(
-                        color: Color(0xFF05001E),
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                  _buildLoginButton(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'No account? ',
-                        style: TextStyle(
-                          color: Color(0xFF05001E),
-                          fontSize: 14,
-                        ),
-                      ),
-                      CupertinoButton(
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 64),
+                CustomTextField(
+                  label: 'Email:',
+                  controller: _emailController,
+                ),
+                const SizedBox(height: 24),
+                CustomTextField(
+                  label: 'PASSWORD:',
+                  controller: _passwordController,
+                  isPassword: true,
+                  obscurePassword: _obscurePassword,
+                  onTogglePassword: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                ),
+                const SizedBox(height: 16),
+                Platform.isIOS
+                    ? CupertinoButton(
                         padding: EdgeInsets.zero,
-                        onPressed: () {
-                          // Handle create account
-                        },
+                        onPressed: () {},
                         child: const Text(
-                          'Create one.',
+                          'Forgotten your password?',
                           style: TextStyle(
-                            color: Color(0xFFFDC202),
+                            color: Color(0xFF05001E),
                             fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      )
+                    : TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                        ),
+                        onPressed: () {},
+                        child: const Text(
+                          'Forgotten your password?',
+                          style: TextStyle(
+                            color: Color(0xFF05001E),
+                            fontSize: 14,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                LoginButton(onPressed: _handleLogin),
+                _buildBottomSection(),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

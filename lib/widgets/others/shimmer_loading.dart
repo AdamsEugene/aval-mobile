@@ -1,4 +1,7 @@
+// lib/widgets/others/shimmer_loading.dart
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 class ShimmerLoading extends StatefulWidget {
   final double width;
@@ -30,9 +33,14 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
     )..repeat(reverse: true);
 
     _colorAnimation = ColorTween(
-      begin: CupertinoColors.systemGrey6,
-      end: CupertinoColors.systemGrey5,
-    ).animate(_controller);
+      begin: Platform.isIOS ? CupertinoColors.systemGrey6 : Colors.grey[200],
+      end: Platform.isIOS ? CupertinoColors.systemGrey5 : Colors.grey[300],
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
   }
 
   @override
@@ -52,6 +60,16 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
           decoration: BoxDecoration(
             color: _colorAnimation.value,
             borderRadius: widget.borderRadius,
+            boxShadow: Platform.isIOS
+                ? null
+                : [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 2,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
           ),
         );
       },

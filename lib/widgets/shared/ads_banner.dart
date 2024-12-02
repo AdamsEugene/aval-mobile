@@ -1,4 +1,7 @@
+// lib/widgets/shared/ads_banner.dart
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 class AdsBanner extends StatefulWidget {
   const AdsBanner({super.key});
@@ -19,9 +22,53 @@ class _AdsBannerState extends State<AdsBanner> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // Auto-scroll functionality
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        _autoScroll();
+      }
+    });
+  }
+
+  void _autoScroll() {
+    if (!mounted) return;
+
+    final nextPage = (_currentPage + 1) % images.length;
+    _pageController
+        .animateToPage(
+      nextPage,
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.easeInOut,
+    )
+        .then((_) {
+      if (mounted) {
+        Future.delayed(const Duration(seconds: 3), _autoScroll);
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  Widget _buildPageIndicator(int index) {
+    return Container(
+      width: 8,
+      height: 8,
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: _currentPage == index
+            ? (Platform.isIOS ? CupertinoColors.white : Colors.white)
+            : (Platform.isIOS
+                ? CupertinoColors.white.withOpacity(0.5)
+                : Colors.white.withOpacity(0.5)),
+      ),
+    );
   }
 
   @override
@@ -30,6 +77,19 @@ class _AdsBannerState extends State<AdsBanner> {
       child: Container(
         height: 120,
         margin: const EdgeInsets.symmetric(horizontal: 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: Platform.isIOS
+              ? null
+              : [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+        ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: Stack(
@@ -42,11 +102,39 @@ class _AdsBannerState extends State<AdsBanner> {
                   });
                 },
                 itemCount: images.length,
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return Image.asset(
-                    images[index],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      // Shimmer loading placeholder
+                      Container(
+                        color: Platform.isIOS
+                            ? CupertinoColors.systemGrey6
+                            : Colors.grey[200],
+                      ),
+                      Image.asset(
+                        images[index],
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Platform.isIOS
+                                ? CupertinoColors.systemGrey6
+                                : Colors.grey[200],
+                            child: Icon(
+                              Platform.isIOS
+                                  ? CupertinoIcons.photo
+                                  : Icons.image_not_supported_outlined,
+                              size: 32,
+                              color: Platform.isIOS
+                                  ? CupertinoColors.systemGrey
+                                  : Colors.grey,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   );
                 },
               ),
@@ -58,17 +146,7 @@ class _AdsBannerState extends State<AdsBanner> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     images.length,
-                    (index) => Container(
-                      width: 8,
-                      height: 8,
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentPage == index
-                            ? CupertinoColors.white
-                            : CupertinoColors.white.withOpacity(0.5),
-                      ),
-                    ),
+                    (index) => _buildPageIndicator(index),
                   ),
                 ),
               ),

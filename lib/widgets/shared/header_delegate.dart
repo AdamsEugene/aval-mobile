@@ -1,5 +1,7 @@
 // lib/widgets/shared/header_delegate.dart
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 class HeaderDelegate extends SliverPersistentHeaderDelegate {
   final bool showProfile;
@@ -9,13 +11,14 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
   final double? fontSize;
   final double? extent;
 
-  HeaderDelegate(
-      {this.showProfile = true,
-      this.showBackButton = false,
-      this.title,
-      this.onBackPressed,
-      this.fontSize = 32,
-      this.extent = 200});
+  HeaderDelegate({
+    this.showProfile = true,
+    this.showBackButton = false,
+    this.title,
+    this.onBackPressed,
+    this.fontSize = 32,
+    this.extent = 200,
+  });
 
   @override
   double get minExtent => extent ?? 200;
@@ -29,13 +32,13 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
           width: 48,
           height: 48,
           decoration: const BoxDecoration(
-            color: CupertinoColors.white,
+            color: Colors.white,
             shape: BoxShape.circle,
           ),
-          child: const Center(
+          child: Center(
             child: Icon(
-              CupertinoIcons.person,
-              color: Color(0xFF05001E),
+              Platform.isIOS ? CupertinoIcons.person : Icons.person_outline,
+              color: const Color(0xFF05001E),
               size: 24,
             ),
           ),
@@ -44,7 +47,7 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
         const Text(
           'David',
           style: TextStyle(
-            color: CupertinoColors.white,
+            color: Colors.white,
             fontSize: 32,
             fontWeight: FontWeight.w600,
           ),
@@ -58,12 +61,36 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
       child: Text(
         title ?? '',
         style: TextStyle(
-          color: CupertinoColors.white,
+          color: Colors.white,
           fontSize: fontSize,
           fontWeight: FontWeight.w600,
         ),
       ),
     );
+  }
+
+  Widget _buildBackButton(BuildContext context) {
+    if (Platform.isIOS) {
+      return CupertinoButton(
+        padding: EdgeInsets.zero,
+        onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
+        child: const Icon(
+          CupertinoIcons.back,
+          color: Colors.white,
+          size: 28,
+        ),
+      );
+    } else {
+      return IconButton(
+        padding: EdgeInsets.zero,
+        onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
+        icon: const Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 28,
+        ),
+      );
+    }
   }
 
   @override
@@ -82,15 +109,7 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
           Positioned(
             top: 24,
             left: 24,
-            child: CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
-              child: const Icon(
-                CupertinoIcons.back,
-                color: CupertinoColors.white,
-                size: 28,
-              ),
-            ),
+            child: _buildBackButton(context),
           ),
         // Content
         Padding(
@@ -112,10 +131,13 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class SimpleCurvedPainter extends CustomPainter {
+  final Color backgroundColor = const Color(0xFF05001E);
+  final Color accentColor = const Color(0xFFFDC202);
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFF05001E)
+      ..color = backgroundColor
       ..style = PaintingStyle.fill;
 
     final path = Path();
@@ -142,7 +164,7 @@ class SimpleCurvedPainter extends CustomPainter {
 
     // Draw the golden accent line
     final accentPaint = Paint()
-      ..color = const Color(0xFFFDC202)
+      ..color = accentColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 24;
 
@@ -155,9 +177,17 @@ class SimpleCurvedPainter extends CustomPainter {
       size.height - 36, // end point y
     );
 
+    // Draw in correct order
     canvas.drawPath(accentPath, accentPaint);
-    // Draw the navy background
     canvas.drawPath(path, paint);
+
+    // Add Material Design elevation effect if on Android
+    if (!Platform.isIOS) {
+      final shadowPaint = Paint()
+        ..color = Colors.black.withOpacity(0.1)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
+      canvas.drawPath(path, shadowPaint);
+    }
   }
 
   @override

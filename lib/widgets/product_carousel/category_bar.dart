@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// lib/widgets/product_carousel/category_bar.dart
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:e_commerce_app/widgets/common/conditional_widget.dart';
@@ -15,14 +15,15 @@ class CategoryBar extends StatefulWidget {
   final bool? ourChoice;
   final bool? isProductTile;
 
-  const CategoryBar(
-      {super.key,
-      required this.categories,
-      required this.selectedCategory,
-      required this.onCategorySelected,
-      this.isPromo,
-      this.ourChoice,
-      this.isProductTile});
+  const CategoryBar({
+    super.key,
+    required this.categories,
+    required this.selectedCategory,
+    required this.onCategorySelected,
+    this.isPromo,
+    this.ourChoice,
+    this.isProductTile,
+  });
 
   @override
   CategoryBarState createState() => CategoryBarState();
@@ -58,43 +59,54 @@ class CategoryBarState extends State<CategoryBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 34,
-      decoration: const BoxDecoration(
-        color: Color(0xFFEEEFF1),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          color: const Color(0xFFEEEFF1),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              offset: const Offset(0, -1),
+              blurRadius: 2,
+            ),
+          ],
         ),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: Row(
-        children: [
-          Expanded(
-            child: Center(
-              child: CategoryButtons(
-                categories: widget.categories,
-                selectedCategory: widget.selectedCategory,
-                onCategorySelected: widget.onCategorySelected,
+        clipBehavior: Clip.hardEdge,
+        child: Row(
+          children: [
+            Expanded(
+              child: Center(
+                child: CategoryButtons(
+                  categories: widget.categories,
+                  selectedCategory: widget.selectedCategory,
+                  onCategorySelected: widget.onCategorySelected,
+                ),
               ),
             ),
-          ),
-          ConditionalWidget(
-            condition: widget.isPromo,
-            whenTrue: PromoSection(
-              secondsRemaining: _secondsRemaining,
-              ourChoice: widget.ourChoice,
-            ),
-            whenFalse: ConditionalWidget(
-              condition: widget.ourChoice,
-              whenTrue: const TitleDisplay(title: "Aval Choice"),
+            ConditionalWidget(
+              condition: widget.isPromo,
+              whenTrue: PromoSection(
+                secondsRemaining: _secondsRemaining,
+                ourChoice: widget.ourChoice,
+              ),
               whenFalse: ConditionalWidget(
+                condition: widget.ourChoice,
+                whenTrue: const TitleDisplay(title: "Aval Choice"),
+                whenFalse: ConditionalWidget(
                   condition: widget.isProductTile,
                   whenTrue: const SizedBox.shrink(),
-                  whenFalse: TimerDisplay(secondsRemaining: _secondsRemaining)),
+                  whenFalse: TimerDisplay(secondsRemaining: _secondsRemaining),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

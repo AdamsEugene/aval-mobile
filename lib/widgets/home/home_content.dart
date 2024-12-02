@@ -1,5 +1,8 @@
-import 'package:e_commerce_app/widgets/others/shimmer_loading.dart';
+// lib/widgets/home/home_content.dart
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
+import 'package:e_commerce_app/widgets/others/shimmer_loading.dart';
 import 'package:e_commerce_app/services/product_service.dart';
 import 'package:e_commerce_app/models/product.dart';
 import 'package:e_commerce_app/widgets/product_grid/product_grid.dart';
@@ -27,104 +30,126 @@ class _HomeContentState extends State<HomeContent> {
     _productsFuture = ProductService.fetchProducts();
   }
 
+  void _refreshProducts() {
+    setState(() {
+      _productsFuture = ProductService.fetchProducts();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: SafeArea(
-        child: FutureBuilder<List<Product>>(
-          future: _productsFuture,
-          builder: (context, snapshot) {
-            return CustomScrollView(
-              slivers: <Widget>[
-                const MainHeader(),
-                const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                const MainSearchBar(),
-                const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                const CategoryScrollList(),
-                const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                const MainBannerCarousel(),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+    final scrollPhysics = Platform.isIOS
+        ? const AlwaysScrollableScrollPhysics()
+        : const BouncingScrollPhysics();
 
-                // Product carousels will handle their own loading states
-                const ProductCarousel(
-                  ourChoice: true,
-                  categories: [
-                    'Electronics',
-                    'Beauty & Care',
-                  ],
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                const ServiceFeatures(),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                const ProductCarousel(
-                  isPromo: true,
-                  ourChoice: false,
-                  categories: [
-                    'Electronics',
-                    'Beauty & Care',
-                  ],
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                const AdsBanner(),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                const ProductCarousel(
-                  ourChoice: true,
-                  categories: [
-                    'Electronics',
-                    'Beauty & Care',
-                  ],
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                const AdsBanner(),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                const ProductCarousel(
-                  isPromo: true,
-                  ourChoice: false,
-                  categories: [
-                    'Electronics',
-                    'Beauty & Care',
-                  ],
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                const ProductCarousel(
-                  isPromo: false,
-                  ourChoice: false,
-                  categories: ['Home & Living'],
-                  isProductTile: true,
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                const ProductCarousel(
-                  isPromo: false,
-                  ourChoice: false,
-                  categories: ['Electronics'],
-                  isProductTile: true,
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                const ProductCarousel(
-                  isPromo: false,
-                  ourChoice: false,
-                  categories: ['Aval Choice'],
-                  isProductTile: true,
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 12)),
+    final content = RefreshIndicator(
+      onRefresh: () async {
+        _refreshProducts();
+      },
+      child: CustomScrollView(
+        physics: scrollPhysics,
+        slivers: <Widget>[
+          const MainHeader(),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          const MainSearchBar(),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          const CategoryScrollList(),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          const SliverToBoxAdapter(
+            child: MainBannerCarousel(),
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          const ProductCarousel(
+            ourChoice: true,
+            categories: [
+              'Electronics',
+              'Beauty & Care',
+            ],
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          const ServiceFeatures(),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          const ProductCarousel(
+            isPromo: true,
+            ourChoice: false,
+            categories: [
+              'Electronics',
+              'Beauty & Care',
+            ],
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          const AdsBanner(),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          const ProductCarousel(
+            ourChoice: true,
+            categories: [
+              'Electronics',
+              'Beauty & Care',
+            ],
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          const AdsBanner(),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+          const ProductCarousel(
+            isPromo: true,
+            ourChoice: false,
+            categories: [
+              'Electronics',
+              'Beauty & Care',
+            ],
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          const ProductCarousel(
+            isPromo: false,
+            ourChoice: false,
+            categories: ['Home & Living'],
+            isProductTile: true,
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          const ProductCarousel(
+            isPromo: false,
+            ourChoice: false,
+            categories: ['Electronics'],
+            isProductTile: true,
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          const ProductCarousel(
+            isPromo: false,
+            ourChoice: false,
+            categories: ['Aval Choice'],
+            isProductTile: true,
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          FutureBuilder<List<Product>>(
+            future: _productsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const _LoadingGrid();
+              }
 
-                // Product grid with loading state
-                snapshot.connectionState == ConnectionState.waiting
-                    ? const _LoadingGrid()
-                    : snapshot.hasError
-                        ? SliverToBoxAdapter(
-                            child: _ErrorWidget(error: snapshot.error),
-                          )
-                        : ProductGrid(products: snapshot.data ?? []),
+              if (snapshot.hasError) {
+                return SliverToBoxAdapter(
+                  child: _ErrorWidget(
+                    error: snapshot.error,
+                    onRetry: _refreshProducts,
+                  ),
+                );
+              }
 
-                // Bottom padding
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
-              ],
-            );
-          },
-        ),
+              return ProductGrid(products: snapshot.data ?? []);
+            },
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+        ],
       ),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(child: content)
+        : Scaffold(
+            backgroundColor: Colors.white,
+            body: content,
+          );
   }
 }
 
@@ -159,8 +184,12 @@ class _LoadingGrid extends StatelessWidget {
 
 class _ErrorWidget extends StatelessWidget {
   final Object? error;
+  final VoidCallback onRetry;
 
-  const _ErrorWidget({this.error});
+  const _ErrorWidget({
+    this.error,
+    required this.onRetry,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -169,36 +198,36 @@ class _ErrorWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            CupertinoIcons.exclamationmark_circle,
-            color: CupertinoColors.systemRed,
+          Icon(
+            Platform.isIOS
+                ? CupertinoIcons.exclamationmark_circle
+                : Icons.error_outline,
+            color: Platform.isIOS ? CupertinoColors.systemRed : Colors.red,
             size: 48,
           ),
           const SizedBox(height: 16),
           Text(
             'Error loading products: ${error?.toString()}',
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: CupertinoColors.systemGrey,
+            style: TextStyle(
+              color: Platform.isIOS ? CupertinoColors.systemGrey : Colors.grey,
             ),
           ),
           const SizedBox(height: 16),
-          CupertinoButton(
-            onPressed: () {
-              // Trigger a rebuild of the HomeContent widget
-              // You might want to add a proper refresh mechanism here
-              Navigator.of(context).pushReplacement(
-                CupertinoPageRoute(
-                  builder: (context) => const HomeContent(),
+          Platform.isIOS
+              ? CupertinoButton(
+                  onPressed: onRetry,
+                  child: const Text('Retry'),
+                )
+              : TextButton(
+                  onPressed: onRetry,
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.blue,
+                  ),
+                  child: const Text('Retry'),
                 ),
-              );
-            },
-            child: const Text('Retry'),
-          ),
         ],
       ),
     );
   }
 }
-
-// Make sure you have the ShimmerLoading widget from the previous example

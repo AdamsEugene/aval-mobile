@@ -1,6 +1,8 @@
+// lib/widgets/shared/main_search_bar.dart
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'dart:io' show Platform;
 
 class MainSearchBar extends StatelessWidget {
   const MainSearchBar({super.key});
@@ -56,65 +58,111 @@ class CustomizedSearchTextField extends StatelessWidget {
 
   const CustomizedSearchTextField({super.key, required this.shrinkProgress});
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPlatformTextField() {
+    if (Platform.isIOS) {
+      return CupertinoTextField(
+        decoration: BoxDecoration(
+          color: CupertinoColors.white,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        placeholder: 'Search...',
+        prefix: _buildPrefix(),
+        suffix: _buildSuffix(),
+        suffixMode: OverlayVisibilityMode.always,
+        clipBehavior: Clip.hardEdge,
+      );
+    }
+
+    return TextField(
+      decoration: InputDecoration(
+        hintText: 'Search...',
+        filled: true,
+        fillColor: Colors.white,
+        prefixIcon: _buildPrefix(),
+        suffixIcon: _buildSuffix(),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(50),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      ),
+    );
+  }
+
+  Widget? _buildPrefix() {
+    if (shrinkProgress >= 0.48) return null;
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: math.max(6.0, 12.0 - (shrinkProgress * 6.0)),
+      ),
+      child: Icon(
+        Platform.isIOS
+            ? CupertinoIcons.camera_viewfinder
+            : Icons.qr_code_scanner,
+        color: Platform.isIOS ? CupertinoColors.black : Colors.black54,
+        size: math.max(15.0, 20.0 - (shrinkProgress * 10.0)),
+      ),
+    );
+  }
+
+  Widget? _buildSuffix() {
+    if (shrinkProgress >= 0.48) return null;
+
     final iconSize = math.max(10.0, 20.0 - (shrinkProgress * 10.0));
 
-    return CupertinoTextField(
-      decoration: BoxDecoration(
-        color: CupertinoColors.white,
-        borderRadius: BorderRadius.circular(50),
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFFD5D6D7),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildIconButton(
+              Platform.isIOS ? CupertinoIcons.camera : Icons.camera_alt,
+              iconSize,
+            ),
+            _buildIconButton(
+              Platform.isIOS ? CupertinoIcons.mic : Icons.mic,
+              iconSize,
+            ),
+            _buildIconButton(
+              Platform.isIOS ? CupertinoIcons.search : Icons.search,
+              iconSize,
+            ),
+          ],
+        ),
       ),
-      placeholder: 'Search...',
-      prefix: shrinkProgress < 0.48
-          ? Padding(
-              padding: EdgeInsets.only(
-                left: math.max(6.0, 12.0 - (shrinkProgress * 6.0)),
-              ),
-              child: Icon(
-                CupertinoIcons.camera_viewfinder,
-                color: CupertinoColors.black,
-                size: math.max(15.0, 20.0 - (shrinkProgress * 10.0)),
-              ),
-            )
-          : null,
-      suffix: shrinkProgress < 0.48
-          ? Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Container(
-                // width: containerWidth,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFD5D6D7),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildIconButton(CupertinoIcons.camera, iconSize),
-                    _buildIconButton(CupertinoIcons.mic, iconSize),
-                    _buildIconButton(CupertinoIcons.search, iconSize),
-                  ],
-                ),
-              ),
-            )
-          : null,
-      suffixMode: OverlayVisibilityMode.always,
-      clipBehavior: Clip.hardEdge,
     );
   }
 
   Widget _buildIconButton(IconData icon, double size) {
+    final buttonSize = math.max(20.0, 40.0 - (shrinkProgress * 20.0));
+
     return SizedBox(
-      width: math.max(20.0, 40.0 - (shrinkProgress * 20.0)),
-      height: math.max(20.0, 40.0 - (shrinkProgress * 20.0)),
+      width: buttonSize,
+      height: buttonSize,
       child: Center(
         child: IconButton(
-          icon: Icon(icon, color: CupertinoColors.white, size: size),
+          icon: Icon(
+            icon,
+            color: Platform.isIOS ? CupertinoColors.white : Colors.white,
+            size: size,
+          ),
           onPressed: () {},
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
+          splashRadius: Platform.isIOS ? null : buttonSize / 2,
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildPlatformTextField();
   }
 }
