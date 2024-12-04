@@ -39,25 +39,29 @@ class ProductService {
       'tags': rawProduct['tags'] ?? ['uncategorized'],
       'brand': rawProduct['brand'] ?? 'Unknown Brand',
       'sku': (rawProduct['id'] ?? '0').toString(),
-      'weight': 0.0,
-      'dimensions': {
-        'width': 0.0,
-        'height': 0.0,
-        'depth': 0.0,
-      },
-      'warrantyInformation': 'Standard Warranty',
-      'shippingInformation': 'Standard Shipping',
+      'weight': rawProduct['weight'] ?? 0.0,
+      'dimensions': rawProduct['dimensions'] ??
+          {
+            'width': 0.0,
+            'height': 0.0,
+            'depth': 0.0,
+          },
+      'warrantyInformation':
+          rawProduct['warrantyInformation'] ?? 'Standard Warranty',
+      'shippingInformation':
+          rawProduct['shippingInformation'] ?? 'Standard Shipping',
       'availabilityStatus':
           (rawProduct['stock'] ?? 0) > 0 ? 'In Stock' : 'Out of Stock',
-      'reviews': [],
-      'returnPolicy': 'Standard Return Policy',
-      'minimumOrderQuantity': 1,
-      'meta': {
-        'createdAt': DateTime.now().toIso8601String(),
-        'updatedAt': DateTime.now().toIso8601String(),
-        'barcode': (rawProduct['id'] ?? '0').toString(),
-        'qrCode': 'https://dummyjson.com/qr-code/${rawProduct['id'] ?? 0}'
-      },
+      'reviews': rawProduct['reviews'] ?? [],
+      'returnPolicy': rawProduct['returnPolicy'] ?? 'Standard Return Policy',
+      'minimumOrderQuantity': rawProduct['minimumOrderQuantity'] ?? 1,
+      'meta': rawProduct['meta'] ??
+          {
+            'createdAt': DateTime.now().toIso8601String(),
+            'updatedAt': DateTime.now().toIso8601String(),
+            'barcode': (rawProduct['id'] ?? '0').toString(),
+            'qrCode': 'https://dummyjson.com/qr-code/${rawProduct['id'] ?? 0}'
+          },
       'images': (rawProduct['images'] as List<dynamic>?)
               ?.map((image) => image.toString())
               .toList() ??

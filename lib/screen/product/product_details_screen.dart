@@ -10,6 +10,7 @@ import 'package:e_commerce_app/widgets/product/floating_cart_button.dart';
 import 'package:e_commerce_app/widgets/product/product_bottom_bar.dart';
 import 'package:e_commerce_app/widgets/protection/protection_plan_section.dart';
 import 'package:e_commerce_app/widgets/return_policy/return_policy_section.dart';
+import 'package:e_commerce_app/widgets/reviews/product_reviews_section.dart';
 import 'package:e_commerce_app/widgets/security/security_info_section.dart';
 import 'package:e_commerce_app/widgets/shipping/shipping_info_section.dart';
 import 'package:e_commerce_app/widgets/subscription/subscription_info_section.dart';
@@ -198,6 +199,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, int> reviewCategories = {
+      'High quality': 27,
+      'Satisfied': 31,
+      'love it': 101,
+    };
+
+    // Calculate average rating from product reviews
+    final double averageRating = widget.product.reviews.isEmpty
+        ? 0.0
+        : widget.product.reviews.map((r) => r.rating).reduce((a, b) => a + b) /
+            widget.product.reviews.length;
+
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.white,
       child: Stack(
@@ -212,7 +225,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 const PriceSession(),
                 const CouponSection(),
-                const ColorSelection(),
+                ColorSelection(product: widget.product),
                 const ProductTitleSection(),
                 const StockInfoSection(),
                 const StoreInfoSection(),
@@ -222,6 +235,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 const SubscriptionInfoSection(),
                 const ProtectionPlanSection(),
                 const ReturnPolicySection(),
+                ProductReviewsSection(
+                  product: widget.product,
+                  reviews: widget.product.reviews,
+                  averageRating: averageRating,
+                  reviewCategories: reviewCategories,
+                ),
                 SizedBox(height: MediaQuery.of(context).padding.bottom + 78),
               ],
             ),

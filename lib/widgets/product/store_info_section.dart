@@ -41,7 +41,7 @@ class StoreInfoSection extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(22),
                   child: Image.network(
-                    'store_logo_url',
+                    'https://img.freepik.com/free-photo/colorful-design-with-spiral-design_188544-9588.jpg',
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => const Center(
                       child: Text(

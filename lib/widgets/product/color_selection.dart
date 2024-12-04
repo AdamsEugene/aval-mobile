@@ -1,7 +1,9 @@
+import 'package:e_commerce_app/models/product.dart';
 import 'package:flutter/cupertino.dart';
 
 class ColorSelection extends StatefulWidget {
-  const ColorSelection({super.key});
+  final Product product;
+  const ColorSelection({super.key, required this.product});
 
   @override
   State<ColorSelection> createState() => _ColorSelectionState();
@@ -12,6 +14,7 @@ class _ColorSelectionState extends State<ColorSelection> {
 
   Widget _buildColorOption(int index, String imageUrl) {
     final bool isSelected = selectedIndex == index;
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -55,6 +58,8 @@ class _ColorSelectionState extends State<ColorSelection> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> images = widget.product.images;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: const BoxDecoration(
@@ -81,16 +86,26 @@ class _ColorSelectionState extends State<ColorSelection> {
             ),
           ),
           const SizedBox(height: 12),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            physics: const BouncingScrollPhysics(),
-            child: Row(
-              children: List.generate(
-                6,
-                (index) => _buildColorOption(
-                  index,
-                  'https://example.com/bag_$index.jpg', // Replace with your image URLs
+          SizedBox(
+            width: MediaQuery.of(context).size.width, // Take full width
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16), // Added horizontal padding
+              physics: const BouncingScrollPhysics(),
+              child: Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween, // Spread items
+                children: List.generate(
+                  images.isEmpty ? 1 : images.length,
+                  (index) => Padding(
+                    padding: const EdgeInsets.only(
+                        right: 12), // Added spacing between items
+                    child: _buildColorOption(
+                      index,
+                      images.isEmpty ? widget.product.thumbnail : images[index],
+                    ),
+                  ),
                 ),
               ),
             ),
