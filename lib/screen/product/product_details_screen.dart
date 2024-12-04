@@ -11,6 +11,8 @@ import 'package:e_commerce_app/widgets/product/product_bottom_bar.dart';
 import 'package:e_commerce_app/widgets/protection/protection_plan_section.dart';
 import 'package:e_commerce_app/widgets/return_policy/return_policy_section.dart';
 import 'package:e_commerce_app/widgets/reviews/product_reviews_section.dart';
+import 'package:e_commerce_app/widgets/reviews/review_gallery_section.dart';
+import 'package:e_commerce_app/widgets/reviews/review_gallery_viewer.dart';
 import 'package:e_commerce_app/widgets/security/security_info_section.dart';
 import 'package:e_commerce_app/widgets/shipping/shipping_info_section.dart';
 import 'package:e_commerce_app/widgets/subscription/subscription_info_section.dart';
@@ -240,6 +242,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   reviews: widget.product.reviews,
                   averageRating: averageRating,
                   reviewCategories: reviewCategories,
+                ),
+                ReviewGallerySection(
+                  images: widget.product.images,
+                  onViewAll: () {
+                    Navigator.of(context).push(
+                      CupertinoPageRoute(
+                        builder: (context) => ReviewGalleryViewer(
+                          images: widget.product.images,
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(height: MediaQuery.of(context).padding.bottom + 78),
               ],

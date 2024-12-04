@@ -1,5 +1,5 @@
 import 'package:e_commerce_app/models/product.dart';
-import 'package:e_commerce_app/screen/product/product_eviews_screen.dart';
+import 'package:e_commerce_app/screen/product/product_reviews_screen.dart';
 import 'package:e_commerce_app/widgets/reviews/review_details_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
