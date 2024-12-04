@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/screen/product/product_details_screen.dart';
 import 'package:e_commerce_app/widgets/others/shimmer_loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/models/product.dart';
@@ -66,14 +67,17 @@ class ProductContextMenu extends StatelessWidget {
 
 class ProductItemWrapper extends StatelessWidget {
   final Product product;
+  final num index;
+  final String? category;
   final Animation<Decoration> Function(Animation<double>)
       boxDecorationAnimation;
 
-  const ProductItemWrapper({
-    super.key,
-    required this.product,
-    required this.boxDecorationAnimation,
-  });
+  const ProductItemWrapper(
+      {super.key,
+      required this.product,
+      required this.boxDecorationAnimation,
+      required this.index,
+      this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +95,8 @@ class ProductItemWrapper extends StatelessWidget {
                   animation.value < CupertinoContextMenu.animationOpensAt
                       ? decorationAnimation.value
                       : null,
-              child: _buildProductItem(context, product, animation),
+              child: _buildProductItem(
+                  context, product, animation, index, category),
             );
           },
         ),
@@ -100,8 +105,8 @@ class ProductItemWrapper extends StatelessWidget {
   }
 }
 
-Widget _buildProductItem(
-    BuildContext context, Product product, Animation<double> animation) {
+Widget _buildProductItem(BuildContext context, Product product,
+    Animation<double> animation, num index, String? category) {
   final bool isExpanded =
       animation.value >= CupertinoContextMenu.animationOpensAt;
 
@@ -112,76 +117,94 @@ Widget _buildProductItem(
     spreadRadius: 0,
   );
 
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-    width: isExpanded ? MediaQuery.of(context).size.width : 160,
-    height: isExpanded ? 440 : 220,
-    decoration: BoxDecoration(
-      color: CupertinoColors.white,
-      borderRadius: BorderRadius.circular(12),
-      boxShadow: [boxShadow],
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              boxShadow: [boxShadow],
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(12),
-                bottom: Radius.circular(8),
+  final heroTag =
+      'product-${product.id}-${product.thumbnail}-$index-$category';
+
+  return GestureDetector(
+    onTap: () {
+      Navigator.of(context, rootNavigator: true).push(
+        CupertinoPageRoute(
+          builder: (context) => ProductDetailsScreen(
+            product: product,
+            heroTag: heroTag,
+          ),
+        ),
+      );
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      width: isExpanded ? MediaQuery.of(context).size.width : 160,
+      height: isExpanded ? 440 : 220,
+      decoration: BoxDecoration(
+        color: CupertinoColors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [boxShadow],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [boxShadow],
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                  bottom: Radius.circular(8),
+                ),
               ),
-            ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(12),
-                bottom: Radius.circular(8),
-              ),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  const ShimmerLoading(
-                    width: double.infinity,
-                    height: double.infinity,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(12),
-                      bottom: Radius.circular(8),
-                    ),
-                  ),
-                  Image.network(
-                    product.imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: CupertinoColors.systemGrey6,
-                        child: const Center(
-                          child: Icon(
-                            CupertinoIcons.photo,
-                            size: 32,
-                            color: CupertinoColors.systemGrey,
-                          ),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                  bottom: Radius.circular(8),
+                ),
+                child: Hero(
+                  tag: heroTag,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      const ShimmerLoading(
+                        width: double.infinity,
+                        height: double.infinity,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12),
+                          bottom: Radius.circular(8),
                         ),
-                      );
-                    },
+                      ),
+                      Image.network(
+                        product.thumbnail,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: CupertinoColors.systemGrey6,
+                            child: const Center(
+                              child: Icon(
+                                CupertinoIcons.photo,
+                                size: 32,
+                                color: CupertinoColors.systemGrey,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            product.name,
-            style: TextStyle(
-              fontSize: isExpanded ? 16 : 14,
-              fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              product.title,
+              style: TextStyle(
+                fontSize: isExpanded ? 16 : 14,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

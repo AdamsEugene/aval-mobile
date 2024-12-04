@@ -58,9 +58,9 @@ class _ProductGridState extends State<ProductGrid> {
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return ProductItemWrapper(
-            product: widget.products[index],
-            boxDecorationAnimation: _boxDecorationAnimation,
-          );
+              product: widget.products[index],
+              boxDecorationAnimation: _boxDecorationAnimation,
+              index: index);
         },
         childCount: widget.products.length,
       ),

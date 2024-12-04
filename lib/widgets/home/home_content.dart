@@ -59,20 +59,14 @@ class _HomeContentState extends State<HomeContent> {
                 const ProductCarousel(
                   isPromo: true,
                   ourChoice: false,
-                  categories: [
-                    'Electronics',
-                    'Beauty & Care',
-                  ],
+                  categories: ['Home & Living'],
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 24)),
                 const AdsBanner(),
                 const SliverToBoxAdapter(child: SizedBox(height: 24)),
                 const ProductCarousel(
                   ourChoice: true,
-                  categories: [
-                    'Electronics',
-                    'Beauty & Care',
-                  ],
+                  categories: ['Groceries'],
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 24)),
                 const AdsBanner(),
@@ -80,25 +74,22 @@ class _HomeContentState extends State<HomeContent> {
                 const ProductCarousel(
                   isPromo: true,
                   ourChoice: false,
-                  categories: [
-                    'Electronics',
-                    'Beauty & Care',
-                  ],
+                  categories: ['Fashion'],
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                const ProductCarousel(
-                  isPromo: false,
-                  ourChoice: false,
-                  categories: ['Home & Living'],
-                  isProductTile: true,
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 12)),
-                const ProductCarousel(
-                  isPromo: false,
-                  ourChoice: false,
-                  categories: ['Electronics'],
-                  isProductTile: true,
-                ),
+                // const ProductCarousel(
+                //   isPromo: false,
+                //   ourChoice: false,
+                //   categories: ['Home & Living'],
+                //   isProductTile: true,
+                // ),
+                // const SliverToBoxAdapter(child: SizedBox(height: 12)),
+                // const ProductCarousel(
+                //   isPromo: false,
+                //   ourChoice: false,
+                //   categories: ['Electronics'],
+                //   isProductTile: true,
+                // ),
                 const SliverToBoxAdapter(child: SizedBox(height: 12)),
                 const ProductCarousel(
                   isPromo: false,

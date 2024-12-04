@@ -1,4 +1,3 @@
-// lib/services/product_service.dart
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:e_commerce_app/models/product.dart';
@@ -26,6 +25,47 @@ class ProductService {
     'Groceries': ['groceries'],
   };
 
+  static Map<String, dynamic> _normalizeProductData(
+      Map<String, dynamic> rawProduct, String categoryGroup) {
+    return {
+      'id': rawProduct['id'] ?? 0,
+      'title': rawProduct['title'] ?? 'Untitled Product',
+      'description': rawProduct['description'] ?? 'No description available',
+      'category': categoryGroup,
+      'price': (rawProduct['price'] ?? 0).toDouble(),
+      'discountPercentage': (rawProduct['discountPercentage'] ?? 0).toDouble(),
+      'rating': (rawProduct['rating'] ?? 0).toDouble(),
+      'stock': rawProduct['stock'] ?? 0,
+      'tags': rawProduct['tags'] ?? ['uncategorized'],
+      'brand': rawProduct['brand'] ?? 'Unknown Brand',
+      'sku': (rawProduct['id'] ?? '0').toString(),
+      'weight': 0.0,
+      'dimensions': {
+        'width': 0.0,
+        'height': 0.0,
+        'depth': 0.0,
+      },
+      'warrantyInformation': 'Standard Warranty',
+      'shippingInformation': 'Standard Shipping',
+      'availabilityStatus':
+          (rawProduct['stock'] ?? 0) > 0 ? 'In Stock' : 'Out of Stock',
+      'reviews': [],
+      'returnPolicy': 'Standard Return Policy',
+      'minimumOrderQuantity': 1,
+      'meta': {
+        'createdAt': DateTime.now().toIso8601String(),
+        'updatedAt': DateTime.now().toIso8601String(),
+        'barcode': (rawProduct['id'] ?? '0').toString(),
+        'qrCode': 'https://dummyjson.com/qr-code/${rawProduct['id'] ?? 0}'
+      },
+      'images': (rawProduct['images'] as List<dynamic>?)
+              ?.map((image) => image.toString())
+              .toList() ??
+          [],
+      'thumbnail': rawProduct['thumbnail'] ?? 'https://via.placeholder.com/150',
+    };
+  }
+
   static Future<List<Product>> fetchProducts() async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/products?limit=100'));
@@ -42,18 +82,21 @@ class ProductService {
 
         // Organize products into their respective groups
         for (final product in rawProducts) {
-          final category = product['category'] as String;
+          final category = product['category'] as String?;
+          if (category == null) continue;
 
           // Find which group this category belongs to
           for (final entry in categoryGroups.entries) {
             if (entry.value.contains(category)) {
-              organizedProducts[entry.key]?.add(
-                Product(
-                  product['title'],
-                  (product['images'] as List<dynamic>)[0], // First image
-                  entry.key, // Use the group name as category
-                ),
-              );
+              try {
+                final normalizedData = _normalizeProductData(
+                    product as Map<String, dynamic>, entry.key);
+                final productObj = Product.fromJson(normalizedData);
+                organizedProducts[entry.key]?.add(productObj);
+              } catch (e) {
+                print('Error processing product: ${product['id']} - $e');
+                continue;
+              }
               break;
             }
           }
@@ -65,32 +108,19 @@ class ProductService {
         // Take up to 4 products from each category group
         for (final group in organizedProducts.entries) {
           if (group.value.isNotEmpty) {
-            finalProducts.addAll(
-              group.value.take(4).map(
-                    (p) => Product(
-                      p.name,
-                      p.imageUrl,
-                      group.key,
-                    ),
-                  ),
-            );
+            finalProducts.addAll(group.value.take(4));
           }
         }
 
-        // Add some featured products (from mixed categories) for the "Aval Choice"
+        // Add featured products for "Aval Choice"
         final featuredProducts = rawProducts
-            .where((p) =>
-                (p['rating'] as num) >= 4.5 && (p['images'] as List).isNotEmpty)
+            .where((p) => ((p['rating'] as num?) ?? 0) >= 4.5)
             .take(4)
-            .map((p) => Product(
-                  p['title'],
-                  (p['images'] as List<dynamic>)[0],
-                  'Aval Choice',
-                ))
+            .map((p) => Product.fromJson(_normalizeProductData(
+                p as Map<String, dynamic>, 'Aval Choice')))
             .toList();
 
         finalProducts.addAll(featuredProducts);
-
         return finalProducts;
       } else {
         throw Exception('Failed to load products');
@@ -105,20 +135,16 @@ class ProductService {
     try {
       // If it's Aval Choice, fetch top-rated products
       if (category == 'Aval Choice') {
-        final response = await http.get(
-          Uri.parse('$baseUrl/products?limit=20'),
-        );
+        final response =
+            await http.get(Uri.parse('$baseUrl/products?limit=20'));
 
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
           return (data['products'] as List)
-              .where((p) => (p['rating'] as num) >= 4.5)
+              .where((p) => ((p['rating'] as num?) ?? 0) >= 4.5)
               .take(10)
-              .map((p) => Product(
-                    p['title'],
-                    (p['images'] as List<dynamic>)[0],
-                    'Aval Choice',
-                  ))
+              .map((p) => Product.fromJson(_normalizeProductData(
+                  p as Map<String, dynamic>, 'Aval Choice')))
               .toList();
         }
       }
@@ -138,11 +164,8 @@ class ProductService {
           final data = json.decode(response.body);
           allProducts.addAll(
             (data['products'] as List)
-                .map((p) => Product(
-                      p['title'],
-                      (p['images'] as List<dynamic>)[0],
-                      category,
-                    ))
+                .map((p) => Product.fromJson(
+                    _normalizeProductData(p as Map<String, dynamic>, category)))
                 .toList(),
           );
         }

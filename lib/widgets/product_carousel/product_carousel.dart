@@ -81,6 +81,8 @@ class ProductCarouselState extends State<ProductCarousel> {
         return ProductItemWrapper(
           product: filteredProducts[index],
           boxDecorationAnimation: _boxDecorationAnimation,
+          index: index,
+          category: _selectedCategory,
         );
       },
     );
