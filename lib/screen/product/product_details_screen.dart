@@ -2,8 +2,11 @@
 import 'package:e_commerce_app/data/product_data.dart';
 import 'package:e_commerce_app/widgets/product/color_selection.dart';
 import 'package:e_commerce_app/widgets/product/coupon_section.dart';
+import 'package:e_commerce_app/widgets/product/detail_product_images_section.dart';
 import 'package:e_commerce_app/widgets/product/price_session.dart';
+import 'package:e_commerce_app/widgets/product/product_details_section.dart';
 import 'package:e_commerce_app/widgets/product/product_title_section.dart';
+import 'package:e_commerce_app/widgets/product/seller_recommendation_section.dart';
 import 'package:e_commerce_app/widgets/product/stock_info_section.dart';
 import 'package:e_commerce_app/widgets/product/store_info_section.dart';
 import 'package:e_commerce_app/widgets/customization/customization_options_section.dart';
@@ -38,11 +41,14 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   late Future<List<Product>> relatedProductsFuture;
+  late Future<List<Product>> recommendedProductsFuture;
 
   @override
   void initState() {
     super.initState();
     relatedProductsFuture = ProductData.getRelatedProducts(widget.product);
+    recommendedProductsFuture =
+        ProductData.getSellerRecommendations(widget.product);
   }
 
   int _currentImageIndex = 0;
@@ -287,6 +293,47 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               },
                             ),
                           );
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+                ProductDetailsSection(
+                  description: widget.product.description,
+                  // Optional: set expandable to false for always expanded view
+                  // expandable: false,
+                ),
+                DetailProductImagesSection(
+                  images: widget.product.images,
+                ),
+                FutureBuilder<List<Product>>(
+                  future: recommendedProductsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      return SellerRecommendationSection(
+                        recommendations: snapshot.data!,
+                        onProductTap: (product) {
+                          showCupertinoModalPopup(
+                            context: context,
+                            builder: (context) => ProductDetailsDrawer(
+                              product: product,
+                              onAddToCart: () {
+                                // Add to cart logic here
+                                Navigator.pop(context);
+                              },
+                              onBuyNow: () {
+                                // Buy now logic here
+                                Navigator.pop(context);
+                              },
+                            ),
+                          );
+                        },
+                        onFavoriteTap: (product) {
+                          // Handle favorite toggle
+                          setState(() {
+                            // Update favorite status in your state management
+                          });
                         },
                       );
                     }

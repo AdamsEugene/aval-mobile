@@ -50,4 +50,82 @@ class ProductData {
     // Take up to 6 products
     return categoryProducts.take(6).toList();
   }
+
+  static Future<List<Product>> getRecommendedProducts() async {
+    final products = await getProducts();
+
+    // Calculate a score for each product based on rating and stock sold
+    final scoredProducts = products.map((product) {
+      // Weight: 60% rating, 40% stock sold
+      final ratingScore = product.rating * 0.6;
+      final stockScore =
+          (product.stock / 1000) * 0.4; // Normalize stock to 0-1 range
+      return MapEntry(product, ratingScore + stockScore);
+    }).toList();
+
+    // Sort products by their score
+    scoredProducts.sort((a, b) => b.value.compareTo(a.value));
+
+    // Get top products with at least 4.0 rating
+    final recommendations = scoredProducts
+        .where((entry) => entry.key.rating >= 4.0)
+        .map((entry) => entry.key)
+        .take(6)
+        .toList();
+
+    // If we don't have enough products, add more based on just rating
+    if (recommendations.length < 6) {
+      final additionalProducts = products
+          .where((product) => !recommendations.contains(product))
+          .toList()
+        ..sort((a, b) => b.rating.compareTo(a.rating));
+
+      recommendations.addAll(
+        additionalProducts.take(6 - recommendations.length),
+      );
+    }
+
+    return recommendations;
+  }
+
+  static Future<List<Product>> getSellerRecommendations(
+      Product currentProduct) async {
+    final products = await getProducts();
+
+    // First, get products from the same brand with high ratings
+    final brandProducts = products
+        .where((product) =>
+            product.brand == currentProduct.brand &&
+            product.id != currentProduct.id &&
+            product.rating >= 4.0)
+        .toList();
+
+    // If we don't have enough brand products, add top-rated products
+    if (brandProducts.length < 40) {
+      final otherProducts = products
+          .where((product) =>
+              product.id != currentProduct.id &&
+              !brandProducts.contains(product) &&
+              product.rating >= 4.5)
+          .toList();
+
+      // Sort by rating and discount percentage
+      otherProducts.sort((a, b) {
+        final ratingCompare = b.rating.compareTo(a.rating);
+        if (ratingCompare != 0) return ratingCompare;
+        return b.discountPercentage.compareTo(a.discountPercentage);
+      });
+
+      brandProducts.addAll(otherProducts);
+    }
+
+    // Sort final list by rating and price
+    brandProducts.sort((a, b) {
+      final ratingCompare = b.rating.compareTo(a.rating);
+      if (ratingCompare != 0) return ratingCompare;
+      return a.price.compareTo(b.price); // Better deals first
+    });
+
+    return brandProducts;
+  }
 }
