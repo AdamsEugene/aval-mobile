@@ -1,4 +1,5 @@
 // lib/screens/product/product_details_screen.dart
+import 'package:e_commerce_app/data/product_data.dart';
 import 'package:e_commerce_app/widgets/product/color_selection.dart';
 import 'package:e_commerce_app/widgets/product/coupon_section.dart';
 import 'package:e_commerce_app/widgets/product/price_session.dart';
@@ -8,6 +9,8 @@ import 'package:e_commerce_app/widgets/product/store_info_section.dart';
 import 'package:e_commerce_app/widgets/customization/customization_options_section.dart';
 import 'package:e_commerce_app/widgets/product/floating_cart_button.dart';
 import 'package:e_commerce_app/widgets/product/product_bottom_bar.dart';
+import 'package:e_commerce_app/widgets/products/product_details_drawer.dart';
+import 'package:e_commerce_app/widgets/products/related_items_section.dart';
 import 'package:e_commerce_app/widgets/protection/protection_plan_section.dart';
 import 'package:e_commerce_app/widgets/return_policy/return_policy_section.dart';
 import 'package:e_commerce_app/widgets/reviews/product_reviews_section.dart';
@@ -34,6 +37,14 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  late Future<List<Product>> relatedProductsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    relatedProductsFuture = ProductData.getRelatedProducts(widget.product);
+  }
+
   int _currentImageIndex = 0;
   final List<String> _dummyImages = [
     'image1_url',
@@ -253,6 +264,33 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                       ),
                     );
+                  },
+                ),
+                FutureBuilder<List<Product>>(
+                  future: relatedProductsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      return RelatedItemsSection(
+                        relatedProducts: snapshot.data!,
+                        onProductTap: (product) {
+                          showCupertinoModalPopup(
+                            context: context,
+                            builder: (context) => ProductDetailsDrawer(
+                              product: product,
+                              onAddToCart: () {
+                                // Add to cart logic here
+                                Navigator.pop(context);
+                              },
+                              onBuyNow: () {
+                                // Buy now logic here
+                                Navigator.pop(context);
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink();
                   },
                 ),
                 SizedBox(height: MediaQuery.of(context).padding.bottom + 78),

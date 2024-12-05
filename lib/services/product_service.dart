@@ -1,3 +1,4 @@
+// lib/services/product_service.dart
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:e_commerce_app/models/product.dart';
