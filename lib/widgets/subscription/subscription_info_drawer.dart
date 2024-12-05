@@ -1,8 +1,73 @@
-// lib/widgets/subscription/subscription_info_drawer.dart
 import 'package:flutter/cupertino.dart';
 
-class SubscriptionInfoDrawer extends StatelessWidget {
+class SubscriptionInfoDrawer extends StatefulWidget {
   const SubscriptionInfoDrawer({super.key});
+
+  @override
+  State<SubscriptionInfoDrawer> createState() => _SubscriptionInfoDrawerState();
+}
+
+class _SubscriptionInfoDrawerState extends State<SubscriptionInfoDrawer> {
+  String? _selectedPlan;
+  int _customDays = 3;
+
+  void _showIntervalPicker() {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 250,
+        padding: const EdgeInsets.only(top: 6.0),
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        child: SafeArea(
+          top: false,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CupertinoButton(
+                    child: const Text('Cancel'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  CupertinoButton(
+                    child: const Text('Confirm'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: CupertinoPicker(
+                  magnification: 1.0,
+                  squeeze: 1.2,
+                  useMagnifier: true,
+                  itemExtent: 32.0,
+                  scrollController: FixedExtentScrollController(
+                    initialItem: _customDays - 1,
+                  ),
+                  onSelectedItemChanged: (int selectedItem) {
+                    setState(() {
+                      _customDays = selectedItem + 1;
+                    });
+                  },
+                  children: List<Widget>.generate(30, (int index) {
+                    return Center(
+                      child: Text(
+                        'Every ${index + 1} ${(index + 1) == 1 ? 'day' : 'days'}',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildSubscriptionPlan({
     required String title,
@@ -10,92 +75,120 @@ class SubscriptionInfoDrawer extends StatelessWidget {
     required String interval,
     required String savings,
     bool isPopular = false,
+    bool isCustom = false,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFEEEEEE)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Color(0xFF05001E),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+    final bool isSelected = _selectedPlan == title;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedPlan = isSelected ? null : title;
+          if (isCustom) {
+            _showIntervalPicker();
+          }
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFFFF4E5) : const Color(0xFFF8F9FA),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color:
+                isSelected ? const Color(0xFFFDC202) : const Color(0xFFEEEEEE),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  isCustom ? 'Custom Plan' : title,
+                  style: const TextStyle(
+                    color: Color(0xFF05001E),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              if (isPopular)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFEEAD1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text(
-                    'Most Popular',
-                    style: TextStyle(
-                      color: Color(0xFFFDC202),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                if (isPopular)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFEEAD1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      'Most Popular',
+                      style: TextStyle(
+                        color: Color(0xFFFDC202),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  isCustom
+                      ? 'USD ${(_customDays * 5.99).toStringAsFixed(2)}'
+                      : price,
+                  style: const TextStyle(
+                    color: Color(0xFF05001E),
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
+                const SizedBox(width: 4),
+                Text(
+                  isCustom ? 'every $_customDays days' : interval,
+                  style: TextStyle(
+                    color: const Color(0xFF05001E).withOpacity(0.6),
+                    fontSize: 14,
+                  ),
+                ),
+                if (isCustom) ...[
+                  const Spacer(),
+                  const Icon(
+                    CupertinoIcons.chevron_down,
+                    size: 16,
+                    color: Color(0xFF05001E),
+                  ),
+                ],
+              ],
+            ),
+            if (!isCustom) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Icon(
+                    CupertinoIcons.tag_fill,
+                    color: Color(0xFFFDC202),
+                    size: 16,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    savings,
+                    style: const TextStyle(
+                      color: Color(0xFFFDC202),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
             ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                price,
-                style: const TextStyle(
-                  color: Color(0xFF05001E),
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                interval,
-                style: TextStyle(
-                  color: const Color(0xFF05001E).withOpacity(0.6),
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(
-                CupertinoIcons.tag_fill,
-                color: Color(0xFFFDC202),
-                size: 16,
-              ),
-              const SizedBox(width: 4),
-              Text(
-                savings,
-                style: const TextStyle(
-                  color: Color(0xFFFDC202),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -137,7 +230,6 @@ class SubscriptionInfoDrawer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Drawer Handle
           Center(
             child: Container(
               width: 36,
@@ -149,8 +241,6 @@ class SubscriptionInfoDrawer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-
-          // Title
           const Text(
             'Subscription Plans',
             style: TextStyle(
@@ -160,8 +250,6 @@ class SubscriptionInfoDrawer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-
-          // Content
           Expanded(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -187,7 +275,14 @@ class SubscriptionInfoDrawer extends StatelessWidget {
                     interval: '/quarter',
                     savings: 'Save 30%',
                   ),
-                  const SizedBox(height: 24),
+                  _buildSubscriptionPlan(
+                    title: 'Custom Plan',
+                    price: 'USD ${(_customDays * 5.99).toStringAsFixed(2)}',
+                    interval: 'every $_customDays days',
+                    savings: '',
+                    isCustom: true,
+                  ),
+                  const SizedBox(height: 8),
                   const Text(
                     'Subscription Benefits',
                     style: TextStyle(

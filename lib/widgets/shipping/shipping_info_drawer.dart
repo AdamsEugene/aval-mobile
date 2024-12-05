@@ -35,7 +35,7 @@ class _ShippingInfoDrawerState extends State<ShippingInfoDrawer> {
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => Container(
-        height: 300,
+        height: 250,
         padding: const EdgeInsets.only(top: 6.0),
         margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
