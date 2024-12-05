@@ -7,10 +7,12 @@ class ProductDetailsDrawer extends StatelessWidget {
   final Product product;
   final VoidCallback? onAddToCart;
   final VoidCallback? onBuyNow;
+  final String heroTag; // Add heroTag parameter
 
   const ProductDetailsDrawer({
     super.key,
     required this.product,
+    required this.heroTag,
     this.onAddToCart,
     this.onBuyNow,
   });
@@ -29,11 +31,14 @@ class ProductDetailsDrawer extends StatelessWidget {
               width: 1,
             ),
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              product.thumbnail,
-              fit: BoxFit.cover,
+          child: Hero(
+            tag: heroTag,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                product.thumbnail,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

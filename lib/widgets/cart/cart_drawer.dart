@@ -31,7 +31,8 @@ class CartDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               image: const DecorationImage(
-                image: NetworkImage('product_image_url'),
+                image: NetworkImage(
+                    'https://cdn.dummyjson.com/products/images/smartphones/iPhone%205s/1.png'),
                 fit: BoxFit.cover,
               ),
             ),

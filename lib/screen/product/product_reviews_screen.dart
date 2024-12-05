@@ -6,14 +6,15 @@ class ProductReviewsScreen extends StatefulWidget {
   final double averageRating;
   final Map<String, int> reviewCategories;
   final List<Review> reviews;
+  final String initialCategory;
 
-  const ProductReviewsScreen({
-    super.key,
-    required this.product,
-    required this.averageRating,
-    required this.reviewCategories,
-    required this.reviews,
-  });
+  const ProductReviewsScreen(
+      {super.key,
+      required this.product,
+      required this.averageRating,
+      required this.reviewCategories,
+      required this.reviews,
+      required this.initialCategory});
 
   @override
   State<ProductReviewsScreen> createState() => _ProductReviewsScreenState();

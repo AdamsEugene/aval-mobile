@@ -1,5 +1,7 @@
 // lib/screens/product/product_details_screen.dart
 import 'package:e_commerce_app/data/product_data.dart';
+import 'package:e_commerce_app/screen/product/product_details_top_buttons.dart';
+import 'package:e_commerce_app/widgets/common/floating_scroll_to_top.dart';
 import 'package:e_commerce_app/widgets/product/color_selection.dart';
 import 'package:e_commerce_app/widgets/product/coupon_section.dart';
 import 'package:e_commerce_app/widgets/product/detail_product_images_section.dart';
@@ -10,7 +12,7 @@ import 'package:e_commerce_app/widgets/product/seller_recommendation_section.dar
 import 'package:e_commerce_app/widgets/product/stock_info_section.dart';
 import 'package:e_commerce_app/widgets/product/store_info_section.dart';
 import 'package:e_commerce_app/widgets/customization/customization_options_section.dart';
-import 'package:e_commerce_app/widgets/product/floating_cart_button.dart';
+import 'package:e_commerce_app/widgets/common/floating_cart_button.dart';
 import 'package:e_commerce_app/widgets/product/product_bottom_bar.dart';
 import 'package:e_commerce_app/widgets/products/product_details_drawer.dart';
 import 'package:e_commerce_app/widgets/products/related_items_section.dart';
@@ -40,6 +42,8 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  final ScrollController _scrollController = ScrollController();
+
   late Future<List<Product>> relatedProductsFuture;
   late Future<List<Product>> recommendedProductsFuture;
 
@@ -49,6 +53,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     relatedProductsFuture = ProductData.getRelatedProducts(widget.product);
     recommendedProductsFuture =
         ProductData.getSellerRecommendations(widget.product);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   int _currentImageIndex = 0;
@@ -61,101 +71,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     'image6_url',
     'image7_url',
   ];
-
-  Widget _buildTopButtons() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: CupertinoColors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: CupertinoColors.systemGrey.withOpacity(0.2),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => Navigator.pop(context),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: const Icon(
-                  CupertinoIcons.back,
-                  color: Color(0xFF05001E),
-                ),
-              ),
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: CupertinoColors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: CupertinoColors.systemGrey.withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    // Handle favorite
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Icon(
-                      CupertinoIcons.heart,
-                      color: Color(0xFF05001E),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Container(
-                decoration: BoxDecoration(
-                  color: CupertinoColors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: CupertinoColors.systemGrey.withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    // Handle share
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    child: const Icon(
-                      CupertinoIcons.share,
-                      color: Color(0xFF05001E),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
   // In your ProductDetailsScreen
   Widget _buildImageCarousel() {
@@ -198,12 +113,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
               _dummyImages.length,
-              (index) => Container(
-                width: 8,
+              (index) => AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: _currentImageIndex == index
+                    ? 16
+                    : 8, // Double width when active
                 height: 8,
                 margin: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(
+                      4), // Use rounded rectangle for better look with width change
                   color: _currentImageIndex == index
                       ? const Color(0xFFFDC202)
                       : CupertinoColors.systemGrey4,
@@ -235,6 +154,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       child: Stack(
         children: [
           SingleChildScrollView(
+            controller: _scrollController,
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
@@ -283,6 +203,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             context: context,
                             builder: (context) => ProductDetailsDrawer(
                               product: product,
+                              heroTag:
+                                  'product-${product.id}-${product.thumbnail}',
                               onAddToCart: () {
                                 // Add to cart logic here
                                 Navigator.pop(context);
@@ -318,6 +240,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             context: context,
                             builder: (context) => ProductDetailsDrawer(
                               product: product,
+                              heroTag:
+                                  'product-${product.id}-${product.thumbnail}',
                               onAddToCart: () {
                                 // Add to cart logic here
                                 Navigator.pop(context);
@@ -345,9 +269,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
           SafeArea(
-            child: _buildTopButtons(),
+            child: ProductDetailsTopButtons(
+              scrollController: _scrollController,
+            ),
           ),
           const FloatingCartButton(),
+          FloatingScrollToTop(
+            scrollController: _scrollController,
+            bottom: 170,
+          ),
           const Positioned(
             left: 0,
             right: 0,
