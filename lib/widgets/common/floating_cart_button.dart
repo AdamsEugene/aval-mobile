@@ -1,9 +1,12 @@
 // lib/widgets/product/floating_cart_button.dart
+import 'package:e_commerce_app/models/product.dart';
 import 'package:e_commerce_app/widgets/cart/cart_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 class FloatingCartButton extends StatelessWidget {
-  const FloatingCartButton({super.key});
+  final Product product;
+
+  const FloatingCartButton({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,7 @@ class FloatingCartButton extends StatelessWidget {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: () {
-          CartDrawer.show(context);
+          CartDrawer.show(context, product);
         },
         child: Container(
           width: 48,

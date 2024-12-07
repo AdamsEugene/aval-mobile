@@ -1,43 +1,18 @@
 // lib/widgets/product/product_bottom_bar.dart
+import 'package:e_commerce_app/models/product.dart';
+import 'package:e_commerce_app/screen/checkout/checkout_screen.dart';
+import 'package:e_commerce_app/screen/payment/payment_plans_sheet.dart';
 import 'package:flutter/cupertino.dart';
 
 class ProductBottomBar extends StatelessWidget {
-  const ProductBottomBar({super.key});
+  final Product product;
+  const ProductBottomBar({super.key, required this.product});
 
   void _showPaymentPlan(BuildContext context) {
     showCupertinoModalPopup<void>(
       context: context,
-      builder: (BuildContext context) => Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(
-          color: CupertinoColors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        ),
-        child: Column(
-          children: [
-            Center(
-              child: Container(
-                width: 36,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: CupertinoColors.systemGrey4,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Payment Plans',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF05001E),
-              ),
-            ),
-            const SizedBox(height: 24),
-          ],
-        ),
+      builder: (BuildContext context) => PaymentPlansSheet(
+        productPrice: product.price,
       ),
     );
   }
@@ -144,7 +119,11 @@ class ProductBottomBar extends StatelessWidget {
             child: CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: () {
-                // Handle buy now
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => CheckoutScreen(product: product),
+                  ),
+                );
               },
               child: Container(
                 height: 44,

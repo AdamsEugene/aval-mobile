@@ -609,17 +609,19 @@ class _ProtectionPlanDrawerState extends State<ProtectionPlanDrawer> {
                         'Comprehensive coverage against damages and defects',
                     isRecommended: true,
                   ),
+                  const SizedBox(height: 16),
                   _buildPlanOption(
                     duration: '2 Year Protection',
                     price: 'USD 49.99',
                     coverage: 'Extended coverage with additional benefits',
                   ),
+                  const SizedBox(height: 16),
                   _buildPlanOption(
                     duration: '3 Year Protection',
                     price: 'USD 69.99',
                     coverage: 'Maximum protection with premium support',
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(

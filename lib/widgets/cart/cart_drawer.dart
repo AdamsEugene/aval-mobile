@@ -1,14 +1,19 @@
 // lib/widgets/cart/cart_drawer.dart
+import 'package:e_commerce_app/models/product.dart';
+import 'package:e_commerce_app/screen/checkout/checkout_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CartDrawer extends StatelessWidget {
-  const CartDrawer({super.key});
+  final Product product;
+  const CartDrawer({super.key, required this.product});
 
-  static void show(BuildContext context) {
+  static void show(BuildContext context, Product product) {
     showCupertinoModalPopup<void>(
       context: context,
-      builder: (BuildContext context) => const CartDrawer(),
+      builder: (BuildContext context) => CartDrawer(
+        product: product,
+      ),
     );
   }
 
@@ -239,7 +244,11 @@ class CartDrawer extends StatelessWidget {
                 CupertinoButton(
                   padding: EdgeInsets.zero,
                   onPressed: () {
-                    // Handle checkout
+                    Navigator.of(context).push(
+                      CupertinoPageRoute(
+                        builder: (context) => CheckoutScreen(product: product),
+                      ),
+                    );
                   },
                   child: Container(
                     width: double.infinity,

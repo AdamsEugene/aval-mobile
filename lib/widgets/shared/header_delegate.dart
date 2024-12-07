@@ -80,15 +80,20 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
         // Back button if needed
         if (showBackButton)
           Positioned(
-            top: 24,
-            left: 24,
-            child: CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
-              child: const Icon(
-                CupertinoIcons.back,
-                color: CupertinoColors.white,
-                size: 28,
+            top: 0,
+            left: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 24, top: 24),
+                child: CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
+                  child: const Icon(
+                    CupertinoIcons.back,
+                    color: CupertinoColors.white,
+                    size: 28,
+                  ),
+                ),
               ),
             ),
           ),

@@ -40,6 +40,12 @@ class _ShippingInfoDrawerState extends State<ShippingInfoDrawer> {
         margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
+        decoration: const BoxDecoration(
+          color: CupertinoColors.white,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(16),
+          ),
+        ),
         color: CupertinoColors.systemBackground.resolveFrom(context),
         child: SafeArea(
           top: false,

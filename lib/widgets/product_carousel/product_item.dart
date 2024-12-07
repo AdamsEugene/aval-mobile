@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/screen/deals/super_deals_page.dart';
 import 'package:e_commerce_app/screen/product/product_details_screen.dart';
 import 'package:e_commerce_app/widgets/others/shimmer_loading.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,15 +70,18 @@ class ProductItemWrapper extends StatelessWidget {
   final Product product;
   final num index;
   final String? category;
+  final bool? promo;
   final Animation<Decoration> Function(Animation<double>)
       boxDecorationAnimation;
 
-  const ProductItemWrapper(
-      {super.key,
-      required this.product,
-      required this.boxDecorationAnimation,
-      required this.index,
-      this.category});
+  const ProductItemWrapper({
+    super.key,
+    required this.product,
+    required this.boxDecorationAnimation,
+    required this.index,
+    this.category,
+    this.promo,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +100,7 @@ class ProductItemWrapper extends StatelessWidget {
                       ? decorationAnimation.value
                       : null,
               child: _buildProductItem(
-                  context, product, animation, index, category),
+                  context, product, animation, index, category, promo),
             );
           },
         ),
@@ -106,7 +110,7 @@ class ProductItemWrapper extends StatelessWidget {
 }
 
 Widget _buildProductItem(BuildContext context, Product product,
-    Animation<double> animation, num index, String? category) {
+    Animation<double> animation, num index, String? category, bool? promo) {
   final bool isExpanded =
       animation.value >= CupertinoContextMenu.animationOpensAt;
 
@@ -117,19 +121,18 @@ Widget _buildProductItem(BuildContext context, Product product,
     spreadRadius: 0,
   );
 
-  final heroTag =
-      'product-${product.id}-${product.thumbnail}-$index-$category';
+  final heroTag = 'product-${product.id}-${product.thumbnail}-$index-$category';
+  Widget screenToShow = promo == true // Alternative way to handle null
+      ? const SuperDealsPage()
+      : ProductDetailsScreen(
+          product: product,
+          heroTag: heroTag,
+        );
 
   return GestureDetector(
     onTap: () {
-      Navigator.of(context, rootNavigator: true).push(
-        CupertinoPageRoute(
-          builder: (context) => ProductDetailsScreen(
-            product: product,
-            heroTag: heroTag,
-          ),
-        ),
-      );
+      Navigator.of(context, rootNavigator: !(promo ?? false))
+          .push(CupertinoPageRoute(builder: (context) => screenToShow));
     },
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),

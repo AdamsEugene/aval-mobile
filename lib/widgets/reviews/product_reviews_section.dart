@@ -65,11 +65,15 @@ class _ProductReviewsSectionState extends State<ProductReviewsSection> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Icon(
-                  CupertinoIcons.chevron_right,
-                  color: CupertinoColors.black,
-                  size: 18,
-                ),
+                CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () => _navigateToReviewScreen(context),
+                  child: const Icon(
+                    CupertinoIcons.chevron_right,
+                    color: CupertinoColors.black,
+                    size: 18,
+                  ),
+                )
               ],
             ),
           ),

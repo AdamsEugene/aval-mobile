@@ -1,6 +1,6 @@
 // lib/screens/product/product_details_screen.dart
 import 'package:e_commerce_app/data/product_data.dart';
-import 'package:e_commerce_app/screen/product/product_details_top_buttons.dart';
+import 'package:e_commerce_app/widgets/product/product_details_top_buttons.dart';
 import 'package:e_commerce_app/widgets/common/floating_scroll_to_top.dart';
 import 'package:e_commerce_app/widgets/product/color_selection.dart';
 import 'package:e_commerce_app/widgets/product/coupon_section.dart';
@@ -62,15 +62,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   int _currentImageIndex = 0;
-  final List<String> _dummyImages = [
-    'image1_url',
-    'image2_url',
-    'image3_url',
-    'image4_url',
-    'image5_url',
-    'image6_url',
-    'image7_url',
-  ];
 
   // In your ProductDetailsScreen
   Widget _buildImageCarousel() {
@@ -79,7 +70,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         Hero(
           tag: widget.heroTag,
           child: PageView.builder(
-            itemCount: _dummyImages.length,
+            itemCount: widget.product.images.length,
             onPageChanged: (index) {
               setState(() {
                 _currentImageIndex = index;
@@ -87,7 +78,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             },
             itemBuilder: (context, index) {
               return Image.network(
-                widget.product.thumbnail,
+                widget.product.images[index],
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
@@ -112,7 +103,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-              _dummyImages.length,
+              widget.product.images.length,
               (index) => AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 width: _currentImageIndex == index
@@ -273,16 +264,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               scrollController: _scrollController,
             ),
           ),
-          const FloatingCartButton(),
+          FloatingCartButton(
+            product: widget.product,
+          ),
           FloatingScrollToTop(
             scrollController: _scrollController,
             bottom: 170,
           ),
-          const Positioned(
+          Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: ProductBottomBar(),
+            child: ProductBottomBar(product: widget.product),
           ),
         ],
       ),

@@ -83,6 +83,7 @@ class ProductCarouselState extends State<ProductCarousel> {
           boxDecorationAnimation: _boxDecorationAnimation,
           index: index,
           category: _selectedCategory,
+          promo: true,
         );
       },
     );
