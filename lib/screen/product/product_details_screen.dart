@@ -115,7 +115,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   borderRadius: BorderRadius.circular(
                       4), // Use rounded rectangle for better look with width change
                   color: _currentImageIndex == index
-                      ? const Color(0xFFFDC202)
+                      ? CupertinoColors.activeOrange
                       : CupertinoColors.systemGrey4,
                 ),
               ),

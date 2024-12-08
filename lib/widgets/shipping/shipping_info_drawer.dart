@@ -157,7 +157,7 @@ class _ShippingInfoDrawerState extends State<ShippingInfoDrawer> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: isSelected
-                  ? const Color(0xFFFDC202)
+                  ? CupertinoColors.activeOrange
                   : const Color(0xFFEEEEEE),
             ),
           ),
@@ -194,7 +194,7 @@ class _ShippingInfoDrawerState extends State<ShippingInfoDrawer> {
                                 child: const Text(
                                   'Recommended',
                                   style: TextStyle(
-                                    color: Color(0xFFFDC202),
+                                    color: CupertinoColors.activeOrange,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -216,7 +216,7 @@ class _ShippingInfoDrawerState extends State<ShippingInfoDrawer> {
                           Text(
                             selectedAgency,
                             style: const TextStyle(
-                              color: Color(0xFFFDC202),
+                              color: CupertinoColors.activeOrange,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
@@ -376,7 +376,7 @@ class _ShippingInfoDrawerState extends State<ShippingInfoDrawer> {
                           children: [
                             Icon(
                               CupertinoIcons.info_circle_fill,
-                              color: Color(0xFFFDC202),
+                              color: CupertinoColors.activeOrange,
                               size: 20,
                             ),
                             SizedBox(width: 8),

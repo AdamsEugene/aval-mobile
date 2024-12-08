@@ -8,7 +8,7 @@ class ProductTitleSection extends StatelessWidget {
     return Row(
       children: [
         ...List.generate(5, (index) {
-          const color = Color(0xFFFDC202);
+          const color = CupertinoColors.activeOrange;
           if (index < rating.floor()) {
             return const Icon(CupertinoIcons.star_fill, size: 16, color: color);
           }
@@ -22,7 +22,7 @@ class ProductTitleSection extends StatelessWidget {
         Text(
           rating.toString(),
           style: const TextStyle(
-            color: Color(0xFFFDC202),
+            color: CupertinoColors.activeOrange,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),

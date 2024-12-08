@@ -38,7 +38,7 @@ class ProtectionPlanSection extends StatelessWidget {
               ),
               child: const Icon(
                 CupertinoIcons.shield_lefthalf_fill,
-                color: Color(0xFFFDC202),
+                color: CupertinoColors.activeOrange,
                 size: 24,
               ),
             ),

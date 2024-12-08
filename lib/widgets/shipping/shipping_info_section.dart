@@ -38,7 +38,7 @@ class ShippingInfoSection extends StatelessWidget {
               ),
               child: const Icon(
                 CupertinoIcons.bus,
-                color: Color(0xFFFDC202),
+                color: CupertinoColors.activeOrange,
                 size: 24,
               ),
             ),

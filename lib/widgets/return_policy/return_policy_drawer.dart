@@ -35,7 +35,7 @@ class ReturnPolicyDrawer extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              color: const Color(0xFFFDC202),
+              color: CupertinoColors.activeOrange,
               size: 20,
             ),
           ),
@@ -90,7 +90,7 @@ class ReturnPolicyDrawer extends StatelessWidget {
               child: Text(
                 number,
                 style: const TextStyle(
-                  color: Color(0xFFFDC202),
+                  color: CupertinoColors.activeOrange,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -235,7 +235,7 @@ class ReturnPolicyDrawer extends StatelessWidget {
                           children: [
                             Icon(
                               CupertinoIcons.exclamationmark_circle_fill,
-                              color: Color(0xFFFDC202),
+                              color: CupertinoColors.activeOrange,
                               size: 20,
                             ),
                             SizedBox(width: 8),

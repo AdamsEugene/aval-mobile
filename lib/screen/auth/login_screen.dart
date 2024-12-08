@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _obscurePassword
                         ? CupertinoIcons.eye
                         : CupertinoIcons.eye_slash,
-                    color: const Color(0xFFFDC202),
+                    color: CupertinoColors.activeOrange,
                   ),
                 )
               else
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {},
                   child: const Icon(
                     CupertinoIcons.mail,
-                    color: Color(0xFFFDC202),
+                    color: CupertinoColors.activeOrange,
                   ),
                 )
             ],
@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: const Text(
                           'Create one.',
                           style: TextStyle(
-                            color: Color(0xFFFDC202),
+                            color: CupertinoColors.activeOrange,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),

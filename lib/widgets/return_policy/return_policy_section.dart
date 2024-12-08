@@ -38,7 +38,7 @@ class ReturnPolicySection extends StatelessWidget {
               ),
               child: const Icon(
                 CupertinoIcons.arrow_2_circlepath,
-                color: Color(0xFFFDC202),
+                color: CupertinoColors.activeOrange,
                 size: 24,
               ),
             ),

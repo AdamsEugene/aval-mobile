@@ -128,11 +128,11 @@ class ProductBottomBar extends StatelessWidget {
               child: Container(
                 height: 44,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFDC202),
+                  color: CupertinoColors.activeOrange,
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFFDC202).withOpacity(0.2),
+                      color: CupertinoColors.activeOrange.withOpacity(0.2),
                       offset: const Offset(0, 2),
                       blurRadius: 8,
                     ),

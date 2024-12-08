@@ -33,12 +33,12 @@ class SharedCustomizationWidgets {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: isSelected
-                  ? const Color(0xFFFDC202)
+                  ? CupertinoColors.activeOrange
                   : const Color(0xFFF8F9FA),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: isSelected
-                    ? const Color(0xFFFDC202)
+                    ? CupertinoColors.activeOrange
                     : const Color(0xFFEEEEEE),
               ),
             ),
@@ -64,7 +64,7 @@ class SharedCustomizationWidgets {
   }) {
     final colors = [
       const Color(0xFF05001E),
-      const Color(0xFFFDC202),
+      CupertinoColors.activeOrange,
       const Color(0xFF2ECC71),
       const Color(0xFF3498DB),
       const Color(0xFFE74C3C),
@@ -87,7 +87,7 @@ class SharedCustomizationWidgets {
               shape: BoxShape.circle,
               border: Border.all(
                 color: isSelected
-                    ? const Color(0xFFFDC202)
+                    ? CupertinoColors.activeOrange
                     : const Color(0x00FFFFFF),
                 width: 2,
               ),
@@ -207,7 +207,7 @@ class SharedCustomizationWidgets {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 12),
               decoration: BoxDecoration(
-                color: const Color(0xFFFDC202),
+                color: CupertinoColors.activeOrange,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Text(

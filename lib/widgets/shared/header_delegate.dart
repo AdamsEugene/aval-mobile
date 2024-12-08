@@ -147,7 +147,7 @@ class SimpleCurvedPainter extends CustomPainter {
 
     // Draw the golden accent line
     final accentPaint = Paint()
-      ..color = const Color(0xFFFDC202)
+      ..color = CupertinoColors.activeOrange
       ..style = PaintingStyle.stroke
       ..strokeWidth = 24;
 

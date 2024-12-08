@@ -11,7 +11,7 @@ class AccountScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     VoidCallback? onTap,
-    Color iconColor = const Color(0xFFFDC202), // Orange color for icons
+    Color iconColor = CupertinoColors.activeOrange, // Orange color for icons
   }) {
     return CupertinoButton(
       padding: EdgeInsets.zero,
@@ -37,7 +37,7 @@ class AccountScreen extends StatelessWidget {
             const Spacer(),
             const Icon(
               CupertinoIcons.chevron_right,
-              color: Color(0xFFFDC202),
+              color: CupertinoColors.activeOrange,
               size: 20,
             ),
           ],

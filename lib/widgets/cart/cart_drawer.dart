@@ -254,7 +254,7 @@ class CartDrawer extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFDC202),
+                      color: CupertinoColors.activeOrange,
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: const Center(

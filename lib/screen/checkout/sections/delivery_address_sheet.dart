@@ -169,7 +169,7 @@ class _DeliveryAddressSheetState extends State<DeliveryAddressSheet> {
         child: Container(
           height: 48,
           decoration: BoxDecoration(
-            color: const Color(0xFFFDC202),
+            color: CupertinoColors.activeOrange,
             borderRadius: BorderRadius.circular(24),
           ),
           child: const Center(
@@ -202,7 +202,7 @@ class _AddressCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: address.isDefault
-              ? const Color(0xFFFDC202)
+              ? CupertinoColors.activeOrange
               : CupertinoColors.systemGrey4,
         ),
       ),
@@ -237,14 +237,14 @@ class _AddressCard extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFDC202).withOpacity(0.1),
+                          color: CupertinoColors.activeOrange.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Text(
                           'Default',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Color(0xFFFDC202),
+                            color: CupertinoColors.activeOrange,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

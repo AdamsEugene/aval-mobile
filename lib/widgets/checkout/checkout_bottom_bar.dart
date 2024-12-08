@@ -35,7 +35,7 @@ class CheckoutBottomBar extends StatelessWidget {
         child: Container(
           height: 48,
           decoration: BoxDecoration(
-            color: const Color(0xFFFDC202),
+            color: CupertinoColors.activeOrange,
             borderRadius: BorderRadius.circular(24),
           ),
           child: const Center(

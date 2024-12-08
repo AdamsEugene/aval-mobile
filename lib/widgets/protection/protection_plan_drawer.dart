@@ -216,7 +216,7 @@ class _ProtectionPlanDrawerState extends State<ProtectionPlanDrawer> {
               ),
               border: Border.all(
                 color: isSelected
-                    ? const Color(0xFFFDC202)
+                    ? CupertinoColors.activeOrange
                     : const Color(0xFFEEEEEE),
               ),
             ),
@@ -247,7 +247,7 @@ class _ProtectionPlanDrawerState extends State<ProtectionPlanDrawer> {
                         child: const Text(
                           'Recommended',
                           style: TextStyle(
-                            color: Color(0xFFFDC202),
+                            color: CupertinoColors.activeOrange,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
@@ -294,7 +294,7 @@ class _ProtectionPlanDrawerState extends State<ProtectionPlanDrawer> {
             decoration: BoxDecoration(
               color: CupertinoColors.white,
               border: Border.all(
-                color: const Color(0xFFFDC202),
+                color: CupertinoColors.activeOrange,
               ),
               borderRadius: const BorderRadius.vertical(
                 bottom: Radius.circular(12),
@@ -368,7 +368,7 @@ class _ProtectionPlanDrawerState extends State<ProtectionPlanDrawer> {
             ),
             child: Icon(
               detail['icon'],
-              color: const Color(0xFFFDC202),
+              color: CupertinoColors.activeOrange,
               size: 24,
             ),
           ),
@@ -428,7 +428,7 @@ class _ProtectionPlanDrawerState extends State<ProtectionPlanDrawer> {
               ),
               child: Icon(
                 part['icon'],
-                color: const Color(0xFFFDC202),
+                color: CupertinoColors.activeOrange,
                 size: 24,
               ),
             ),
@@ -488,7 +488,7 @@ class _ProtectionPlanDrawerState extends State<ProtectionPlanDrawer> {
                 ),
                 child: Icon(
                   part['icon'],
-                  color: const Color(0xFFFDC202),
+                  color: CupertinoColors.activeOrange,
                   size: 24,
                 ),
               ),
@@ -542,7 +542,7 @@ class _ProtectionPlanDrawerState extends State<ProtectionPlanDrawer> {
                     ),
                     child: const Icon(
                       CupertinoIcons.checkmark_alt,
-                      color: Color(0xFFFDC202),
+                      color: CupertinoColors.activeOrange,
                       size: 16,
                     ),
                   ),
@@ -635,7 +635,7 @@ class _ProtectionPlanDrawerState extends State<ProtectionPlanDrawer> {
                           children: [
                             Icon(
                               CupertinoIcons.info_circle_fill,
-                              color: Color(0xFFFDC202),
+                              color: CupertinoColors.activeOrange,
                               size: 20,
                             ),
                             SizedBox(width: 8),

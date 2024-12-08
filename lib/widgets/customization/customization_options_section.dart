@@ -128,7 +128,7 @@ class CustomizationOptionsSection extends StatelessWidget {
                 child: const Text(
                   'Available',
                   style: TextStyle(
-                    color: Color(0xFFFDC202),
+                    color: CupertinoColors.activeOrange,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),

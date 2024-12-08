@@ -38,12 +38,12 @@ class CouponSection extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFDC202).withOpacity(0.2),
+                      color: CupertinoColors.activeOrange.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(
                       CupertinoIcons.tickets,
-                      color: Color(0xFFFDC202),
+                      color: CupertinoColors.activeOrange,
                       size: 14,
                     ),
                   ),
@@ -54,7 +54,7 @@ class CouponSection extends StatelessWidget {
                       Text(
                         'Coupons & Discount',
                         style: TextStyle(
-                          color: Color(0xFFFDC202),
+                          color: CupertinoColors.activeOrange,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
@@ -64,7 +64,7 @@ class CouponSection extends StatelessWidget {
                   const Spacer(),
                   const Icon(
                     CupertinoIcons.chevron_right,
-                    color: Color(0xFFFDC202),
+                    color: CupertinoColors.activeOrange,
                     size: 14,
                   ),
                 ],

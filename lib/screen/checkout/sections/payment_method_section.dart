@@ -226,7 +226,7 @@ class _PaymentMethodSheet extends StatelessWidget {
         child: Container(
           height: 48,
           decoration: BoxDecoration(
-            color: const Color(0xFFFDC202),
+            color: CupertinoColors.activeOrange,
             borderRadius: BorderRadius.circular(24),
           ),
           child: const Center(
@@ -268,7 +268,7 @@ class _PaymentMethodTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFFFDC202)
+                ? CupertinoColors.activeOrange
                 : CupertinoColors.systemGrey4,
             width: isSelected ? 2 : 1,
           ),
@@ -301,7 +301,7 @@ class _PaymentMethodTile extends StatelessWidget {
             if (isSelected)
               const Icon(
                 CupertinoIcons.checkmark_circle_fill,
-                color: Color(0xFFFDC202),
+                color: CupertinoColors.activeOrange,
                 size: 24,
               ),
           ],

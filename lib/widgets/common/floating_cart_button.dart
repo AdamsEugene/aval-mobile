@@ -22,11 +22,11 @@ class FloatingCartButton extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: const Color(0xFFFDC202),
+            color: CupertinoColors.activeOrange,
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFFDC202).withOpacity(0.2),
+                color: CupertinoColors.activeOrange.withOpacity(0.2),
                 offset: const Offset(0, 4),
                 blurRadius: 12,
               ),

@@ -116,7 +116,7 @@ class StoreInfoSection extends StatelessWidget {
                     children: [
                       Icon(
                         CupertinoIcons.star_fill,
-                        color: Color(0xFFFDC202),
+                        color: CupertinoColors.activeOrange,
                         size: 16,
                       ),
                       SizedBox(width: 4),
@@ -138,7 +138,7 @@ class StoreInfoSection extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFDC202),
+                      color: CupertinoColors.activeOrange,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Row(

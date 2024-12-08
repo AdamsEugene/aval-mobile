@@ -28,8 +28,9 @@ class _ColorSelectionState extends State<ColorSelection> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color:
-                isSelected ? const Color(0xFFFDC202) : const Color(0xFFEEEEEE),
+            color: isSelected
+                ? CupertinoColors.activeOrange
+                : const Color(0xFFEEEEEE),
             width: 2,
           ),
         ),

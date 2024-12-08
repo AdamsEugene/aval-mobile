@@ -35,7 +35,7 @@ class SecurityInfoDrawer extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              color: const Color(0xFFFDC202),
+              color: CupertinoColors.activeOrange,
               size: 20,
             ),
           ),
@@ -156,7 +156,7 @@ class SecurityInfoDrawer extends StatelessWidget {
                           children: [
                             Icon(
                               CupertinoIcons.info_circle_fill,
-                              color: Color(0xFFFDC202),
+                              color: CupertinoColors.activeOrange,
                               size: 20,
                             ),
                             SizedBox(width: 8),

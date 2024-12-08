@@ -187,8 +187,9 @@ class _PlanCard extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
-            color:
-                highlight ? const Color(0xFFFDC202) : const Color(0xFF05001E),
+            color: highlight
+                ? CupertinoColors.activeOrange
+                : const Color(0xFF05001E),
             fontSize: highlight ? 18 : 14,
             fontWeight: highlight ? FontWeight.w600 : FontWeight.w500,
           ),
@@ -282,7 +283,7 @@ class _PlanDetailsSheet extends StatelessWidget {
         children: [
           const Icon(
             CupertinoIcons.checkmark_circle_fill,
-            color: Color(0xFFFDC202),
+            color: CupertinoColors.activeOrange,
             size: 20,
           ),
           const SizedBox(width: 12),

@@ -66,7 +66,7 @@ class StockInfoSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFFFDC202),
+              color: CupertinoColors.activeOrange,
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Row(

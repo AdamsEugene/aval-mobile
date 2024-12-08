@@ -38,7 +38,7 @@ class SubscriptionInfoSection extends StatelessWidget {
               ),
               child: const Icon(
                 CupertinoIcons.repeat,
-                color: Color(0xFFFDC202),
+                color: CupertinoColors.activeOrange,
                 size: 24,
               ),
             ),

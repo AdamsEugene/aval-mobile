@@ -54,7 +54,7 @@ class _PackageCustomizationDrawerState
           ),
           CupertinoSwitch(
             value: includeGiftWrap,
-            activeColor: const Color(0xFFFDC202),
+            activeColor: CupertinoColors.activeOrange,
             onChanged: (value) => setState(() => includeGiftWrap = value),
           ),
         ],

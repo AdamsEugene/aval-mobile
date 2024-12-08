@@ -95,8 +95,9 @@ class _SubscriptionInfoDrawerState extends State<SubscriptionInfoDrawer> {
           color: isSelected ? const Color(0xFFFFF4E5) : const Color(0xFFF8F9FA),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color:
-                isSelected ? const Color(0xFFFDC202) : const Color(0xFFEEEEEE),
+            color: isSelected
+                ? CupertinoColors.activeOrange
+                : const Color(0xFFEEEEEE),
           ),
         ),
         child: Column(
@@ -126,7 +127,7 @@ class _SubscriptionInfoDrawerState extends State<SubscriptionInfoDrawer> {
                     child: const Text(
                       'Most Popular',
                       style: TextStyle(
-                        color: Color(0xFFFDC202),
+                        color: CupertinoColors.activeOrange,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
@@ -172,14 +173,14 @@ class _SubscriptionInfoDrawerState extends State<SubscriptionInfoDrawer> {
                 children: [
                   const Icon(
                     CupertinoIcons.tag_fill,
-                    color: Color(0xFFFDC202),
+                    color: CupertinoColors.activeOrange,
                     size: 16,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     savings,
                     style: const TextStyle(
-                      color: Color(0xFFFDC202),
+                      color: CupertinoColors.activeOrange,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -200,7 +201,7 @@ class _SubscriptionInfoDrawerState extends State<SubscriptionInfoDrawer> {
         children: [
           const Icon(
             CupertinoIcons.checkmark_alt,
-            color: Color(0xFFFDC202),
+            color: CupertinoColors.activeOrange,
             size: 20,
           ),
           const SizedBox(width: 12),
@@ -311,7 +312,7 @@ class _SubscriptionInfoDrawerState extends State<SubscriptionInfoDrawer> {
                           children: [
                             Icon(
                               CupertinoIcons.info_circle_fill,
-                              color: Color(0xFFFDC202),
+                              color: CupertinoColors.activeOrange,
                               size: 20,
                             ),
                             SizedBox(width: 8),

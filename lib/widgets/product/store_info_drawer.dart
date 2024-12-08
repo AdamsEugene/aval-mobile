@@ -204,7 +204,7 @@ class StoreInfoDrawer extends StatelessWidget {
                       children: [
                         const Icon(
                           CupertinoIcons.checkmark_seal_fill,
-                          color: Color(0xFFFDC202),
+                          color: CupertinoColors.activeOrange,
                           size: 24,
                         ),
                         const SizedBox(width: 12),
