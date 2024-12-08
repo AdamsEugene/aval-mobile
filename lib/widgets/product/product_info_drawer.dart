@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/widgets/shared/base_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 class ProductInfoDrawer extends StatelessWidget {
@@ -12,27 +13,22 @@ class ProductInfoDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return BaseDrawer(
       height: MediaQuery.of(context).size.height * 0.7,
       padding: const EdgeInsets.only(top: 16),
-      decoration: const BoxDecoration(
-        color: CupertinoColors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      leadingAction: DrawerAction(
+        text: 'Cancel',
+        onTap: () => Navigator.of(context).pop(),
+      ),
+      trailingAction: DrawerAction(
+        text: 'Save',
+        // textColor: CupertinoColors.activeBlue,
+        fontWeight: FontWeight.w600,
+        onTap: () => (),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Handle bar
-          Container(
-            width: 36,
-            height: 4,
-            decoration: BoxDecoration(
-              color: const Color(0xFF050311),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 24),
-          // Title
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(

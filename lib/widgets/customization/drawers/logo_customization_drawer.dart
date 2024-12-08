@@ -1,9 +1,13 @@
-// lib/widgets/customization/drawers/logo_customization_drawer.dart
+import 'package:e_commerce_app/widgets/customization/base/base_customization_drawer.dart';
+import 'package:e_commerce_app/widgets/customization/models/customization_type.dart';
 import 'package:e_commerce_app/widgets/customization/widgets/shared_widgets.dart';
+import 'package:e_commerce_app/widgets/shared/base_drawer.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:e_commerce_app/widgets/customization/widgets/manufacturer_chat.dart'; // Add this import
 
-class LogoCustomizationDrawer extends StatefulWidget {
-  const LogoCustomizationDrawer({super.key});
+class LogoCustomizationDrawer extends BaseCustomizationDrawer {
+  const LogoCustomizationDrawer({super.key})
+      : super(type: CustomizationType.package);
 
   @override
   State<LogoCustomizationDrawer> createState() =>
@@ -17,26 +21,21 @@ class _LogoCustomizationDrawerState extends State<LogoCustomizationDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return BaseDrawer(
       height: MediaQuery.of(context).size.height * 0.85,
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: CupertinoColors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      leadingAction: DrawerAction(
+        text: 'Cancel',
+        onTap: () => Navigator.of(context).pop(),
+      ),
+      trailingAction: DrawerAction(
+        text: 'Save',
+        // textColor: CupertinoColors.activeBlue,
+        fontWeight: FontWeight.w600,
+        onTap: () => handleSave(),
       ),
       child: Column(
         children: [
-          // Drawer Handle
-          Container(
-            width: 36,
-            height: 4,
-            decoration: BoxDecoration(
-              color: CupertinoColors.systemGrey4,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 16),
-
           // Title
           const Text(
             'Logo Customization',
@@ -108,6 +107,10 @@ class _LogoCustomizationDrawerState extends State<LogoCustomizationDrawer> {
                   ),
                   const SizedBox(height: 24),
 
+                  // Chat Section
+                  const ManufacturerChat(),
+                  const SizedBox(height: 24),
+
                   // Quantity Section
                   SharedCustomizationWidgets.buildQuantitySelector(
                     quantity: quantity,
@@ -132,3 +135,5 @@ class _LogoCustomizationDrawerState extends State<LogoCustomizationDrawer> {
     );
   }
 }
+
+handleSave() {}

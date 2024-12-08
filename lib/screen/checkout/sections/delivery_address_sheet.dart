@@ -1,6 +1,7 @@
 // lib/screens/checkout/delivery_address_sheet.dart
 import 'dart:io';
 
+import 'package:e_commerce_app/widgets/shared/base_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,11 +29,17 @@ class _DeliveryAddressSheetState extends State<DeliveryAddressSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return BaseDrawer(
       height: MediaQuery.of(context).size.height * 0.9,
-      decoration: const BoxDecoration(
-        color: CupertinoColors.systemBackground,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      leadingAction: DrawerAction(
+        text: 'Cancel',
+        onTap: () => Navigator.of(context).pop(),
+      ),
+      trailingAction: DrawerAction(
+        text: 'Save',
+        // textColor: CupertinoColors.activeBlue,
+        fontWeight: FontWeight.w600,
+        onTap: () => (),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -50,18 +57,9 @@ class _DeliveryAddressSheetState extends State<DeliveryAddressSheet> {
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.all(16),
-      child: Column(
+      child: const Column(
         children: [
-          Container(
-            width: 36,
-            height: 4,
-            decoration: BoxDecoration(
-              color: CupertinoColors.systemGrey4,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 16),
-          const Text(
+          Text(
             'Delivery Address',
             style: TextStyle(
               fontSize: 20,

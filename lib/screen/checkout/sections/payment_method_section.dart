@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/widgets/shared/base_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 class PaymentMethodSection extends StatefulWidget {
@@ -108,11 +109,17 @@ class _PaymentMethodSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      decoration: const BoxDecoration(
-        color: CupertinoColors.systemBackground,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    return BaseDrawer(
+      height: MediaQuery.of(context).size.height * 0.85,
+      leadingAction: DrawerAction(
+        text: 'Cancel',
+        onTap: () => Navigator.of(context).pop(),
+      ),
+      trailingAction: DrawerAction(
+        text: 'Save',
+        // textColor: CupertinoColors.activeBlue,
+        fontWeight: FontWeight.w600,
+        onTap: () => (),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -139,18 +146,9 @@ class _PaymentMethodSheet extends StatelessWidget {
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.all(16),
-      child: Column(
+      child: const Column(
         children: [
-          Container(
-            width: 36,
-            height: 4,
-            decoration: BoxDecoration(
-              color: CupertinoColors.systemGrey4,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 16),
-          const Text(
+          Text(
             'Payment Methods',
             style: TextStyle(
               fontSize: 20,

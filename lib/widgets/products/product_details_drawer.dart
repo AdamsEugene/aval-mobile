@@ -1,5 +1,6 @@
 // lib/widgets/products/product_details_drawer.dart
 import 'package:e_commerce_app/screen/product/product_details_screen.dart';
+import 'package:e_commerce_app/widgets/shared/base_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/models/product.dart';
 
@@ -180,34 +181,27 @@ class ProductDetailsDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.85,
-      ),
+    return BaseDrawer(
+      height: MediaQuery.of(context).size.height * 0.85,
       padding: EdgeInsets.only(
         top: 16,
         left: 16,
         right: 16,
         bottom: MediaQuery.of(context).padding.bottom + 16,
       ),
-      decoration: const BoxDecoration(
-        color: CupertinoColors.white,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
+      leadingAction: DrawerAction(
+        text: 'Cancel',
+        onTap: () => Navigator.of(context).pop(),
+      ),
+      trailingAction: DrawerAction(
+        text: 'Save',
+        // textColor: CupertinoColors.activeBlue,
+        fontWeight: FontWeight.w600,
+        onTap: () => (),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: CupertinoColors.systemGrey4,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 16),
           Flexible(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
