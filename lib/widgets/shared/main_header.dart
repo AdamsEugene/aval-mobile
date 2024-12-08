@@ -1,10 +1,17 @@
+// lib/widgets/shared/main_header.dart
 import 'package:flutter/cupertino.dart';
-
 import 'package:e_commerce_app/widgets/shared/sliver_app_bar_delegate.dart';
 import 'package:e_commerce_app/screen/account_screen.dart';
 
 class MainHeader extends StatelessWidget {
-  const MainHeader({super.key});
+  final Widget? leading;
+  final List<HeaderAction>? actions;
+
+  const MainHeader({
+    super.key,
+    this.leading,
+    this.actions,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,70 +26,27 @@ class MainHeader extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
+                // Left content
                 Expanded(
-                  child: Row(
-                    children: [
-                      Text(
-                        'Aval',
-                        style: CupertinoTheme.of(context)
-                            .textTheme
-                            .navLargeTitleTextStyle,
-                      ),
-                      const SizedBox(width: 2),
-                      const Icon(
-                        CupertinoIcons.location_solid,
-                        color: Color(0xFFF08D00),
-                        size: 28,
-                      ),
-                      const SizedBox(width: 2),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 80),
-                        child: Text(
-                          'Deliver to Kumasi',
-                          style: CupertinoTheme.of(context)
-                              .textTheme
-                              .navTitleTextStyle
-                              .copyWith(fontSize: 12),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: leading ?? _buildDefaultLeading(context),
                 ),
-                Row(
-                  children: [
-                    ElevatedIconButton(
-                      icon: CupertinoIcons.flag,
-                      onPressed: () {},
-                      flagBadge: 'assets/images/flag.png',
-                    ),
-                    const SizedBox(width: 8),
-                    ElevatedIconButton(
-                      icon: CupertinoIcons.money_dollar,
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 8),
-                    ElevatedIconButton(
-                      icon: CupertinoIcons.bell,
-                      onPressed: () {},
-                      badgeCount: 2,
-                    ),
-                    const SizedBox(width: 8),
-                    // const Text("Ada"),
-                    // const SizedBox(width: 8),
-                    ElevatedIconButton(
-                      icon: CupertinoIcons.person,
-                      onPressed: () {
-                        Navigator.of(context, rootNavigator: false).push(
-                          CupertinoPageRoute(
-                            builder: (context) => const AccountScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                // Right content
+                if (actions != null)
+                  Row(
+                    children: actions!
+                        .map((action) => Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: ElevatedIconButton(
+                                icon: action.icon,
+                                onPressed: action.onPressed,
+                                badgeCount: action.badgeCount,
+                                flagBadge: action.flagBadge,
+                              ),
+                            ))
+                        .toList(),
+                  )
+                else
+                  _buildDefaultActions(context),
               ],
             ),
           ),
@@ -90,6 +54,84 @@ class MainHeader extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildDefaultLeading(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          'Aval',
+          style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
+        ),
+        const SizedBox(width: 2),
+        const Icon(
+          CupertinoIcons.location_solid,
+          color: Color(0xFFF08D00),
+          size: 28,
+        ),
+        const SizedBox(width: 2),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 80),
+          child: Text(
+            'Deliver to Kumasi',
+            style: CupertinoTheme.of(context)
+                .textTheme
+                .navTitleTextStyle
+                .copyWith(fontSize: 12),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDefaultActions(BuildContext context) {
+    return Row(
+      children: [
+        ElevatedIconButton(
+          icon: CupertinoIcons.flag,
+          onPressed: () {},
+          flagBadge: 'assets/images/flag.png',
+        ),
+        const SizedBox(width: 8),
+        ElevatedIconButton(
+          icon: CupertinoIcons.money_dollar,
+          onPressed: () {},
+        ),
+        const SizedBox(width: 8),
+        ElevatedIconButton(
+          icon: CupertinoIcons.bell,
+          onPressed: () {},
+          badgeCount: 2,
+        ),
+        const SizedBox(width: 8),
+        ElevatedIconButton(
+          icon: CupertinoIcons.person,
+          onPressed: () {
+            Navigator.of(context, rootNavigator: false).push(
+              CupertinoPageRoute(
+                builder: (context) => const AccountScreen(),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class HeaderAction {
+  final IconData icon;
+  final VoidCallback onPressed;
+  final int? badgeCount;
+  final String? flagBadge;
+
+  const HeaderAction({
+    required this.icon,
+    required this.onPressed,
+    this.badgeCount,
+    this.flagBadge,
+  });
 }
 
 class ElevatedIconButton extends StatelessWidget {
@@ -124,12 +166,13 @@ class ElevatedIconButton extends StatelessWidget {
       child: Stack(
         children: [
           CupertinoButton(
-              padding: const EdgeInsets.all(8),
-              onPressed: onPressed,
-              child: Icon(
-                icon,
-                color: CupertinoColors.black,
-              )),
+            padding: const EdgeInsets.all(8),
+            onPressed: onPressed,
+            child: Icon(
+              icon,
+              color: CupertinoColors.black,
+            ),
+          ),
           if (badgeCount != null)
             Positioned(
               top: 0,

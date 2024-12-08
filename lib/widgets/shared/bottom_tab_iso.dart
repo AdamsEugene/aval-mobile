@@ -1,5 +1,5 @@
 import 'package:e_commerce_app/screen/cart_screen.dart';
-import 'package:e_commerce_app/screen/chat_screen.dart';
+import 'package:e_commerce_app/screen/chat/chat_screen.dart';
 import 'package:e_commerce_app/screen/more_screen.dart';
 import 'package:e_commerce_app/screen/reseller_screen.dart';
 import 'package:flutter/cupertino.dart';
