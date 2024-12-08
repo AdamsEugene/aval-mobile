@@ -39,9 +39,19 @@ class PaymentPlansSheet extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
-    return const BaseDrawer(
-      padding: EdgeInsets.all(16),
-      child: Column(
+    return BaseDrawer(
+      padding: const EdgeInsets.all(16),
+      leadingAction: DrawerAction(
+        text: 'Cancel',
+        onTap: () => Navigator.of(context).pop(),
+      ),
+      trailingAction: DrawerAction(
+        text: 'Save',
+        // textColor: CupertinoColors.activeBlue,
+        fontWeight: FontWeight.w600,
+        onTap: () => (),
+      ),
+      child: const Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
