@@ -1,4 +1,5 @@
 // lib/widgets/reseller/sales_report_card.dart
+import 'package:e_commerce_app/screen/reseller/sales_report_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -75,7 +76,11 @@ class SalesReportCard extends StatelessWidget {
               ],
             ),
             onPressed: () {
-              // Navigate to detailed report screen
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (context) => const SalesReportScreen(),
+                ),
+              );
             },
           ),
         ],

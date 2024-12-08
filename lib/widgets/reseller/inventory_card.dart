@@ -1,4 +1,5 @@
 // lib/widgets/reseller/inventory_card.dart
+import 'package:e_commerce_app/screen/reseller/inventory_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class InventoryCard extends StatelessWidget {
@@ -74,7 +75,11 @@ class InventoryCard extends StatelessWidget {
               ],
             ),
             onPressed: () {
-              // Navigate to inventory screen
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (context) => const InventoryScreen(),
+                ),
+              );
             },
           ),
         ],
