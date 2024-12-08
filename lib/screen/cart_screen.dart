@@ -100,14 +100,10 @@ class _CartScreenState extends State<CartScreen> {
     final item = _items[index];
     return Container(
       padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 16),
       decoration: const BoxDecoration(
         color: CupertinoColors.white,
-        border: Border(
-          bottom: BorderSide(
-            color: CupertinoColors.systemGrey5,
-            width: 1,
-          ),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,23 +124,49 @@ class _CartScreenState extends State<CartScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  item.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                if (item.size != null || item.color != null)
-                  Text(
-                    '${item.size ?? ''} ${item.color ?? ''}'.trim(),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: CupertinoColors.systemGrey.darkColor,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Product name and details
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          if (item.size != null || item.color != null) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              '${item.size ?? ''} ${item.color ?? ''}'.trim(),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: CupertinoColors.systemGrey.darkColor,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
-                  ),
+                    // Delete button
+                    CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () => _removeItem(index),
+                      child: const Icon(
+                        CupertinoIcons.delete,
+                        color: CupertinoColors.destructiveRed,
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 8),
+                // Price and Quantity Controls
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -156,33 +178,59 @@ class _CartScreenState extends State<CartScreen> {
                         color: Color(0xFF05001E),
                       ),
                     ),
+                    // Quantity controls in container
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         CupertinoButton(
                           padding: EdgeInsets.zero,
                           onPressed: () =>
                               _updateQuantity(index, item.quantity - 1),
-                          child: const Icon(
-                            CupertinoIcons.minus_circle_fill,
-                            color: Color(0xFF05001E),
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: CupertinoColors.white,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: const Color(0xFFEEEEEE),
+                              ),
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.minus,
+                              size: 14,
+                              color: Color(0xFF05001E),
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          item.quantity.toString(),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                        SizedBox(
+                          width: 36,
+                          child: Text(
+                            item.quantity.toString(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
                         CupertinoButton(
                           padding: EdgeInsets.zero,
                           onPressed: () =>
                               _updateQuantity(index, item.quantity + 1),
-                          child: const Icon(
-                            CupertinoIcons.plus_circle_fill,
-                            color: Color(0xFF05001E),
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: CupertinoColors.white,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: const Color(0xFFEEEEEE),
+                              ),
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.plus,
+                              size: 14,
+                              color: Color(0xFF05001E),
+                            ),
                           ),
                         ),
                       ],
@@ -190,15 +238,6 @@ class _CartScreenState extends State<CartScreen> {
                   ],
                 ),
               ],
-            ),
-          ),
-          // Remove Button
-          CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: () => _removeItem(index),
-            child: const Icon(
-              CupertinoIcons.delete,
-              color: CupertinoColors.destructiveRed,
             ),
           ),
         ],
@@ -209,7 +248,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: const Color(0xFFEEEFF1),
+      // backgroundColor: const Color(0xFFEEEFF1),
       child: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -243,23 +282,26 @@ class _CartScreenState extends State<CartScreen> {
                         ],
                       ),
                     )
-                  : Column(
-                      children: [
-                        ListView.builder(
-                          padding: const EdgeInsets.only(top: 16),
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _items.length,
-                          itemBuilder: (context, index) =>
-                              _buildCartItem(index),
-                        ),
-                        CartSummary(
-                          items: _items,
-                          onCheckout: () {
-                            // Handle checkout
-                          },
-                        ),
-                      ],
+                  : Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            padding: const EdgeInsets.only(top: 16),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: _items.length,
+                            itemBuilder: (context, index) =>
+                                _buildCartItem(index),
+                          ),
+                          CartSummary(
+                            items: _items,
+                            onCheckout: () {
+                              // Handle checkout
+                            },
+                          ),
+                        ],
+                      ),
                     ),
             ),
           ],

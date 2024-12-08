@@ -26,6 +26,7 @@ class CartSummary extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
         color: CupertinoColors.white,
         border: Border(
           top: BorderSide(

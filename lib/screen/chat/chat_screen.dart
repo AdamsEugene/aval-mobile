@@ -1,6 +1,6 @@
 // lib/screens/chat_screen.dart
 import 'package:e_commerce_app/screen/chat/chat_details_screen.dart';
-import 'package:e_commerce_app/widgets/cart/chat_list_item.dart';
+import 'package:e_commerce_app/widgets/chat/chat_list_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/models/chat_models.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
