@@ -1,8 +1,11 @@
 // lib/screens/inventory_screen.dart
+import 'package:e_commerce_app/widgets/shared/custom_segmented_control.dart';
 import 'package:e_commerce_app/widgets/shared/main_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/models/inventory_item.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
+
+enum Category { all, clothing, accessories, shoes }
 
 class InventoryScreen extends StatefulWidget {
   const InventoryScreen({super.key});
@@ -12,6 +15,8 @@ class InventoryScreen extends StatefulWidget {
 }
 
 class _InventoryScreenState extends State<InventoryScreen> {
+  Category _selectedPeriod = Category.all;
+
   String _searchQuery = '';
   String _selectedCategory = 'All';
   final List<String> _categories = ['All', 'Clothing', 'Accessories', 'Shoes'];
@@ -69,33 +74,35 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
   Widget _buildCategories() {
     return SizedBox(
-      height: 36,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: _categories.length,
-        itemBuilder: (context, index) {
-          final category = _categories[index];
-          final isSelected = category == _selectedCategory;
-          return Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: CupertinoButton(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              color:
-                  isSelected ? const Color(0xFF05001E) : CupertinoColors.white,
-              borderRadius: BorderRadius.circular(18),
-              onPressed: () => setState(() => _selectedCategory = category),
-              child: Text(
-                category,
-                style: TextStyle(
-                  color: isSelected
-                      ? CupertinoColors.white
-                      : const Color(0xFF05001E),
-                  fontSize: 14,
-                ),
-              ),
+      height: 48, // Fixed height
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0),
+        child: CustomSegmentedControl<Category>(
+          groupValue: _selectedPeriod,
+          onValueChanged: (value) {
+            if (value != null) {
+              setState(() => _selectedPeriod = value);
+            }
+          },
+          children: const {
+            Category.all: SegmentItem(
+              text: 'All',
+              // icon: CupertinoIcons.clock,
             ),
-          );
-        },
+            Category.clothing: SegmentItem(
+              text: 'Clothing',
+              // icon: CupertinoIcons.calendar,
+            ),
+            Category.accessories: SegmentItem(
+              text: 'Access...',
+              // icon: CupertinoIcons.calendar_badge_plus,
+            ),
+            Category.shoes: SegmentItem(
+              text: 'Shoes',
+              // icon: CupertinoIcons.calendar_circle,
+            ),
+          },
+        ),
       ),
     );
   }

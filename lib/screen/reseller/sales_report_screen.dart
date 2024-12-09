@@ -1,7 +1,10 @@
 // lib/screens/sales_report_screen.dart
 import 'package:e_commerce_app/widgets/sales/sales_chart.dart';
+import 'package:e_commerce_app/widgets/shared/custom_segmented_control.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
+
+enum SalesPeriod { daily, weekly, monthly, yearly }
 
 class SalesReportScreen extends StatefulWidget {
   const SalesReportScreen({super.key});
@@ -11,13 +14,8 @@ class SalesReportScreen extends StatefulWidget {
 }
 
 class _SalesReportScreenState extends State<SalesReportScreen> {
-  String _selectedPeriod = 'This Month';
-  final List<String> _periods = [
-    'Today',
-    'This Week',
-    'This Month',
-    'This Year'
-  ];
+  SalesPeriod _selectedPeriod = SalesPeriod.monthly;
+
   final List<Map<String, dynamic>> _salesData = [
     {'name': 'Mon', 'sales': 2400},
     {'name': 'Tue', 'sales': 1398},
@@ -250,44 +248,43 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.only(top: 16),
                     child: SizedBox(
-                      height: 36,
-                      child: ListView.builder(
+                      height: 48, // Fixed height
+                      child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        itemCount: _periods.length,
-                        itemBuilder: (context, index) {
-                          final period = _periods[index];
-                          final isSelected = period == _selectedPeriod;
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: CupertinoButton(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              color: isSelected
-                                  ? const Color(0xFF05001E)
-                                  : CupertinoColors.white,
-                              borderRadius: BorderRadius.circular(18),
-                              onPressed: () =>
-                                  setState(() => _selectedPeriod = period),
-                              child: Text(
-                                period,
-                                style: TextStyle(
-                                  color: isSelected
-                                      ? CupertinoColors.white
-                                      : const Color(0xFF05001E),
-                                  fontSize: 14,
-                                ),
-                              ),
+                        child: CustomSegmentedControl<SalesPeriod>(
+                          groupValue: _selectedPeriod,
+                          onValueChanged: (value) {
+                            if (value != null) {
+                              setState(() => _selectedPeriod = value);
+                            }
+                          },
+                          children: const {
+                            SalesPeriod.daily: SegmentItem(
+                              text: 'Daily',
+                              icon: CupertinoIcons.clock,
                             ),
-                          );
-                        },
+                            SalesPeriod.weekly: SegmentItem(
+                              text: 'Weekly',
+                              icon: CupertinoIcons.calendar,
+                            ),
+                            SalesPeriod.monthly: SegmentItem(
+                              text: 'Monthly',
+                              icon: CupertinoIcons.calendar_badge_plus,
+                            ),
+                            // SalesPeriod.yearly: SegmentItem(
+                            //   text: 'Yearly',
+                            //   icon: CupertinoIcons.calendar_circle,
+                            // ),
+                          },
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  // const SizedBox(height: 16),
                   _buildSalesChart(),
-                  const SizedBox(height: 16),
+                  // const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
