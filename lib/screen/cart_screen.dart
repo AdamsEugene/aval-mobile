@@ -1,4 +1,9 @@
 // lib/screens/cart_screen.dart
+import 'package:e_commerce_app/data/product_data.dart';
+import 'package:e_commerce_app/models/product.dart';
+import 'package:e_commerce_app/screen/home_screen.dart';
+import 'package:e_commerce_app/widgets/product/seller_recommendation_section.dart';
+import 'package:e_commerce_app/widgets/products/product_details_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/models/cart_item.dart';
 import 'package:e_commerce_app/widgets/cart/cart_summary.dart';
@@ -12,6 +17,16 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  late Future<List<Product>> recommendedProductsFuture;
+
+  // final Product product = P
+
+  @override
+  void initState() {
+    super.initState();
+    recommendedProductsFuture = ProductData.getSellerRecommendations();
+  }
+
   final List<CartItem> _items = [
     CartItem(
       id: '1',
@@ -246,63 +261,110 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      // backgroundColor: const Color(0xFFEEEFF1),
       child: SafeArea(
         child: CustomScrollView(
           slivers: [
             _buildHeader(context),
-            SliverToBoxAdapter(
-              child: _items.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            CupertinoIcons.shopping_cart,
-                            size: 64,
-                            color: CupertinoColors.systemGrey,
-                          ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Your cart is empty',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
+            if (_items.isEmpty)
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        CupertinoIcons.shopping_cart,
+                        size: 64,
+                        color: CupertinoColors.systemGrey,
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Your cart is empty',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      CupertinoButton(
+                        child: const Text('Continue Shopping'),
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true).push(
+                            CupertinoPageRoute(
+                              builder: (context) => const HomeScreen(),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          CupertinoButton(
-                            child: const Text('Continue Shopping'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
+                ),
+              ),
+            if (_items.isNotEmpty)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        padding: const EdgeInsets.only(top: 16),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _items.length,
+                        itemBuilder: (context, index) => _buildCartItem(index),
+                      ),
+                      CartSummary(
+                        items: _items,
+                        onCheckout: () {
+                          // Handle checkout
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            // Recommendations always shown
+            SliverToBoxAdapter(
+              child: FutureBuilder<List<Product>>(
+                future: recommendedProductsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    return SellerRecommendationSection(
+                      bgColor: const Color(0xFFEEEEEE),
+                      recommendations: snapshot.data!,
+                      onProductTap: (product) {
+                        showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) => ProductDetailsDrawer(
+                            product: product,
+                            heroTag:
+                                'product-${product.id}-${product.thumbnail}',
+                            onAddToCart: () {
+                              // Add to cart logic here
+                              Navigator.pop(context);
+                            },
+                            onBuyNow: () {
+                              // Buy now logic here
+                              Navigator.pop(context);
                             },
                           ),
-                        ],
-                      ),
-                    )
-                  : Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          ListView.builder(
-                            padding: const EdgeInsets.only(top: 16),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: _items.length,
-                            itemBuilder: (context, index) =>
-                                _buildCartItem(index),
-                          ),
-                          CartSummary(
-                            items: _items,
-                            onCheckout: () {
-                              // Handle checkout
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                        );
+                      },
+                      onFavoriteTap: (product) {
+                        // Handle favorite toggle
+                        setState(() {
+                          // Update favorite status in your state management
+                        });
+                      },
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ],
         ),

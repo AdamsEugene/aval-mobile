@@ -21,7 +21,7 @@ class ChatListItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: const BoxDecoration(
-          color: CupertinoColors.white,
+          // color: CupertinoColors.white,
           border: Border(
             bottom: BorderSide(
               color: CupertinoColors.separator,

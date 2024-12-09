@@ -5,12 +5,14 @@ class SellerRecommendationSection extends StatelessWidget {
   final List<Product> recommendations;
   final Function(Product) onProductTap;
   final Function(Product) onFavoriteTap;
+  final Color? bgColor;
 
   const SellerRecommendationSection({
     super.key,
     required this.recommendations,
     required this.onProductTap,
     required this.onFavoriteTap,
+    this.bgColor = CupertinoColors.white,
   });
 
   Widget _buildProductCard(Product product) {
@@ -224,9 +226,9 @@ class SellerRecommendationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
-      decoration: const BoxDecoration(
-        color: CupertinoColors.white,
-        border: Border(
+      decoration: BoxDecoration(
+        color: bgColor,
+        border: const Border(
           bottom: BorderSide(
             color: Color(0xFFEEEEEE),
             width: 1,

@@ -4,6 +4,7 @@ import 'package:e_commerce_app/widgets/chat/chat_list_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/models/chat_models.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
+import 'package:e_commerce_app/widgets/shared/main_search_bar.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -37,18 +38,6 @@ class ChatScreen extends StatelessWidget {
     ),
   ];
 
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: CupertinoSearchTextField(
-        placeholder: 'Search chats',
-        onChanged: (value) {
-          // Handle search
-        },
-      ),
-    );
-  }
-
   Widget _buildHeader(BuildContext context) {
     return MainHeader(
       leading: Row(
@@ -79,29 +68,7 @@ class ChatScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             _buildHeader(context),
-            SliverToBoxAdapter(
-              child: _buildSearchBar(),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final conversation = _conversations[index];
-                  return ChatListItem(
-                    conversation: conversation,
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                        CupertinoPageRoute(
-                          builder: (context) => ChatDetailsScreen(
-                            conversation: conversation,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-                childCount: _conversations.length,
-              ),
-            ),
+            const MainSearchBar(),
             if (_conversations.isEmpty)
               const SliverFillRemaining(
                 child: Center(
@@ -130,6 +97,30 @@ class ChatScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+              )
+            else
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final conversation = _conversations[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: ChatListItem(
+                        conversation: conversation,
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: true).push(
+                            CupertinoPageRoute(
+                              builder: (context) => ChatDetailsScreen(
+                                conversation: conversation,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  childCount: _conversations.length,
                 ),
               ),
           ],

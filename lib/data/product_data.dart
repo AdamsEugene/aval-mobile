@@ -89,14 +89,21 @@ class ProductData {
   }
 
   static Future<List<Product>> getSellerRecommendations(
-      Product currentProduct) async {
-    final products = await getProducts();
+      [Product? currentProduct]) async {
+    final List<Product> products = await getProducts();
+
+    // If no product specified, use a random product with good rating
+    final List<Product> highRatedProducts =
+        products.where((p) => p.rating >= 4.0).toList();
+    highRatedProducts.shuffle();
+
+    final targetProduct = currentProduct ?? highRatedProducts.first;
 
     // First, get products from the same brand with high ratings
     final brandProducts = products
         .where((product) =>
-            product.brand == currentProduct.brand &&
-            product.id != currentProduct.id &&
+            product.brand == targetProduct.brand &&
+            product.id != targetProduct.id &&
             product.rating >= 4.0)
         .toList();
 
@@ -104,7 +111,7 @@ class ProductData {
     if (brandProducts.length < 40) {
       final otherProducts = products
           .where((product) =>
-              product.id != currentProduct.id &&
+              product.id != targetProduct.id &&
               !brandProducts.contains(product) &&
               product.rating >= 4.5)
           .toList();

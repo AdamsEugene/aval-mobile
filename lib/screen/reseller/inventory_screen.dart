@@ -1,4 +1,5 @@
 // lib/screens/inventory_screen.dart
+import 'package:e_commerce_app/widgets/shared/main_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/models/inventory_item.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
@@ -66,6 +67,69 @@ class _InventoryScreenState extends State<InventoryScreen> {
     }).toList();
   }
 
+  Widget _buildCategories() {
+    return SizedBox(
+      height: 36,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: _categories.length,
+        itemBuilder: (context, index) {
+          final category = _categories[index];
+          final isSelected = category == _selectedCategory;
+          return Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: CupertinoButton(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              color:
+                  isSelected ? const Color(0xFF05001E) : CupertinoColors.white,
+              borderRadius: BorderRadius.circular(18),
+              onPressed: () => setState(() => _selectedCategory = category),
+              child: Text(
+                category,
+                style: TextStyle(
+                  color: isSelected
+                      ? CupertinoColors.white
+                      : const Color(0xFF05001E),
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      backgroundColor: const Color(0xFFEEEFF1),
+      child: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            _buildHeader(context),
+            const MainSearchBar(),
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverToBoxAdapter(
+                child: _buildCategories(),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => _buildInventoryItem(filteredItems[index]),
+                  childCount: filteredItems.length,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildHeader(BuildContext context) {
     return MainHeader(
       leading: Row(
@@ -101,10 +165,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          CupertinoSearchTextField(
-            placeholder: 'Search inventory',
-            onChanged: (value) => setState(() => _searchQuery = value),
-          ),
+          const MainSearchBar(),
           const SizedBox(height: 16),
           SizedBox(
             height: 36,
@@ -293,29 +354,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
         style: TextStyle(
           fontSize: 12,
           color: CupertinoColors.systemGrey.darkColor,
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: const Color(0xFFEEEFF1),
-      child: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            _buildHeader(context),
-            SliverToBoxAdapter(
-              child: _buildSearchAndFilter(),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _buildInventoryItem(filteredItems[index]),
-                childCount: filteredItems.length,
-              ),
-            ),
-          ],
         ),
       ),
     );
