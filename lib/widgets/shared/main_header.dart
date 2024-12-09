@@ -6,52 +6,65 @@ import 'package:e_commerce_app/screen/account_screen.dart';
 class MainHeader extends StatelessWidget {
   final Widget? leading;
   final List<HeaderAction>? actions;
+  final Color? bgColor;
+  final bool isSliver;
 
   const MainHeader({
     super.key,
     this.leading,
     this.actions,
+    this.bgColor = const Color(0xFFEEEFF1),
+    this.isSliver = true,
   });
+
+  Widget _buildHeaderContent(BuildContext context) {
+    return Container(
+      color: bgColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: leading ?? _buildDefaultLeading(context),
+            ),
+            if (actions != null)
+              Row(
+                children: actions!
+                    .map((action) => Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: ElevatedIconButton(
+                            icon: action.icon,
+                            onPressed: action.onPressed,
+                            badgeCount: action.badgeCount,
+                            flagBadge: action.flagBadge,
+                          ),
+                        ))
+                    .toList(),
+              )
+            else
+              _buildDefaultActions(context),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SliverPersistentHeader(
-      pinned: true,
-      delegate: SliverAppBarDelegate(
-        minHeight: 60.0,
-        maxHeight: 60.0,
-        child: Container(
-          color: const Color(0xFFEEEFF1),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                // Left content
-                Expanded(
-                  child: leading ?? _buildDefaultLeading(context),
-                ),
-                // Right content
-                if (actions != null)
-                  Row(
-                    children: actions!
-                        .map((action) => Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: ElevatedIconButton(
-                                icon: action.icon,
-                                onPressed: action.onPressed,
-                                badgeCount: action.badgeCount,
-                                flagBadge: action.flagBadge,
-                              ),
-                            ))
-                        .toList(),
-                  )
-                else
-                  _buildDefaultActions(context),
-              ],
-            ),
-          ),
+    if (isSliver) {
+      return SliverPersistentHeader(
+        pinned: true,
+        delegate: SliverAppBarDelegate(
+          minHeight: 60.0,
+          maxHeight: 60.0,
+          child: _buildHeaderContent(context),
         ),
-      ),
+      );
+    }
+
+    return SizedBox(
+      height: 60.0,
+      child: _buildHeaderContent(context),
     );
   }
 
