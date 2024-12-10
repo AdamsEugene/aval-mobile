@@ -1,15 +1,17 @@
-import 'package:e_commerce_app/widgets/shared/header_delegate.dart';
+// lib/screens/super_deals_screen.dart
+import 'package:e_commerce_app/widgets/shared/main_search_bar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:e_commerce_app/widgets/shared/main_header.dart';
 import 'dart:async';
 
-class SuperDealsPage extends StatefulWidget {
-  const SuperDealsPage({super.key});
+class SuperDealsScreen extends StatefulWidget {
+  const SuperDealsScreen({super.key});
 
   @override
-  State<SuperDealsPage> createState() => _SuperDealsPageState();
+  State<SuperDealsScreen> createState() => _SuperDealsScreenState();
 }
 
-class _SuperDealsPageState extends State<SuperDealsPage> {
+class _SuperDealsScreenState extends State<SuperDealsScreen> {
   Timer? _timer;
   int _seconds = 28;
   int _minutes = 4;
@@ -50,99 +52,39 @@ class _SuperDealsPageState extends State<SuperDealsPage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.systemGroupedBackground,
-      child: CustomScrollView(
-        slivers: [
-          SliverPersistentHeader(
-            delegate: HeaderDelegate(
-              showProfile: false,
-              showBackButton: true,
-              title: 'SuperDeals',
-              extent: 220,
-              fontSize: 24,
+  Widget _buildHeader(BuildContext context) {
+    return MainHeader(
+      leading: Row(
+        children: [
+          CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Icon(
+              CupertinoIcons.back,
+              color: Color(0xFF05001E),
             ),
           ),
-          const SliverToBoxAdapter(
-            child: _DealsHeader(),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              color: CupertinoColors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Row(
-                    children: [
-                      Text(
-                        'Daily deals',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(width: 4),
-                      Icon(
-                        CupertinoIcons.chevron_right,
-                        size: 16,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: CupertinoColors.systemGrey6,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Row(
-                      children: [
-                        const Text('Ends: '),
-                        Text(
-                          '${_hours.toString().padLeft(2, '0')}:${_minutes.toString().padLeft(2, '0')}:${_seconds.toString().padLeft(2, '0')}',
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.all(16),
-            sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.75,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _DealCard(deal: _deals[index]),
-                childCount: _deals.length,
-              ),
-            ),
+          const SizedBox(width: 8),
+          Text(
+            'Super Deals',
+            style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
           ),
         ],
       ),
+      actions: [
+        HeaderAction(
+          icon: CupertinoIcons.slider_horizontal_3,
+          onPressed: () {},
+        ),
+      ],
     );
   }
-}
 
-class _DealsHeader extends StatelessWidget {
-  const _DealsHeader();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildDealsBanner() {
     return Container(
       padding: const EdgeInsets.all(16),
-      color: const Color(0xFFE31837),
+      margin: const EdgeInsets.only(top: 16),
+      color: const Color(0xFF05001E),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -161,42 +103,53 @@ class _DealsHeader extends StatelessWidget {
               vertical: 6,
             ),
             decoration: BoxDecoration(
-              color: CupertinoColors.black.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(4),
+              color: CupertinoColors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
             ),
-            child: const Text(
-              'Limited-time offers',
-              style: TextStyle(
-                color: CupertinoColors.white,
-                fontSize: 14,
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  CupertinoIcons.time,
+                  color: CupertinoColors.white,
+                  size: 14,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  '${_hours.toString().padLeft(2, '0')}:${_minutes.toString().padLeft(2, '0')}:${_seconds.toString().padLeft(2, '0')}',
+                  style: const TextStyle(
+                    color: CupertinoColors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
-}
 
-class _DealCard extends StatelessWidget {
-  final Deal deal;
-
-  const _DealCard({required this.deal});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildDealCard(Deal deal) {
     return Container(
       decoration: BoxDecoration(
         color: CupertinoColors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: CupertinoColors.systemGrey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             child: AspectRatio(
-              aspectRatio: 1.4,
+              aspectRatio: 1.2,
               child: Image.asset(
                 'assets/images/a.jpg',
                 fit: BoxFit.cover,
@@ -204,18 +157,19 @@ class _DealCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'GHS${deal.price}',
+                  '\$${deal.price}',
                   style: const TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF05001E),
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Container(
@@ -224,60 +178,52 @@ class _DealCard extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE31837),
+                        color: const Color(0xFF05001E),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
                         '-${deal.discount}%',
                         style: const TextStyle(
                           color: CupertinoColors.white,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    const Text(
-                      'Low stock',
-                      style: TextStyle(
-                        color: Color(0xFFE31837),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                if (deal.extraInfo != null) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    deal.extraInfo!,
-                    style: const TextStyle(
-                      color: CupertinoColors.systemGrey,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-                if (deal.rating != null) ...[
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
+                    if (deal.extraInfo != null) ...[
+                      const SizedBox(width: 8),
                       Text(
-                        '${deal.soldCount} sold',
-                        style: const TextStyle(
-                          color: CupertinoColors.systemGrey,
+                        deal.extraInfo!,
+                        style: TextStyle(
+                          color: CupertinoColors.systemGrey.darkColor,
                           fontSize: 12,
                         ),
                       ),
-                      const SizedBox(width: 4),
+                    ],
+                  ],
+                ),
+                if (deal.rating != null && deal.soldCount != null) ...[
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
                       const Icon(
                         CupertinoIcons.star_fill,
-                        size: 12,
-                        color: Color(0xFFffd700),
+                        size: 14,
+                        color: Color(0xFFF08D00),
                       ),
-                      const SizedBox(width: 2),
+                      const SizedBox(width: 4),
                       Text(
                         deal.rating!,
                         style: const TextStyle(
-                          color: CupertinoColors.systemGrey,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${deal.soldCount} sold',
+                        style: TextStyle(
+                          color: CupertinoColors.systemGrey.darkColor,
                           fontSize: 12,
                         ),
                       ),
@@ -288,6 +234,39 @@ class _DealCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      backgroundColor: const Color(0xFFEEEFF1),
+      child: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            _buildHeader(context),
+            const MainSearchBar(),
+            SliverToBoxAdapter(
+              child: _buildDealsBanner(),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.7,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => _buildDealCard(_deals[index]),
+                  childCount: _deals.length,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -313,17 +292,17 @@ class Deal {
 
 final List<Deal> _deals = [
   const Deal(
-    image: 'shoe1.jpg',
+    image: 'assets/images/a.jpg',
     price: '252.91',
     discount: 54,
   ),
   const Deal(
-    image: 'pants.jpg',
+    image: 'assets/images/a.jpg',
     price: '186.29',
     discount: 54,
   ),
   const Deal(
-    image: 'shoe2.jpg',
+    image: 'assets/images/a.jpg',
     price: '7.64',
     discount: 57,
     extraInfo: 'Only 3 left',
@@ -331,7 +310,7 @@ final List<Deal> _deals = [
     soldCount: 223,
   ),
   const Deal(
-    image: 'shoe3.jpg',
+    image: 'assets/images/a.jpg',
     price: '276.71',
     discount: 49,
     extraInfo: 'Free shipping',

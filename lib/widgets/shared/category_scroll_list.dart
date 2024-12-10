@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/screen/deals/category_detail_page.dart';
+import 'package:e_commerce_app/screen/category_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class CategoryScrollList extends StatelessWidget {
@@ -40,7 +40,7 @@ class CategoryScrollList extends StatelessWidget {
         Navigator.push(
           context,
           CupertinoPageRoute(
-            builder: (context) => CategoryDetailPage(category: item),
+            builder: (context) => CategoryDetailScreen(category: item),
           ),
         );
       },

@@ -123,7 +123,7 @@ Widget _buildProductItem(BuildContext context, Product product,
 
   final heroTag = 'product-${product.id}-${product.thumbnail}-$index-$category';
   Widget screenToShow = promo == true // Alternative way to handle null
-      ? const SuperDealsPage()
+      ? const SuperDealsScreen()
       : ProductDetailsScreen(
           product: product,
           heroTag: heroTag,
