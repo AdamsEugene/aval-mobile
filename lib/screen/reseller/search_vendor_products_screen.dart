@@ -1,4 +1,5 @@
 // lib/screens/reseller/search_vendor_products_screen.dart
+import 'package:e_commerce_app/screen/reseller/product_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
 import 'package:e_commerce_app/widgets/shared/main_search_bar.dart';
@@ -72,6 +73,9 @@ class _SearchVendorProductsScreenState
             color: CupertinoColors.systemGrey4,
             width: 1,
           ),
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
         ),
       ),
       child: Column(
@@ -162,99 +166,6 @@ class _SearchVendorProductsScreenState
     );
   }
 
-  Widget _buildProductItem() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: CupertinoColors.white,
-        border: Border(
-          bottom: BorderSide(
-            color: CupertinoColors.systemGrey4,
-            width: 1,
-          ),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              'assets/images/a.jpg',
-              width: 80,
-              height: 80,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Product Name',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Vendor Name',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: CupertinoColors.systemGrey.darkColor,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Text(
-                      '\$99.99',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF05001E),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.activeGreen.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        '30% margin',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: CupertinoColors.activeGreen.darkColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: () {
-              // Add to inventory
-            },
-            child: const Icon(
-              CupertinoIcons.add_circled_solid,
-              color: Color(0xFF05001E),
-              size: 28,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -264,13 +175,19 @@ class _SearchVendorProductsScreenState
           slivers: [
             _buildHeader(context),
             const MainSearchBar(),
-            SliverToBoxAdapter(
-              child: _buildFilters(),
+            SliverPadding(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+              sliver: SliverToBoxAdapter(
+                child: _buildFilters(),
+              ),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _buildProductItem(),
-                childCount: 10, // Replace with actual product count
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => ProductCard(context: context),
+                  childCount: 10, // Replace with actual product count
+                ),
               ),
             ),
           ],

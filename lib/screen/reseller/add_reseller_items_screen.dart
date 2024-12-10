@@ -1,5 +1,6 @@
 // lib/screens/reseller/add_reseller_items_screen.dart
 
+import 'package:e_commerce_app/screen/reseller/product_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
 import 'package:e_commerce_app/widgets/shared/main_search_bar.dart';
@@ -52,126 +53,6 @@ class _AddResellerItemsScreenState extends State<AddResellerItemsScreen> {
     );
   }
 
-  Widget _buildProductCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: CupertinoColors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: CupertinoColors.systemGrey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'assets/images/a.jpg',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Product Name',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () {
-                            // Toggle selection
-                          },
-                          child: const Icon(
-                            CupertinoIcons.plus_circle,
-                            color: Color(0xFF05001E),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Text(
-                      'Vendor Name',
-                      style: TextStyle(
-                        color: CupertinoColors.systemGrey,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Vendor Price',
-                              style: TextStyle(
-                                color: CupertinoColors.systemGrey.darkColor,
-                                fontSize: 12,
-                              ),
-                            ),
-                            const Text(
-                              '\$99.99',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF05001E),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: 24),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Suggested Price',
-                              style: TextStyle(
-                                color: CupertinoColors.systemGrey.darkColor,
-                                fontSize: 12,
-                              ),
-                            ),
-                            const Text(
-                              '\$129.99',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: CupertinoColors.activeGreen,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -218,7 +99,7 @@ class _AddResellerItemsScreenState extends State<AddResellerItemsScreen> {
               padding: const EdgeInsets.all(16),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) => _buildProductCard(context),
+                  (context, index) => ProductCard(context: context),
                   childCount: 10, // Replace with actual product count
                 ),
               ),
