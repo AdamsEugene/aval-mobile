@@ -154,7 +154,7 @@ class BaseDrawer extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 8),
           Flexible(child: child),
         ],
       ),
