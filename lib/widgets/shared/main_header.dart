@@ -1,4 +1,8 @@
 // lib/widgets/shared/main_header.dart
+import 'package:e_commerce_app/screen/currency_settings_screen.dart';
+import 'package:e_commerce_app/screen/delivery_location_screen.dart';
+import 'package:e_commerce_app/screen/language_settings_screen.dart';
+import 'package:e_commerce_app/screen/notification_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/widgets/shared/sliver_app_bar_delegate.dart';
 import 'package:e_commerce_app/screen/account_screen.dart';
@@ -76,22 +80,37 @@ class MainHeader extends StatelessWidget {
           style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
         ),
         const SizedBox(width: 2),
-        const Icon(
-          CupertinoIcons.location_solid,
-          color: Color(0xFFF08D00),
-          size: 28,
-        ),
-        const SizedBox(width: 2),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 80),
-          child: Text(
-            'Deliver to Kumasi',
-            style: CupertinoTheme.of(context)
-                .textTheme
-                .navTitleTextStyle
-                .copyWith(fontSize: 12),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+        CupertinoButton(
+          // Wrap this section in CupertinoButton
+          padding: EdgeInsets.zero,
+          onPressed: () {
+            Navigator.of(context).push(
+              CupertinoPageRoute(
+                builder: (context) => const DeliveryLocationScreen(),
+              ),
+            );
+          },
+          child: Row(
+            children: [
+              const Icon(
+                CupertinoIcons.location_solid,
+                color: Color(0xFFF08D00),
+                size: 28,
+              ),
+              const SizedBox(width: 2),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 80),
+                child: Text(
+                  'Deliver to Kumasi',
+                  style: CupertinoTheme.of(context)
+                      .textTheme
+                      .navTitleTextStyle
+                      .copyWith(fontSize: 12),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -103,18 +122,39 @@ class MainHeader extends StatelessWidget {
       children: [
         ElevatedIconButton(
           icon: CupertinoIcons.flag,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const LanguageSettingsScreen(),
+              ),
+            );
+          },
           flagBadge: 'assets/images/flag.png',
         ),
         const SizedBox(width: 8),
         ElevatedIconButton(
           icon: CupertinoIcons.money_dollar,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const CurrencySettingsScreen(),
+              ),
+            );
+          },
         ),
         const SizedBox(width: 8),
         ElevatedIconButton(
           icon: CupertinoIcons.bell,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const NotificationScreen(),
+              ),
+            );
+          },
           badgeCount: 2,
         ),
         const SizedBox(width: 8),
