@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/widgets/product/store_info_drawer.dart';
+import 'package:e_commerce_app/widgets/product/drawers/store_info_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 class StoreInfoSection extends StatelessWidget {

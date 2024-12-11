@@ -1,4 +1,5 @@
 // lib/screens/product/product_details_top_buttons.dart
+import 'package:e_commerce_app/widgets/product/drawers/save_for_later_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 class ProductDetailsTopButtons extends StatefulWidget {
@@ -77,58 +78,124 @@ class _ProductDetailsTopButtonsState extends State<ProductDetailsTopButtons> {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: CupertinoColors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: CupertinoColors.systemGrey.withOpacity(0.2),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: CupertinoColors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: CupertinoColors.systemGrey.withOpacity(0.2),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: CupertinoButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      // Handle favorite
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: const Icon(
-                        CupertinoIcons.heart,
-                        color: Color(0xFF05001E),
+                      child: CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          showCupertinoModalPopup(
+                            context: context,
+                            builder: (context) => const SaveForLaterDrawer(),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: const Icon(
+                            CupertinoIcons.bookmark,
+                            color: Color(0xFF05001E),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      '50+K',
+                      style: TextStyle(
+                        color: Color(0xFF05001E),
+                        fontSize: 12,
+                      ),
+                    )
+                  ],
                 ),
                 const SizedBox(height: 12),
-                Container(
-                  decoration: BoxDecoration(
-                    color: CupertinoColors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: CupertinoColors.systemGrey.withOpacity(0.2),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: CupertinoColors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: CupertinoColors.systemGrey.withOpacity(0.2),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: CupertinoButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      // Handle share
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: const Icon(
-                        CupertinoIcons.share,
-                        color: Color(0xFF05001E),
+                      child: CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          // Handle favorite
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: const Icon(
+                            CupertinoIcons.heart,
+                            color: Color(0xFF05001E),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      '400+K',
+                      style: TextStyle(
+                        color: Color(0xFF05001E),
+                        fontSize: 12,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: CupertinoColors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: CupertinoColors.systemGrey.withOpacity(0.2),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          // Handle share
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: const Icon(
+                            CupertinoIcons.share,
+                            color: Color(0xFF05001E),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      '300+K',
+                      style: TextStyle(
+                        color: Color(0xFF05001E),
+                        fontSize: 12,
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),

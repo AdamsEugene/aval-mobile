@@ -155,16 +155,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 const PriceSession(),
                 const CouponSection(),
-                ColorSelection(product: widget.product),
                 const ProductTitleSection(),
+                ColorSelection(product: widget.product),
                 const StockInfoSection(),
-                const StoreInfoSection(),
                 const CustomizationOptionsSection(),
+                const StoreInfoSection(),
                 const ShippingInfoSection(),
                 const SecurityInfoSection(),
-                const SubscriptionInfoSection(),
                 const ProtectionPlanSection(),
                 const ReturnPolicySection(),
+                const SubscriptionInfoSection(),
+                ProductDetailsSection(
+                  description: widget.product.description,
+                  // Optional: set expandable to false for always expanded view
+                  // expandable: false,
+                ),
+                DetailProductImagesSection(
+                  images: widget.product.images,
+                ),
                 ProductReviewsSection(
                   product: widget.product,
                   reviews: widget.product.reviews,
@@ -211,14 +219,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     }
                     return const SizedBox.shrink();
                   },
-                ),
-                ProductDetailsSection(
-                  description: widget.product.description,
-                  // Optional: set expandable to false for always expanded view
-                  // expandable: false,
-                ),
-                DetailProductImagesSection(
-                  images: widget.product.images,
                 ),
                 FutureBuilder<List<Product>>(
                   future: recommendedProductsFuture,

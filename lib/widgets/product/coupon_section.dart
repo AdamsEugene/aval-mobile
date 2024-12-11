@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/widgets/product/drawers/coupon_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 class CouponSection extends StatelessWidget {
@@ -25,7 +26,10 @@ class CouponSection extends StatelessWidget {
           child: CupertinoButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              // Handle coupon tap
+              showCupertinoModalPopup(
+                context: context,
+                builder: (context) => const CouponDrawer(),
+              );
             },
             child: Container(
               decoration: BoxDecoration(

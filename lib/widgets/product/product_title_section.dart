@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/widgets/product/product_info_drawer.dart';
+import 'package:e_commerce_app/widgets/product/drawers/product_info_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 class ProductTitleSection extends StatelessWidget {
