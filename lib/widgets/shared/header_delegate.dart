@@ -2,20 +2,24 @@
 import 'package:flutter/cupertino.dart';
 
 class HeaderDelegate extends SliverPersistentHeaderDelegate {
+  final Widget? profileImage; // Changed from profileWidget to profileImage
   final bool showProfile;
   final bool showBackButton;
   final String? title;
   final VoidCallback? onBackPressed;
   final double? fontSize;
   final double? extent;
+  final double? imageSize;
 
   HeaderDelegate(
-      {this.showProfile = true,
+      {this.profileImage, // For custom profile image
+      this.showProfile = true,
       this.showBackButton = false,
       this.title,
       this.onBackPressed,
       this.fontSize = 32,
-      this.extent = 200});
+      this.extent = 200,
+      this.imageSize = 48});
 
   @override
   double get minExtent => extent ?? 200;
@@ -25,20 +29,23 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
   Widget _buildProfileContent() {
     return Row(
       children: [
-        Container(
-          width: 48,
-          height: 48,
-          decoration: const BoxDecoration(
-            color: CupertinoColors.white,
-            shape: BoxShape.circle,
-          ),
-          child: const Center(
-            child: Icon(
-              CupertinoIcons.person,
-              color: Color(0xFF05001E),
-              size: 24,
-            ),
-          ),
+        SizedBox(
+          width: imageSize,
+          height: imageSize,
+          child: profileImage ??
+              Container(
+                decoration: const BoxDecoration(
+                  color: CupertinoColors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: const Center(
+                  child: Icon(
+                    CupertinoIcons.person,
+                    color: Color(0xFF05001E),
+                    size: 24,
+                  ),
+                ),
+              ),
         ),
         const SizedBox(width: 16),
         const Text(
@@ -77,35 +84,42 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
           painter: SimpleCurvedPainter(),
           child: Container(),
         ),
-        // Back button if needed
-        if (showBackButton)
-          Positioned(
-            top: 0,
-            left: 0,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 24, top: 24),
-                child: CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
-                  child: const Icon(
-                    CupertinoIcons.back,
-                    color: CupertinoColors.white,
-                    size: 28,
-                  ),
-                ),
-              ),
-            ),
-          ),
+
         // Content
         Padding(
-          padding: EdgeInsets.only(
-            left: 24,
-            right: 24,
-            top: showBackButton ? 64 : 24,
+          padding: const EdgeInsets.only(top: 0),
+          child: SafeArea(
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.center, // Centers the row content
+              children: [
+                if (showBackButton) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 8),
+                    child: CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      onPressed:
+                          onBackPressed ?? () => Navigator.of(context).pop(),
+                      child: const Icon(
+                        CupertinoIcons.back,
+                        color: CupertinoColors.white,
+                        size: 28,
+                      ),
+                    ),
+                  ),
+                ],
+                Expanded(
+                  child: Center(
+                    child: showProfile
+                        ? _buildProfileContent()
+                        : _buildTitleContent(),
+                  ),
+                ),
+                if (showBackButton) const SizedBox(width: 76),
+              ],
+            ),
           ),
-          child: showProfile ? _buildProfileContent() : _buildTitleContent(),
-        ),
+        )
       ],
     );
   }

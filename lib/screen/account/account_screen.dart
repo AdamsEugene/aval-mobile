@@ -1,4 +1,12 @@
 // lib/screens/account_screen.dart
+import 'package:e_commerce_app/screen/account/contact_preferences_screen.dart';
+import 'package:e_commerce_app/screen/account/faq_screen.dart';
+import 'package:e_commerce_app/screen/account/orders_screen.dart';
+import 'package:e_commerce_app/screen/account/payments_screen.dart';
+import 'package:e_commerce_app/screen/account/profile_screen.dart';
+import 'package:e_commerce_app/screen/account/settings_screen.dart';
+import 'package:e_commerce_app/screen/auth/change_password_screen.dart';
+import 'package:e_commerce_app/widgets/shared/profile_image.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:e_commerce_app/widgets/shared/header_delegate.dart';
@@ -8,10 +16,11 @@ class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
   Widget _buildMenuItem({
+    required BuildContext context, // Add this parameter
     required IconData icon,
     required String title,
     VoidCallback? onTap,
-    Color iconColor = CupertinoColors.activeOrange, // Orange color for icons
+    Color iconColor = CupertinoColors.activeOrange,
   }) {
     return CupertinoButton(
       padding: EdgeInsets.zero,
@@ -104,42 +113,106 @@ class AccountScreen extends StatelessWidget {
         slivers: [
           SliverPersistentHeader(
             pinned: true,
-            delegate: HeaderDelegate(showProfile: true),
+            delegate: HeaderDelegate(
+                showProfile: true,
+                profileImage: const ProfileImage(
+                  rounded: 48,
+                  avatar: true,
+                ),
+                imageSize: 70,
+                showBackButton: true),
           ),
           SliverList(
             delegate: SliverChildListDelegate([
               const SizedBox(height: 16),
               _buildMenuItem(
+                context: context, // Add the context here
                 icon: CupertinoIcons.person,
                 title: 'My profile',
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    CupertinoPageRoute(
+                      builder: (context) => const ProfileScreen(),
+                    ),
+                  );
+                },
               ),
               _buildMenuItem(
+                context: context,
                 icon: CupertinoIcons.shopping_cart,
                 title: 'My orders',
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    CupertinoPageRoute(
+                      builder: (context) => const OrdersScreen(),
+                    ),
+                  );
+                },
               ),
               _buildMenuItem(
+                context: context,
                 icon: CupertinoIcons.lock,
                 title: 'Change password',
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    CupertinoPageRoute(
+                      builder: (context) => const ChangePasswordScreen(),
+                    ),
+                  );
+                },
               ),
               _buildMenuItem(
+                context: context,
                 icon: CupertinoIcons.creditcard,
                 title: 'Payments',
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    CupertinoPageRoute(
+                      builder: (context) => const PaymentsScreen(),
+                    ),
+                  );
+                },
               ),
               _buildMenuItem(
+                context: context,
                 icon: CupertinoIcons.bell,
                 title: 'Notifications',
               ),
               _buildMenuItem(
+                context: context,
                 icon: CupertinoIcons.chat_bubble,
                 title: 'Contact preference',
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    CupertinoPageRoute(
+                      builder: (context) => const ContactPreferencesScreen(),
+                    ),
+                  );
+                },
               ),
               _buildMenuItem(
+                context: context,
                 icon: CupertinoIcons.settings,
                 title: 'Settings',
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    CupertinoPageRoute(
+                      builder: (context) => const SettingsScreen(),
+                    ),
+                  );
+                },
               ),
               _buildMenuItem(
+                context: context,
                 icon: CupertinoIcons.question_circle,
                 title: 'FAQ',
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    CupertinoPageRoute(
+                      builder: (context) => const FAQScreen(),
+                    ),
+                  );
+                },
               ),
               _buildSignOutButton(context),
               _buildPromoBanner(),

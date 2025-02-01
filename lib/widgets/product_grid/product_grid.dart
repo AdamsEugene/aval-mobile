@@ -53,14 +53,16 @@ class _ProductGridState extends State<ProductGrid> {
         crossAxisCount: 2,
         mainAxisSpacing: 0,
         crossAxisSpacing: 0,
-        childAspectRatio: 160 / 260,
+        childAspectRatio: 160 / 240,
       ),
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return ProductItemWrapper(
-              product: widget.products[index],
-              boxDecorationAnimation: _boxDecorationAnimation,
-              index: index);
+            product: widget.products[index],
+            boxDecorationAnimation: _boxDecorationAnimation,
+            index: index,
+            forGrid: true,
+          );
         },
         childCount: widget.products.length,
       ),

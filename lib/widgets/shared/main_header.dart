@@ -5,7 +5,7 @@ import 'package:e_commerce_app/screen/language_settings_screen.dart';
 import 'package:e_commerce_app/screen/notification_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/widgets/shared/sliver_app_bar_delegate.dart';
-import 'package:e_commerce_app/screen/account_screen.dart';
+import 'package:e_commerce_app/screen/account/account_screen.dart';
 
 class MainHeader extends StatelessWidget {
   final Widget? leading;
