@@ -6,7 +6,7 @@ class StockInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       decoration: const BoxDecoration(
         color: CupertinoColors.white,
         border: Border(
@@ -64,29 +64,25 @@ class StockInfoSection extends StatelessWidget {
           ),
           // Certified Badge
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            width: 44,
+            height: 84,
             decoration: BoxDecoration(
-              color: CupertinoColors.activeOrange,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  CupertinoIcons.checkmark_seal_fill,
-                  size: 16,
-                  color: CupertinoColors.white,
-                ),
-                SizedBox(width: 4),
-                Text(
-                  'Certified Refurb',
-                  style: TextStyle(
-                    color: CupertinoColors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
+              color: CupertinoColors.white,
+              borderRadius: BorderRadius.circular(22),
+              boxShadow: [
+                BoxShadow(
+                  color: CupertinoColors.systemGrey.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
               ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(22),
+              child: Image.asset(
+                'assets/images/certs/certified-refurb.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ],

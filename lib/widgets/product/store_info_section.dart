@@ -7,7 +7,7 @@ class StoreInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
         color: CupertinoColors.white,
         border: Border(
@@ -131,41 +131,33 @@ class StoreInfoSection extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(width: 8),
-                  // Verified Badge
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
+                    width: 44,
+                    height: 84,
                     decoration: BoxDecoration(
-                      color: CupertinoColors.activeOrange,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          CupertinoIcons.checkmark_seal_fill,
-                          color: CupertinoColors.white,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          'AVAL Verified',
-                          style: TextStyle(
-                            color: CupertinoColors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      color: CupertinoColors.white,
+                      borderRadius: BorderRadius.circular(22),
+                      boxShadow: [
+                        BoxShadow(
+                          color: CupertinoColors.systemGrey.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
                         ),
                       ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(22),
+                      child: Image.asset(
+                        'assets/images/certs/aval-choice.png',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          // const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
