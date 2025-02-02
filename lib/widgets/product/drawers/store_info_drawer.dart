@@ -103,6 +103,72 @@ class StoreInfoDrawer extends StatelessWidget {
     );
   }
 
+  Widget _buildVerificationBadge() {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: double.infinity,
+          padding:
+              const EdgeInsets.only(left: 145, right: 16, top: 12, bottom: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF05001E),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Aval Choice',
+                style: TextStyle(
+                  color: CupertinoColors.activeOrange,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.3,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'This store has been verified by aval for quality and reliability',
+                style: TextStyle(
+                  color: CupertinoColors.white.withOpacity(0.9),
+                  fontSize: 13,
+                  height: 1.4,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Badge icon positioned on top
+        Positioned(
+          left: 10,
+          top: -16,
+          child: Container(
+            width: 114,
+            height: 114,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFF05001E),
+              image: const DecorationImage(
+                image: AssetImage('assets/images/certs/aval-choice.png'),
+                fit: BoxFit.cover,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF05001E).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseDrawer(
@@ -114,7 +180,6 @@ class StoreInfoDrawer extends StatelessWidget {
       ),
       trailingAction: DrawerAction(
         text: 'Save',
-        // textColor: CupertinoColors.activeBlue,
         fontWeight: FontWeight.w600,
         onTap: () => (),
       ),
@@ -191,47 +256,7 @@ class StoreInfoDrawer extends StatelessWidget {
                     value: '98.5%',
                   ),
                   const SizedBox(height: 24),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFF4E5),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          CupertinoIcons.checkmark_seal_fill,
-                          color: CupertinoColors.activeOrange,
-                          size: 24,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'AVAL Verified Store',
-                                style: TextStyle(
-                                  color: Color(0xFF05001E),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'This store has been verified by AVAL for quality and reliability',
-                                style: TextStyle(
-                                  color:
-                                      const Color(0xFF05001E).withOpacity(0.6),
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildVerificationBadge(),
                 ],
               ),
             ),
