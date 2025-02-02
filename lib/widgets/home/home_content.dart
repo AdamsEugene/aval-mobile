@@ -53,9 +53,9 @@ class _HomeContentState extends State<HomeContent> {
                     'Beauty & Care',
                   ],
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                // const SliverToBoxAdapter(child: SizedBox(height: 24)),
                 const ServiceFeatures(),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                // const SliverToBoxAdapter(child: SizedBox(height: 24)),
                 const ProductCarousel(
                   isPromo: true,
                   ourChoice: false,

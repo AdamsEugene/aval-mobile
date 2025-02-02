@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'dart:async';
 
 class AdsBanner extends StatefulWidget {
   const AdsBanner({super.key});
@@ -9,6 +10,7 @@ class AdsBanner extends StatefulWidget {
 
 class _AdsBannerState extends State<AdsBanner> {
   final PageController _pageController = PageController();
+  Timer? _timer;
   int _currentPage = 0;
 
   final List<String> images = [
@@ -19,9 +21,34 @@ class _AdsBannerState extends State<AdsBanner> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _startAutoScroll();
+  }
+
+  @override
   void dispose() {
+    _timer?.cancel();
     _pageController.dispose();
     super.dispose();
+  }
+
+  void _startAutoScroll() {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (_currentPage < images.length - 1) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+
+      if (_pageController.hasClients) {
+        _pageController.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
   }
 
   @override
