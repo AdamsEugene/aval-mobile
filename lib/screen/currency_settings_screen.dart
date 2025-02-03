@@ -93,12 +93,21 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFFF8F9FA),
                 borderRadius: BorderRadius.circular(20),
+                // shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: CupertinoColors.systemGrey.withOpacity(0.5),
+                    offset: const Offset(0, 2),
+                    blurRadius: 2,
+                    spreadRadius: 0,
+                  ),
+                ],
               ),
               child: Center(
                 child: Text(
                   currency.symbol,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
