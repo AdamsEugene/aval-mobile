@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
+import 'certificates_drawer.dart';
 
 class ServiceFeatures extends StatefulWidget {
   const ServiceFeatures({super.key});
@@ -11,17 +12,6 @@ class ServiceFeatures extends StatefulWidget {
 class _ServiceFeaturesState extends State<ServiceFeatures> {
   final ScrollController _scrollController = ScrollController();
   Timer? _timer;
-
-  static const List<String> imagePaths = [
-    'assets/images/certs/Payment-Plan.png',
-    'assets/images/certs/certified-refurb.png',
-    'assets/images/certs/certified-Pre-owned.png',
-    'assets/images/certs/Digi-Cert.png',
-    'assets/images/certs/Pre-owned.png',
-    'assets/images/certs/protect-cert.png',
-    'assets/images/certs/refurb.png',
-    'assets/images/certs/Trace-Cert.png',
-  ];
 
   @override
   void initState() {
@@ -46,7 +36,7 @@ class _ServiceFeaturesState extends State<ServiceFeatures> {
           _scrollController.jumpTo(0);
         } else {
           _scrollController.animateTo(
-            currentPosition + 2, // Increased increment for faster scroll
+            currentPosition + 2,
             duration: const Duration(milliseconds: 30),
             curve: Curves.linear,
           );
@@ -55,20 +45,51 @@ class _ServiceFeaturesState extends State<ServiceFeatures> {
     });
   }
 
+  void _showCertificatesDetails(BuildContext context) {
+    CertificatesDrawer.show(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: SizedBox(
-        height: 170,
-        child: ListView.builder(
-          controller: _scrollController,
-          scrollDirection: Axis.horizontal,
-          itemCount: 1000,
-          itemBuilder: (context, index) {
-            final imageIndex = index % imagePaths.length;
-            return FeatureItem(imagePath: imagePaths[imageIndex]);
-          },
-        ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0, bottom: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () => _showCertificatesDetails(context),
+                  child: const Text(
+                    'About Our Certificates',
+                    style: TextStyle(
+                      color: CupertinoColors.systemBlue,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 80,
+            child: ListView.builder(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              itemCount: 1000,
+              itemBuilder: (context, index) {
+                final imageIndex =
+                    index % CertificatesDrawer.certificates.length;
+                return FeatureItem(
+                  imagePath:
+                      CertificatesDrawer.certificates[imageIndex].imagePath,
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -85,7 +106,7 @@ class FeatureItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 95,
+      width: 70,
       margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -99,7 +120,7 @@ class FeatureItem extends StatelessWidget {
         ],
         image: DecorationImage(
           image: AssetImage(imagePath),
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
         ),
       ),
     );
