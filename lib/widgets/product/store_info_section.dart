@@ -7,7 +7,7 @@ class StoreInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         color: CupertinoColors.white,
         border: Border(
@@ -133,7 +133,7 @@ class StoreInfoSection extends StatelessWidget {
                   const SizedBox(width: 8),
                   Container(
                     width: 44,
-                    height: 84,
+                    height: 44,
                     decoration: BoxDecoration(
                       color: CupertinoColors.white,
                       borderRadius: BorderRadius.circular(22),

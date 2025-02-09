@@ -1,4 +1,5 @@
 // lib/screens/more_screen.dart
+import 'package:e_commerce_app/screen/watch_share/watch_share_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
 import 'package:flutter/material.dart';
@@ -61,10 +62,12 @@ class MoreScreen extends StatelessWidget {
             mainAxisSpacing: 16,
             crossAxisSpacing: 16,
             children: [
-              _buildGridItem('Bition', 'Loyalty Coins', CupertinoIcons.bitcoin),
-              _buildGridItem('Coupons', 'Special Offers', CupertinoIcons.tag),
               _buildGridItem(
-                  'BTN Wallet', 'Balance', CupertinoIcons.creditcard),
+                  context, 'Bition', 'Loyalty Coins', CupertinoIcons.bitcoin),
+              _buildGridItem(
+                  context, 'Coupons', 'Special Offers', CupertinoIcons.tag),
+              _buildGridItem(
+                  context, 'BTN Wallet', 'Balance', CupertinoIcons.creditcard),
             ],
           ),
         ],
@@ -135,16 +138,18 @@ class MoreScreen extends StatelessWidget {
             mainAxisSpacing: 16,
             crossAxisSpacing: 16,
             children: [
-              _buildGridItem('Watch & Share', 'Ads Rewards',
+              _buildGridItem(context, 'Watch & Share', 'Ads Rewards',
                   CupertinoIcons.play_circle_fill),
+              _buildGridItem(context, 'Referrals', 'Sales Rewards',
+                  CupertinoIcons.person_2_fill),
+              _buildGridItem(context, 'Surveys', 'Programs',
+                  CupertinoIcons.doc_text_viewfinder),
+              _buildGridItem(context, 'Games', 'Play & Earn',
+                  CupertinoIcons.gamecontroller_fill),
               _buildGridItem(
-                  'Referrals', 'Sales Rewards', CupertinoIcons.person_2_fill),
+                  context, 'Invest', 'Grow Wealth', CupertinoIcons.chart_bar),
               _buildGridItem(
-                  'Surveys', 'Programs', CupertinoIcons.doc_text_viewfinder),
-              _buildGridItem(
-                  'Games', 'Play & Earn', CupertinoIcons.gamecontroller_fill),
-              _buildGridItem('Invest', 'Grow Wealth', CupertinoIcons.chart_bar),
-              _buildGridItem('Delivery', 'Logistics', CupertinoIcons.cart),
+                  context, 'Delivery', 'Logistics', CupertinoIcons.cart),
             ],
           ),
         ],
@@ -157,7 +162,7 @@ class MoreScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          Icon(icon, color: CupertinoColors.activeBlue),
+          Icon(icon, color: CupertinoColors.activeOrange),
           const SizedBox(width: 8),
           Text(
             title,
@@ -171,41 +176,80 @@ class MoreScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGridItem(String title, String subtitle, IconData icon) {
+  Widget _buildGridItem(
+      BuildContext context, String title, String subtitle, IconData icon) {
     return GestureDetector(
-      onTap: () {
-        // Handle item tap
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: CupertinoColors.systemGrey6,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 32, color: CupertinoColors.activeBlue),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
+        onTap: () {
+          switch (title) {
+            case 'Watch & Share':
+              Navigator.of(context, rootNavigator: true).push(
+                CupertinoPageRoute(
+                  builder: (context) => const WatchShareScreen(),
+                ),
+              );
+              break;
+            case 'Referrals':
+              // Navigate to Referrals screen
+              break;
+            case 'Surveys':
+              // Navigate to Surveys screen
+              break;
+            case 'Games':
+              // Navigate to Games screen
+              break;
+            case 'Invest':
+              // Navigate to Invest screen
+              break;
+            case 'Delivery':
+              // Navigate to Delivery screen
+              break;
+            default:
+              // Handle other navigation or show under development message
+              showCupertinoDialog(
+                context: context,
+                builder: (BuildContext context) => CupertinoAlertDialog(
+                  title: const Text('Coming Soon'),
+                  content: Text('$title feature is under development'),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              );
+          }
+          ;
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFFEEAD1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 32, color: CupertinoColors.activeOrange),
+              const SizedBox(height: 8),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              subtitle,
-              style: const TextStyle(
-                fontSize: 12,
-                color: CupertinoColors.systemGrey,
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: CupertinoColors.systemGrey,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        ));
   }
 
   Widget _buildListItem(String title, String label, IconData icon,
@@ -218,7 +262,7 @@ class MoreScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
-            Icon(icon, color: CupertinoColors.activeBlue),
+            Icon(icon, color: CupertinoColors.activeOrange),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
