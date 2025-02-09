@@ -17,39 +17,6 @@ class RewardsTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Your Rewards',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: null,
-                      child: Row(
-                        children: [
-                          Text(
-                            'History',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: CupertinoColors.activeBlue,
-                            ),
-                          ),
-                          Icon(
-                            CupertinoIcons.chevron_right,
-                            size: 16,
-                            color: CupertinoColors.activeBlue,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(

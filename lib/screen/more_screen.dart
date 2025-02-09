@@ -1,4 +1,6 @@
 // lib/screens/more_screen.dart
+import 'package:e_commerce_app/screen/referrals/referrals_screen.dart';
+import 'package:e_commerce_app/screen/surveys/surveys_screen.dart';
 import 'package:e_commerce_app/screen/watch_share/watch_share_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
@@ -189,10 +191,18 @@ class MoreScreen extends StatelessWidget {
               );
               break;
             case 'Referrals':
-              // Navigate to Referrals screen
+              Navigator.of(context, rootNavigator: true).push(
+                CupertinoPageRoute(
+                  builder: (context) => const ReferralsScreen(),
+                ),
+              );
               break;
             case 'Surveys':
-              // Navigate to Surveys screen
+              Navigator.of(context, rootNavigator: true).push(
+                CupertinoPageRoute(
+                  builder: (context) => const SurveysScreen(),
+                ),
+              );
               break;
             case 'Games':
               // Navigate to Games screen
