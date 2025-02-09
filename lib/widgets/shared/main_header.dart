@@ -12,6 +12,7 @@ class MainHeader extends StatelessWidget {
   final List<HeaderAction>? actions;
   final Color? bgColor;
   final bool isSliver;
+  final bool withBack;
 
   const MainHeader({
     super.key,
@@ -19,6 +20,7 @@ class MainHeader extends StatelessWidget {
     this.actions,
     this.bgColor = const Color(0xFFEEEFF1),
     this.isSliver = true,
+    this.withBack = false,
   });
 
   Widget _buildHeaderContent(BuildContext context) {
@@ -28,6 +30,18 @@ class MainHeader extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Row(
           children: [
+            if (withBack) ...[
+              CupertinoButton(
+                child: const Icon(
+                  CupertinoIcons.back,
+                  color: CupertinoColors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              const SizedBox(width: 8),
+            ],
             Expanded(
               child: leading ?? _buildDefaultLeading(context),
             ),

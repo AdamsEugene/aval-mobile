@@ -1,4 +1,6 @@
 // lib/screens/more_screen.dart
+import 'package:e_commerce_app/screen/games/games_screen.dart';
+import 'package:e_commerce_app/screen/invest/invest_screen.dart';
 import 'package:e_commerce_app/screen/referrals/referrals_screen.dart';
 import 'package:e_commerce_app/screen/surveys/surveys_screen.dart';
 import 'package:e_commerce_app/screen/watch_share/watch_share_screen.dart';
@@ -205,13 +207,34 @@ class MoreScreen extends StatelessWidget {
               );
               break;
             case 'Games':
-              // Navigate to Games screen
+              Navigator.of(context, rootNavigator: true).push(
+                CupertinoPageRoute(
+                  builder: (context) => const GamesScreen(),
+                ),
+              );
               break;
             case 'Invest':
-              // Navigate to Invest screen
+              Navigator.of(context, rootNavigator: true).push(
+                CupertinoPageRoute(
+                  builder: (context) => const InvestScreen(),
+                ),
+              );
               break;
             case 'Delivery':
               // Navigate to Delivery screen
+              showCupertinoDialog(
+                context: context,
+                builder: (BuildContext context) => CupertinoAlertDialog(
+                  title: const Text('Coming Soon'),
+                  content: Text('$title feature is under development'),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              );
               break;
             default:
               // Handle other navigation or show under development message
