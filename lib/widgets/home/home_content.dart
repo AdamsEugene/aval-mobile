@@ -1,3 +1,5 @@
+import 'package:e_commerce_app/widgets/magic_box/first_time_modal.dart';
+import 'package:e_commerce_app/widgets/magic_box/magic_box_carousel.dart';
 import 'package:e_commerce_app/widgets/others/shimmer_loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/services/product_service.dart';
@@ -25,6 +27,20 @@ class _HomeContentState extends State<HomeContent> {
   void initState() {
     super.initState();
     _productsFuture = ProductService.fetchProducts();
+
+    FirstTimeMagicBoxModal.resetSeenStatus();
+
+    // Show the first-time modal after the screen is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // This will check if the user has seen it before and handle preferences
+      FirstTimeMagicBoxModal.showFirstTime(context);
+
+      // If you want to test it and always show regardless of preferences:
+      // FirstTimeMagicBoxModal.showModal(context);
+
+      // To reset for testing:
+      // FirstTimeMagicBoxModal.resetSeenStatus();
+    });
   }
 
   @override
@@ -43,6 +59,45 @@ class _HomeContentState extends State<HomeContent> {
                 const CategoryScrollList(),
                 const SliverToBoxAdapter(child: SizedBox(height: 12)),
                 const MainBannerCarousel(),
+                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+                const MagicBoxCarousel(
+                  title: 'Mystery Boxes',
+                  boxes: [
+                    MagicBoxTheme(
+                      title: 'Mystery Box',
+                      price: 9.99,
+                      startColor: Color(0xFFDA4453),
+                      endColor: Color(0xFF89216B),
+                    ),
+                    MagicBoxTheme(
+                      title: 'Pure Magic Box',
+                      price: 19.99,
+                      startColor: Color.fromARGB(255, 73, 218, 68),
+                      endColor: Color.fromARGB(255, 33, 137, 61),
+                    ),
+                    // Additional boxes with different colors
+                    MagicBoxTheme(
+                      title: 'Premium Box',
+                      price: 29.99,
+                      startColor: Color(0xFF1A2980),
+                      endColor: Color(0xFF26D0CE),
+                    ),
+                    MagicBoxTheme(
+                      title: 'Deluxe Box',
+                      price: 39.99,
+                      startColor: Color(0xFF8E2DE2),
+                      endColor: Color(0xFF4A00E0),
+                    ),
+                    MagicBoxTheme(
+                      title: 'Ultimate Box',
+                      price: 49.99,
+                      startColor: Color(0xFFFF8008),
+                      endColor: Color(0xFFFFC837),
+                    ),
+                  ],
+                ),
+
                 const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
                 // Product carousels will handle their own loading states
@@ -191,5 +246,3 @@ class _ErrorWidget extends StatelessWidget {
     );
   }
 }
-
-// Make sure you have the ShimmerLoading widget from the previous example
