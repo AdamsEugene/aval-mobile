@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/widgets/common/mystery_pattern_painter.dart';
+import 'package:e_commerce_app/widgets/common/magic_pattern_painter.dart';
 import 'package:e_commerce_app/widgets/common/particle_background_painter.dart';
 import 'package:e_commerce_app/widgets/common/shine_effect.dart';
 import 'package:flutter/cupertino.dart';
@@ -229,7 +229,7 @@ class _FirstTimeMagicBoxModalState extends State<FirstTimeMagicBoxModal>
                         builder: (context, child) {
                           return Transform.rotate(
                             angle: _boxRotationAnimation.value,
-                            child: _buildMysteryBox(),
+                            child: _buildMagicBox(),
                           );
                         }),
 
@@ -324,7 +324,7 @@ class _FirstTimeMagicBoxModalState extends State<FirstTimeMagicBoxModal>
     );
   }
 
-  Widget _buildMysteryBox() {
+  Widget _buildMagicBox() {
     return SizedBox(
       width: 180,
       height: 180,
@@ -371,7 +371,7 @@ class _FirstTimeMagicBoxModalState extends State<FirstTimeMagicBoxModal>
           // Question mark pattern
           Positioned.fill(
             child: CustomPaint(
-              painter: MysteryPatternPainter(),
+              painter: MagicPatternPainter(),
             ),
           ),
         ],

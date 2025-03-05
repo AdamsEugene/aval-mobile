@@ -28,7 +28,7 @@ class _AllMagicBoxesPageState extends State<AllMagicBoxesPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: const Text('Mystery Boxes'),
+        middle: const Text('Magic Boxes'),
         leading: CupertinoButton(
           padding: EdgeInsets.zero,
           child: const Icon(CupertinoIcons.back),
@@ -314,7 +314,7 @@ class _AllMagicBoxesPageState extends State<AllMagicBoxesPage> {
   String _getBoxDescription(String boxTitle) {
     // Generate unique descriptions based on box title
     switch (boxTitle.toLowerCase()) {
-      case 'mystery box':
+      case 'Magic box':
         return 'A surprise selection of popular items at a great value.';
       case 'pure magic box':
         return 'Premium quality items with guaranteed superior value.';

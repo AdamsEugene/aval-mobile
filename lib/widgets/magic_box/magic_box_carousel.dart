@@ -1,6 +1,23 @@
 import 'package:e_commerce_app/widgets/magic_box/all_magic_boxes_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:e_commerce_app/widgets/magic_box/magic_box.dart';
+
+class MagicBoxTheme {
+  final String title;
+  final double price;
+  final Color startColor;
+  final Color endColor;
+  final int itemCount; // Added item count parameter
+
+  const MagicBoxTheme({
+    required this.title,
+    required this.price,
+    required this.startColor,
+    required this.endColor,
+    this.itemCount = 1, // Default to 1 item
+  });
+}
 
 class MagicBoxCarousel extends StatelessWidget {
   final String title;
@@ -19,7 +36,8 @@ class MagicBoxCarousel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding:
+                const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -30,34 +48,40 @@ class MagicBoxCarousel extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  child: const Text('See All'),
-                  onPressed: () {
-                    _showAllMagicBoxes(context);
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => AllMagicBoxesPage(boxes: boxes),
+                      ),
+                    );
                   },
+                  child: Text(
+                    'Find your surprise!',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 8),
           SizedBox(
-            height: 220,
+            height: 240,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               itemCount: boxes.length,
               itemBuilder: (context, index) {
                 final box = boxes[index];
                 return MagicBox(
-                  key: ValueKey('magic_box_$index'),
                   title: box.title,
                   price: box.price,
                   startColor: box.startColor,
                   endColor: box.endColor,
-                  onPurchased: () {
-                    // Handle purchase completion
-                  },
+                  itemCount: box.itemCount, // Pass the item count to MagicBox
                 );
               },
             ),
@@ -66,30 +90,4 @@ class MagicBoxCarousel extends StatelessWidget {
       ),
     );
   }
-
-  void _showAllMagicBoxes(BuildContext context) {
-    // Use CupertinoPageRoute to navigate to a full page instead of a bottom sheet
-    Navigator.of(context).push(
-      CupertinoPageRoute(
-        fullscreenDialog: true,
-        builder: (context) => AllMagicBoxesPage(boxes: boxes),
-      ),
-    );
-  }
-}
-
-
-// Magic Box theme class to make implementation easier
-class MagicBoxTheme {
-  final String title;
-  final double price;
-  final Color startColor;
-  final Color endColor;
-
-  const MagicBoxTheme({
-    required this.title,
-    required this.price,
-    required this.startColor,
-    required this.endColor,
-  });
 }
