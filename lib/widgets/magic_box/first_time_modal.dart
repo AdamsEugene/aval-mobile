@@ -18,14 +18,14 @@ class FirstTimeMagicBoxModal extends StatefulWidget {
     try {
       // Check if the user has seen the intro before
       final prefs = await SharedPreferences.getInstance();
-      final hasSeenIntro = prefs.getBool('magic_box_intro_seen') ?? false;
+      final hasSeenIntro = prefs.getBool('magic_box_intro_seen1') ?? false;
 
       if (!hasSeenIntro && context.mounted) {
         // Show the modal
         await showModal(context);
 
         // Mark as seen
-        await prefs.setBool('magic_box_intro_seen', true);
+        await prefs.setBool('magic_box_intro_seen1', true);
       }
     } catch (e) {
       // If there's an error with SharedPreferences, still show the modal
@@ -73,7 +73,7 @@ class FirstTimeMagicBoxModal extends StatefulWidget {
   static Future<void> resetSeenStatus() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('magic_box_intro_seen');
+      await prefs.remove('magic_box_intro_seen1');
     } catch (e) {
       debugPrint('Error resetting magic box seen status: $e');
     }

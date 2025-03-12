@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:e_commerce_app/widgets/magic_box/first_time_modal.dart';
 import 'package:e_commerce_app/widgets/magic_box/magic_box_carousel.dart';
+import 'package:e_commerce_app/widgets/magic_box/multi_items_first_time_modal.dart';
 import 'package:e_commerce_app/widgets/magic_box/new_box_manager.dart';
 import 'package:e_commerce_app/widgets/magic_box/new_box_floating_button.dart';
 import 'package:e_commerce_app/widgets/others/shimmer_loading.dart';
@@ -42,9 +45,19 @@ class _HomeContentState extends State<HomeContent> {
       });
     });
 
+    FirstTimeMagicBoxModal.resetSeenStatus();
+
     // Show the first-time modal after the screen is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      FirstTimeMagicBoxModal.showFirstTime(context);
+      Random random = Random();
+      int modalToShow = random.nextInt(2); // 0 or 1
+
+      // Show a random modal based on the generated number
+      if (modalToShow == 0) {
+        FirstTimeMagicBoxModal.showFirstTime(context);
+      } else {
+        MultiItemsFirstTimeMagicBoxModal.showFirstTime(context);
+      }
     });
   }
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MultiItemsFirstTimeMagicBoxModal {
-  static const String _seenKey = 'has_seen_magic_box_intro';
+  static const String _seenKey = 'has_seen_magic_box_intro2';
 
   // Reset seen status for testing purposes
   static Future<void> resetSeenStatus() async {
