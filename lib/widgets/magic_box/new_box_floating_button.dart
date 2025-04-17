@@ -123,7 +123,7 @@ class _NewBoxFloatingButtonState extends State<NewBoxFloatingButton>
                           const Icon(
                             CupertinoIcons.gift_fill,
                             color: Colors.white,
-                            size: 24,
+                            size: 32,
                           ),
                           if (widget.itemCount > 1)
                             Positioned(
@@ -147,17 +147,17 @@ class _NewBoxFloatingButtonState extends State<NewBoxFloatingButton>
                             ),
                         ],
                       ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'NEW BOX!',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      _buildSparkle(),
+                      // const SizedBox(width: 8),
+                      // const Text(
+                      //   'NEW BOX!',
+                      //   style: TextStyle(
+                      //     fontWeight: FontWeight.bold,
+                      //     fontSize: 14,
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
+                      // const SizedBox(width: 4),
+                      // _buildSparkle(),
                     ],
                   ),
                 ),

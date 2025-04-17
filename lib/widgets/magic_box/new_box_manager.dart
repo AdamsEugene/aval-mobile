@@ -11,8 +11,8 @@ class NewBoxManager {
   NewBoxManager._internal();
 
   // Keys for storing data
-  static const String _lastBoxTimeKey = 'last_new_box_time3';
-  static const String _seenBoxIdKey = 'seen_box_id3';
+  static const String _lastBoxTimeKey = 'last_new_box_time2';
+  static const String _seenBoxIdKey = 'seen_box_id2';
 
   // Stream controller for box availability
   final StreamController<NewBoxData?> _boxStreamController =

@@ -1,4 +1,5 @@
-// lib/screens/more_screen.dart
+// lib/screen/more_screen.dart
+import 'package:e_commerce_app/screen/delivery/delivery_screen.dart';
 import 'package:e_commerce_app/screen/games/games_screen.dart';
 import 'package:e_commerce_app/screen/invest/invest_screen.dart';
 import 'package:e_commerce_app/screen/referrals/referrals_screen.dart';
@@ -97,18 +98,32 @@ class MoreScreen extends StatelessWidget {
         children: [
           _buildSectionHeader('Certificates', CupertinoIcons.doc_text_fill),
           const Divider(height: 1),
-          ListView(
+          GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 3,
+            padding: const EdgeInsets.all(16),
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
             children: [
-              _buildListItem(
-                  'TC', 'Trace Certificate', CupertinoIcons.arrow_2_squarepath),
-              _buildListItem(
-                  'DG-C', 'Digital Certificate', CupertinoIcons.doc_on_doc,
-                  subtitle:
-                      'SMICE/MOKKO: YT-Like, Books, Articles, Research, News'),
-              _buildListItem(
-                  'PT-C', 'Protection Certificate', CupertinoIcons.shield_fill),
+              _buildGridItem(
+                context,
+                'TC',
+                'Trace Certificate',
+                CupertinoIcons.arrow_2_squarepath,
+              ),
+              _buildGridItem(
+                context,
+                'DG-C',
+                'Digital Certificate',
+                CupertinoIcons.doc_on_doc,
+              ),
+              _buildGridItem(
+                context,
+                'PT-C',
+                'Protection Certificate',
+                CupertinoIcons.shield_fill,
+              ),
             ],
           ),
         ],
@@ -221,18 +236,10 @@ class MoreScreen extends StatelessWidget {
               );
               break;
             case 'Delivery':
-              // Navigate to Delivery screen
-              showCupertinoDialog(
-                context: context,
-                builder: (BuildContext context) => CupertinoAlertDialog(
-                  title: const Text('Coming Soon'),
-                  content: Text('$title feature is under development'),
-                  actions: [
-                    CupertinoDialogAction(
-                      child: const Text('OK'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
+              // Navigate to Delivery screen - updated to use our new screen
+              Navigator.of(context, rootNavigator: true).push(
+                CupertinoPageRoute(
+                  builder: (context) => const DeliveryScreen(),
                 ),
               );
               break;
