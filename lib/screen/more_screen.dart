@@ -2,6 +2,8 @@
 import 'package:e_commerce_app/screen/delivery/delivery_screen.dart';
 import 'package:e_commerce_app/screen/games/games_screen.dart';
 import 'package:e_commerce_app/screen/invest/invest_screen.dart';
+import 'package:e_commerce_app/screen/more/drawers/notifications_drawer.dart';
+import 'package:e_commerce_app/screen/more/drawers/settings_drawer.dart';
 import 'package:e_commerce_app/screen/referrals/referrals_screen.dart';
 import 'package:e_commerce_app/screen/surveys/surveys_screen.dart';
 import 'package:e_commerce_app/screen/watch_share/watch_share_screen.dart';
@@ -27,13 +29,19 @@ class MoreScreen extends StatelessWidget {
         HeaderAction(
           icon: CupertinoIcons.bell,
           onPressed: () {
-            // Handle notifications
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) => const NotificationsDrawer(),
+            );
           },
         ),
         HeaderAction(
           icon: CupertinoIcons.settings,
           onPressed: () {
-            // Handle settings
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) => const SettingsDrawer(),
+            );
           },
         ),
       ],

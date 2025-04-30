@@ -1,7 +1,6 @@
 // lib/screen/delivery/drawers/package_size_drawer.dart
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/widgets/shared/base_drawer.dart';
-import 'package:flutter/material.dart';
 
 class PackageSizeDrawer extends StatefulWidget {
   final Function(String) onSelect;
@@ -87,7 +86,6 @@ class _PackageSizeDrawerState extends State<PackageSizeDrawer> {
   Widget build(BuildContext context) {
     return BaseDrawer(
       height: MediaQuery.of(context).size.height * 0.8,
-      // title: 'Select Package Size',
       leadingAction: DrawerAction(
         text: 'Cancel',
         onTap: () => Navigator.of(context).pop(),
@@ -98,232 +96,240 @@ class _PackageSizeDrawerState extends State<PackageSizeDrawer> {
         fontWeight: FontWeight.w600,
         onTap: _confirmSelection,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Text(
-              'Choose the size that fits your package',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color(0xFF05001E),
-              ),
+      child: SafeArea(
+        bottom: false,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-          ),
-
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: _packageSizes.length,
-              itemBuilder: (context, index) {
-                final packageSize = _packageSizes[index];
-                final isSelected = index == _selectedIndex;
-                final isCustom = index == 5;
-
-                return GestureDetector(
-                  onTap: () => _selectPackageSize(index),
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? const Color(0xFFF8F0E3)
-                          : CupertinoColors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: isSelected
-                            ? CupertinoColors.activeOrange
-                            : CupertinoColors.systemGrey5,
-                        width: isSelected ? 2 : 1,
-                      ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: Text(
+                    'Choose the size that fits your package',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF05001E),
                     ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? CupertinoColors.activeOrange.withOpacity(0.1)
-                                : const Color(0xFFF5F5F5),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(
-                            packageSize['icon'],
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _packageSizes.length,
+                  itemBuilder: (context, index) {
+                    final packageSize = _packageSizes[index];
+                    final isSelected = index == _selectedIndex;
+                    final isCustom = index == 5;
+
+                    return GestureDetector(
+                      onTap: () => _selectPackageSize(index),
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? const Color(0xFFF8F0E3)
+                              : CupertinoColors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
                             color: isSelected
                                 ? CupertinoColors.activeOrange
-                                : const Color(0xFF05001E),
-                            size: 24,
+                                : CupertinoColors.systemGrey5,
+                            width: isSelected ? 2 : 1,
                           ),
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                packageSize['name'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: isSelected
-                                      ? CupertinoColors.activeOrange
-                                      : const Color(0xFF05001E),
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              if (!isCustom) ...[
-                                Text(
-                                  'Dimensions: ${packageSize['dimensions']}',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: CupertinoColors.systemGrey.darkColor,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  'Weight: ${packageSize['weight']}',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: CupertinoColors.systemGrey.darkColor,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                              ],
-                              Text(
-                                'Example: ${packageSize['example']}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: CupertinoColors.systemGrey.darkColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        child: Row(
                           children: [
-                            Text(
-                              packageSize['price'],
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                            Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? CupertinoColors.activeOrange
+                                        .withOpacity(0.1)
+                                    : const Color(0xFFF5F5F5),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Icon(
+                                packageSize['icon'],
                                 color: isSelected
                                     ? CupertinoColors.activeOrange
                                     : const Color(0xFF05001E),
+                                size: 24,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            CupertinoRadio<int>(
-                              value: index,
-                              groupValue: _selectedIndex,
-                              onChanged: (int? value) {
-                                if (value != null) {
-                                  _selectPackageSize(value);
-                                }
-                              },
-                              activeColor: CupertinoColors.activeOrange,
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    packageSize['name'],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: isSelected
+                                          ? CupertinoColors.activeOrange
+                                          : const Color(0xFF05001E),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  if (!isCustom) ...[
+                                    Text(
+                                      'Dimensions: ${packageSize['dimensions']}',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: CupertinoColors
+                                            .systemGrey.darkColor,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      'Weight: ${packageSize['weight']}',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: CupertinoColors
+                                            .systemGrey.darkColor,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                  ],
+                                  Text(
+                                    'Example: ${packageSize['example']}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color:
+                                          CupertinoColors.systemGrey.darkColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  packageSize['price'],
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: isSelected
+                                        ? CupertinoColors.activeOrange
+                                        : const Color(0xFF05001E),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                CupertinoRadio<int>(
+                                  value: index,
+                                  groupValue: _selectedIndex,
+                                  onChanged: (int? value) {
+                                    if (value != null) {
+                                      _selectPackageSize(value);
+                                    }
+                                  },
+                                  activeColor: CupertinoColors.activeOrange,
+                                ),
+                              ],
                             ),
                           ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                if (_selectedIndex != 5)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Size Visualization',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF05001E),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          height: 150,
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: List.generate(5, (index) {
+                                final scale = (index + 1) / 5;
+                                final isCurrentSize = index == _selectedIndex;
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      width: 40 + (scale * 40),
+                                      height: 40 + (scale * 60),
+                                      decoration: BoxDecoration(
+                                        color: isCurrentSize
+                                            ? CupertinoColors.activeOrange
+                                            : const Color(0xFFE0E0E0),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      _packageSizes[index]['name']
+                                          .split(' ')
+                                          .last,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: isCurrentSize
+                                            ? FontWeight.w600
+                                            : FontWeight.normal,
+                                        color: isCurrentSize
+                                            ? CupertinoColors.activeOrange
+                                            : CupertinoColors.systemGrey,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-
-          // Visual representation of sizes
-          if (_selectedIndex != 5) // Not showing for custom size
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Size Visualization',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF05001E),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: 120,
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: List.generate(5, (index) {
-                          // Scale factor based on size category
-                          final scale = (index + 1) / 5;
-                          final isCurrentSize = index == _selectedIndex;
-
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Container(
-                                width: 40 + (scale * 40),
-                                height: 40 + (scale * 60),
-                                decoration: BoxDecoration(
-                                  color: isCurrentSize
-                                      ? CupertinoColors.activeOrange
-                                      : const Color(0xFFE0E0E0),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                _packageSizes[index]['name']
-                                    .split(' ')
-                                    .last, // Just "Small", "Medium", etc.
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: isCurrentSize
-                                      ? FontWeight.w600
-                                      : FontWeight.normal,
-                                  color: isCurrentSize
-                                      ? CupertinoColors.activeOrange
-                                      : CupertinoColors.systemGrey,
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: _confirmSelection,
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF05001E),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Confirm Selection',
+                        style: TextStyle(
+                          color: CupertinoColors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: _confirmSelection,
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF05001E),
-                  borderRadius: BorderRadius.circular(12),
                 ),
-                alignment: Alignment.center,
-                child: const Text(
-                  'Confirm Selection',
-                  style: TextStyle(
-                    color: CupertinoColors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

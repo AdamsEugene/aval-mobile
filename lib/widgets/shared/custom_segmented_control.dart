@@ -11,7 +11,7 @@ class SegmentItem {
   });
 }
 
-class CustomSegmentedControl<T> extends StatelessWidget {
+class CustomSegmentedControl<T extends Object> extends StatelessWidget {
   final T groupValue;
   final Map<T, SegmentItem> children;
   final ValueChanged<T?> onValueChanged;
