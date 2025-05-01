@@ -10,12 +10,312 @@ import 'package:e_commerce_app/screen/delivery/drawers/route_service_drawer.dart
 import 'package:e_commerce_app/screen/delivery/drawers/full_vehicle_logistics_drawer.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/special_goods_drawer.dart';
 import 'package:e_commerce_app/widgets/delivery/package_form.dart';
+import 'package:e_commerce_app/screen/delivery/delivery_service_selection_screen.dart';
 
-class SendPackageTab extends StatelessWidget {
+class SendPackageTab extends StatefulWidget {
   const SendPackageTab({super.key});
 
   @override
+  State<SendPackageTab> createState() => _SendPackageTabState();
+}
+
+class _SendPackageTabState extends State<SendPackageTab> {
+  // Selected delivery service
+  DeliveryServiceProvider? _selectedService;
+  
+  @override
+  void initState() {
+    super.initState();
+    // Schedule showing the service selection screen after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_selectedService == null) {
+        _showServiceSelectionScreen();
+      }
+    });
+  }
+
+  // Show service selection screen and handle selection
+  Future<void> _showServiceSelectionScreen() async {
+    final result = await Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => const DeliveryServiceSelectionScreen(),
+        fullscreenDialog: true,
+      ),
+    );
+    
+    if (result != null && result is DeliveryServiceProvider) {
+      setState(() {
+        _selectedService = result;
+      });
+
+      // Show a confirmation snackbar
+      final snackBar = CupertinoTheme(
+        data: const CupertinoThemeData(
+          brightness: Brightness.dark,
+        ),
+        child: CupertinoPopupSurface(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: _selectedService!.color.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: Text(
+                      _selectedService!.name.substring(0, 1),
+                      style: TextStyle(
+                        color: _selectedService!.color,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'Delivery Service Selected',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: CupertinoColors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${_selectedService!.name} - ${_selectedService!.deliveryTime}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: CupertinoColors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => _showServiceSelectionScreen(),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: CupertinoColors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Text(
+                      'Change',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: CupertinoColors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      // Show a toast at the bottom
+      showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) => Container(
+          alignment: Alignment.bottomCenter,
+          padding: const EdgeInsets.only(bottom: 80),
+          child: snackBar,
+        ),
+      );
+    } else if (_selectedService == null) {
+      // If service is still null and user cancelled selection,
+      // show service selection again to make it mandatory
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showServiceSelectionScreen();
+      });
+    }
+  }
+  
+  // Handle opening specialized delivery drawers
+  void _showSpecializedDelivery(String type) async {
+    // If no service is selected, show the service selection screen first
+    if (_selectedService == null) {
+      await _showServiceSelectionScreen();
+      
+      // If user cancelled service selection, return
+      if (_selectedService == null) {
+        return;
+      }
+    }
+    
+    // Show the appropriate drawer based on type
+    switch (type) {
+      case 'consolidated':
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => const ConsolidatedDeliveryDrawer(),
+        );
+        break;
+      case 'route':
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => const RouteServiceDrawer(),
+        );
+        break;
+      case 'logistics':
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => const FullVehicleLogisticsDrawer(),
+        );
+        break;
+      case 'special_goods':
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => const SpecialGoodsDrawer(),
+        );
+        break;
+      case 'special_transport':
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => const SpecialTransportDrawer(),
+        );
+        break;
+      case 'local':
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => const LocalDeliveryDrawer(),
+        );
+        break;
+      case 'cross_region':
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => const CrossRegionDrawer(),
+        );
+        break;
+      case 'ecommerce':
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => const EcommerceShippingDrawer(),
+        );
+        break;
+    }
+  }
+
+  Widget _buildQuickOption({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: CupertinoColors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Icon(
+              icon,
+              color: CupertinoColors.white,
+              size: 24,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              color: CupertinoColors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSpecializedOption({
+    required BuildContext context,
+    required IconData icon,
+    required String title,
+    required String description,
+    required Color color,
+    String type = '',
+  }) {
+    return GestureDetector(
+      onTap: () => _showSpecializedDelivery(type),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF05001E),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: const Color(0xFF05001E).withOpacity(0.6),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Icon(
+            CupertinoIcons.chevron_right,
+            color: CupertinoColors.systemGrey,
+            size: 20,
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // If no service is selected, show a placeholder loading state
+    if (_selectedService == null) {
+      return const Center(
+        child: CupertinoActivityIndicator(),
+      );
+    }
+    
+    // Otherwise, show the normal UI with selected service
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -67,37 +367,19 @@ class SendPackageTab extends StatelessWidget {
                       context: context,
                       icon: CupertinoIcons.cube_box,
                       label: 'Local',
-                      onTap: () {
-                        // Show local delivery drawer
-                        showCupertinoModalPopup(
-                          context: context,
-                          builder: (context) => const LocalDeliveryDrawer(),
-                        );
-                      },
+                      onTap: () => _showSpecializedDelivery('local'),
                     ),
                     _buildQuickOption(
                       context: context,
                       icon: CupertinoIcons.location_north,
                       label: 'Cross-Region',
-                      onTap: () {
-                        // Show cross-region delivery drawer
-                        showCupertinoModalPopup(
-                          context: context,
-                          builder: (context) => const CrossRegionDrawer(),
-                        );
-                      },
+                      onTap: () => _showSpecializedDelivery('cross_region'),
                     ),
                     _buildQuickOption(
                       context: context,
                       icon: CupertinoIcons.bag,
                       label: 'E-commerce',
-                      onTap: () {
-                        // Show e-commerce shipping drawer
-                        showCupertinoModalPopup(
-                          context: context,
-                          builder: (context) => const EcommerceShippingDrawer(),
-                        );
-                      },
+                      onTap: () => _showSpecializedDelivery('ecommerce'),
                     ),
                   ],
                 ),
@@ -106,7 +388,110 @@ class SendPackageTab extends StatelessWidget {
           ),
         ),
         
-        // New Specialized Delivery Options Section
+        // Current Delivery Service Section
+        SliverToBoxAdapter(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: _selectedService!.color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: _selectedService!.color.withOpacity(0.3),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: CupertinoColors.systemGrey.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                // Service logo placeholder
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: _selectedService!.color.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text(
+                      _selectedService!.name.substring(0, 1),
+                      style: TextStyle(
+                        color: _selectedService!.color,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                
+                // Service details
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Current Delivery Partner',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF05001E),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _selectedService!.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF05001E),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Delivery time: ${_selectedService!.deliveryTime}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: const Color(0xFF05001E).withOpacity(0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Change button
+                GestureDetector(
+                  onTap: _showServiceSelectionScreen,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _selectedService!.color.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      'Change',
+                      style: TextStyle(
+                        color: _selectedService!.color,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        
+        // Specialized Delivery Options Section
         SliverToBoxAdapter(
           child: Container(
             margin: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
@@ -155,6 +540,7 @@ class SendPackageTab extends StatelessWidget {
                   title: 'Consolidated Delivery',
                   description: 'Special delivery cases with optimal security',
                   color: const Color(0xFF4CAF50),
+                  type: 'consolidated',
                 ),
                 Container(
                   height: 1,
@@ -167,6 +553,7 @@ class SendPackageTab extends StatelessWidget {
                   title: 'Route Service',
                   description: 'Service picks packages along route (slow and cheap)',
                   color: const Color(0xFF2196F3),
+                  type: 'route',
                 ),
                 Container(
                   height: 1,
@@ -179,6 +566,7 @@ class SendPackageTab extends StatelessWidget {
                   title: 'Full Vehicle Logistics',
                   description: 'Request a whole car or van for goods transportation',
                   color: const Color(0xFF9C27B0),
+                  type: 'logistics',
                 ),
                 Container(
                   height: 1,
@@ -191,6 +579,7 @@ class SendPackageTab extends StatelessWidget {
                   title: 'Special Goods',
                   description: 'Medical deliveries, valuable and delicate items',
                   color: const Color(0xFFFF5722),
+                  type: 'special_goods',
                 ),
                 Container(
                   height: 1,
@@ -203,6 +592,7 @@ class SendPackageTab extends StatelessWidget {
                   title: 'Special Transport',
                   description: 'Ambulance, pregnant women, school kids, elderly, disabled',
                   color: const Color(0xFFFFC107),
+                  type: 'special_transport',
                 ),
               ],
             ),
@@ -306,163 +696,6 @@ class SendPackageTab extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildSpecializedOption({
-    required BuildContext context,
-    required IconData icon,
-    required String title,
-    required String description,
-    required Color color,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        // Show appropriate drawer based on title
-        switch (title) {
-          case 'Consolidated Delivery':
-            showCupertinoModalPopup(
-              context: context,
-              builder: (context) => const ConsolidatedDeliveryDrawer(),
-            );
-            break;
-          case 'Special Transport':
-            showCupertinoModalPopup(
-              context: context,
-              builder: (context) => const SpecialTransportDrawer(),
-            );
-            break;
-          case 'Route Service':
-            showCupertinoModalPopup(
-              context: context,
-              builder: (context) => const RouteServiceDrawer(),
-            );
-            break;
-          case 'Full Vehicle Logistics':
-            showCupertinoModalPopup(
-              context: context,
-              builder: (context) => const FullVehicleLogisticsDrawer(),
-            );
-            break;
-          case 'Special Goods':
-            showCupertinoModalPopup(
-              context: context,
-              builder: (context) => const SpecialGoodsDrawer(),
-            );
-            break;
-          default:
-            // Show under development message for other options
-            showCupertinoDialog(
-              context: context,
-              builder: (BuildContext context) => CupertinoAlertDialog(
-                title: const Text('Coming Soon'),
-                content: Text('$title feature is under development'),
-                actions: [
-                  CupertinoDialogAction(
-                    child: const Text('OK'),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-            );
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                icon,
-                color: color,
-                size: 24,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      color: CupertinoColors.systemGrey,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                CupertinoIcons.chevron_right,
-                color: color,
-                size: 16,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildQuickOption({
-    required BuildContext context,
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: CupertinoColors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFFFF5E62).withOpacity(0.2),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Icon(
-              icon,
-              color: const Color(0xFFFF5E62),
-              size: 28,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              color: CupertinoColors.white,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
     );
   }
 
