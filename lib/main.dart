@@ -18,7 +18,7 @@ class PageScaffoldApp extends StatelessWidget {
         barBackgroundColor: Color(0xFFEEEFF1),
       ),
       home: FutureBuilder(
-        future: Future.delayed(const Duration(seconds: 2)),
+        future: Future.delayed(const Duration(milliseconds: 3500)),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SplashScreen();
