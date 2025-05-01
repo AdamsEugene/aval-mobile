@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/track_details_drawer.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
@@ -71,53 +72,118 @@ class _PackageTrackingScreenState extends State<PackageTrackingScreen> {
   final LatLng _destinationLocation =
       const LatLng(6.6884, -1.6244); // Kumasi, Ghana
 
-  Widget _buildHeader(BuildContext context) {
-    return MainHeader(
-      leading: Row(
-        children: [
-          const SizedBox(width: 8),
-          Text(
-            'Tracking Details',
-            style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
-          ),
-        ],
-      ),
-      actions: _getHeaderActions(),
-    );
-  }
-
-  List<HeaderAction> _getHeaderActions() {
-    return [
-      HeaderAction(
-        icon: CupertinoIcons.info_circle,
-        onPressed: () {
-          showCupertinoModalPopup(
-            context: context,
-            builder: (context) => TrackDetailsDrawer(
-              trackingId: widget.trackingId,
-              packageDetails: _packageDetails,
-            ),
-          );
-        },
-        badgeCount: 3, // Example notification count
-      ),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: const Color(0xFFEEEFF1),
+      backgroundColor: const Color(0xFFF5F5F7),
       child: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // Main Header
-            _buildHeader(context),
+            // Main Header with gradient background
+            SliverToBoxAdapter(
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF3F51B5), // Indigo color for tracking theme
+                      Color(0xFF303F9F), // Darker indigo
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF3F51B5).withOpacity(0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: CupertinoColors.white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.back,
+                              color: CupertinoColors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showCupertinoModalPopup(
+                              context: context,
+                              builder: (context) => TrackDetailsDrawer(
+                                trackingId: widget.trackingId,
+                                packageDetails: _packageDetails,
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: CupertinoColors.white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.info,
+                              color: CupertinoColors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Package Tracking',
+                      style: TextStyle(
+                        color: CupertinoColors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(
+                          CupertinoIcons.number,
+                          color: CupertinoColors.white,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          widget.trackingId,
+                          style: TextStyle(
+                            color: CupertinoColors.white.withOpacity(0.9),
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
             // Status Card
             SliverToBoxAdapter(
               child: Container(
-                margin: const EdgeInsets.all(16),
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: CupertinoColors.white,
@@ -157,11 +223,11 @@ class _PackageTrackingScreenState extends State<PackageTrackingScreen> {
                           ],
                         ),
                         Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
                                 CupertinoColors.activeOrange.withOpacity(0.1),
-                            shape: BoxShape.circle,
+                            borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Icon(
                             CupertinoIcons.cube_box,
@@ -171,7 +237,11 @@ class _PackageTrackingScreenState extends State<PackageTrackingScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      height: 1,
+                      color: CupertinoColors.systemGrey.withOpacity(0.2),
+                    ),
                     Row(
                       children: [
                         Expanded(
@@ -224,16 +294,29 @@ class _PackageTrackingScreenState extends State<PackageTrackingScreen> {
               ),
             ),
 
-            // Tracking Timeline
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text(
-                  'Tracking Timeline',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+            // Tracking Timeline with accent bar
+            SliverToBoxAdapter(
+              child: Container(
+                margin: const EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 8),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 20,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF3F51B5),
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'Tracking Timeline',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -245,14 +328,45 @@ class _PackageTrackingScreenState extends State<PackageTrackingScreen> {
               ),
             ),
 
-            // Delivery Map
+            // Delivery Map with accent bar header
+            SliverToBoxAdapter(
+              child: Container(
+                margin: const EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 8),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 20,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF3F51B5),
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'Package Location',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             SliverToBoxAdapter(
               child: Container(
                 margin: const EdgeInsets.all(16),
                 height: 300,
                 decoration: BoxDecoration(
-                  color: CupertinoColors.systemGrey6,
                   borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CupertinoColors.systemGrey.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
@@ -273,6 +387,80 @@ class _PackageTrackingScreenState extends State<PackageTrackingScreen> {
                         infoWindow: const InfoWindow(title: 'Destination'),
                       ),
                     },
+                  ),
+                ),
+              ),
+            ),
+
+            // Contact driver button
+            SliverToBoxAdapter(
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFF3F51B5),
+                        Color(0xFF303F9F),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF3F51B5).withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: CupertinoButton(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    color: Colors.transparent,
+                    onPressed: () {
+                      // Show driver contact
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) => CupertinoAlertDialog(
+                          title: const Text('Contact Driver'),
+                          content: const Text('Call or message the driver for additional information.'),
+                          actions: [
+                            CupertinoDialogAction(
+                              child: const Text('Call'),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                            CupertinoDialogAction(
+                              child: const Text('Message'),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                            CupertinoDialogAction(
+                              isDestructiveAction: true,
+                              child: const Text('Cancel'),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          CupertinoIcons.phone_fill,
+                          color: CupertinoColors.white,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          'Contact Driver',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: CupertinoColors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

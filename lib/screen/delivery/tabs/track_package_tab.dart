@@ -1,5 +1,6 @@
 // lib/screen/delivery/tabs/track_package_tab.dart
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:e_commerce_app/screen/delivery/package_tracking_screen.dart';
 
 class TrackPackageTab extends StatefulWidget {
@@ -77,11 +78,18 @@ class _TrackPackageTabState extends State<TrackPackageTab> {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(0xFF05001E),
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF3F51B5), // Indigo color for tracking theme
+                  Color(0xFF303F9F), // Darker indigo
+                ],
+              ),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF05001E).withOpacity(0.3),
+                  color: const Color(0xFF3F51B5).withOpacity(0.3),
                   blurRadius: 20,
                   offset: const Offset(0, 8),
                 ),
@@ -98,42 +106,91 @@ class _TrackPackageTabState extends State<TrackPackageTab> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 16),
-                CupertinoTextField(
-                  controller: _trackingController,
-                  placeholder: 'Enter tracking number',
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: CupertinoColors.white,
-                    borderRadius: BorderRadius.circular(8),
+                const SizedBox(height: 8),
+                Text(
+                  'Get real-time updates on your delivery',
+                  style: TextStyle(
+                    color: CupertinoColors.white.withOpacity(0.9),
+                    fontSize: 16,
                   ),
-                  prefix: const Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Icon(
-                      CupertinoIcons.search,
-                      color: Color(0xFF05001E),
-                    ),
-                  ),
-                  clearButtonMode: OverlayVisibilityMode.editing,
                 ),
                 const SizedBox(height: 16),
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: _trackPackage,
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: CupertinoTextField(
+                    controller: _trackingController,
+                    placeholder: 'Enter tracking number',
+                    padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: CupertinoColors.activeOrange,
-                      borderRadius: BorderRadius.circular(8),
+                      color: CupertinoColors.white,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Track',
-                      style: TextStyle(
-                        color: CupertinoColors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                    prefix: const Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Icon(
+                        CupertinoIcons.search,
+                        color: Color(0xFF3F51B5),
+                        size: 20,
+                      ),
+                    ),
+                    clearButtonMode: OverlayVisibilityMode.editing,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFF303F9F),  // Darker indigo
+                        Color(0xFF1A237E),  // Even darker indigo
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF3F51B5).withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: _trackPackage,
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            CupertinoIcons.location_fill,
+                            color: CupertinoColors.white,
+                            size: 20,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Track',
+                            style: TextStyle(
+                              color: CupertinoColors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -142,15 +199,30 @@ class _TrackPackageTabState extends State<TrackPackageTab> {
             ),
           ),
         ),
-        const SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(
-              'Recent Trackings',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+        
+        // Recent Trackings Section with improved styling
+        SliverToBoxAdapter(
+          child: Container(
+            margin: const EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 8),
+            child: Row(
+              children: [
+                Container(
+                  width: 4,
+                  height: 20,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF3F51B5),
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  'Recent Trackings',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -213,17 +285,34 @@ class _TrackPackageTabState extends State<TrackPackageTab> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  tracking['id'],
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF3F51B5).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        CupertinoIcons.cube_box,
+                        color: Color(0xFF3F51B5),
+                        size: 18,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      tracking['id'],
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
+                    horizontal: 10,
+                    vertical: 5,
                   ),
                   decoration: BoxDecoration(
                     color: statusColor.withOpacity(0.1),
@@ -234,67 +323,105 @@ class _TrackPackageTabState extends State<TrackPackageTab> {
                     style: TextStyle(
                       color: statusColor,
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                const Icon(
-                  CupertinoIcons.location,
-                  size: 16,
-                  color: CupertinoColors.systemGrey,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  tracking['origin'],
-                  style: const TextStyle(
-                    color: CupertinoColors.systemGrey,
-                    fontSize: 14,
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: CupertinoColors.systemGrey6,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        CupertinoIcons.location,
+                        size: 16,
+                        color: CupertinoColors.systemGrey,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        tracking['origin'],
+                        style: const TextStyle(
+                          color: CupertinoColors.systemGrey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Container(
+                        width: 40,
+                        height: 1,
+                        color: CupertinoColors.systemGrey.withOpacity(0.3),
+                      ),
+                      const SizedBox(width: 8),
+                      const Icon(
+                        CupertinoIcons.arrow_right,
+                        size: 14,
+                        color: CupertinoColors.systemGrey,
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        width: 40,
+                        height: 1,
+                        color: CupertinoColors.systemGrey.withOpacity(0.3),
+                      ),
+                      const SizedBox(width: 12),
+                      const Icon(
+                        CupertinoIcons.location_solid,
+                        size: 16,
+                        color: CupertinoColors.systemGrey,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        tracking['destination'],
+                        style: const TextStyle(
+                          color: CupertinoColors.systemGrey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 8),
-                const Icon(
-                  CupertinoIcons.arrow_right,
-                  size: 14,
-                  color: CupertinoColors.systemGrey,
-                ),
-                const SizedBox(width: 8),
-                const Icon(
-                  CupertinoIcons.location_solid,
-                  size: 16,
-                  color: CupertinoColors.systemGrey,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  tracking['destination'],
-                  style: const TextStyle(
-                    color: CupertinoColors.systemGrey,
-                    fontSize: 14,
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      const Icon(
+                        CupertinoIcons.calendar,
+                        size: 16,
+                        color: CupertinoColors.systemGrey,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        tracking['date'],
+                        style: const TextStyle(
+                          color: CupertinoColors.systemGrey,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF3F51B5).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Icon(
+                          CupertinoIcons.chevron_right,
+                          color: Color(0xFF3F51B5),
+                          size: 14,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                const Icon(
-                  CupertinoIcons.calendar,
-                  size: 16,
-                  color: CupertinoColors.systemGrey,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  tracking['date'],
-                  style: const TextStyle(
-                    color: CupertinoColors.systemGrey,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

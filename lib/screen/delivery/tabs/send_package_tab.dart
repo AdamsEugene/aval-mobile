@@ -1,5 +1,6 @@
 // lib/screen/delivery/tabs/send_package_tab.dart
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/local_delivery_drawer.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/cross_region_drawer.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/ecommerce_shipping_drawer.dart';
@@ -106,15 +107,28 @@ class SendPackageTab extends StatelessWidget {
         ),
         
         // New Specialized Delivery Options Section
-        const SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          sliver: SliverToBoxAdapter(
-            child: Text(
-              'Specialized Delivery Options',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+        SliverToBoxAdapter(
+          child: Container(
+            margin: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+            child: Row(
+              children: [
+                Container(
+                  width: 4,
+                  height: 20,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFF5E62),
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  'Specialized Delivery Options',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -195,22 +209,36 @@ class SendPackageTab extends StatelessWidget {
           ),
         ),
         
-        const SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          sliver: SliverToBoxAdapter(
-            child: Text(
-              'Package Details',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+        // Package Details Section with improved styling
+        SliverToBoxAdapter(
+          child: Container(
+            margin: const EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 8),
+            child: Row(
+              children: [
+                Container(
+                  width: 4,
+                  height: 20,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFF5E62),
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  'Package Details',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
         SliverToBoxAdapter(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: CupertinoColors.white,
               borderRadius: BorderRadius.circular(16),
@@ -228,19 +256,50 @@ class SendPackageTab extends StatelessWidget {
         SliverToBoxAdapter(
           child: Container(
             margin: const EdgeInsets.all(16),
-            child: CupertinoButton(
-              color: const Color(0xFF05001E),
-              borderRadius: BorderRadius.circular(12),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              onPressed: () {
-                // Submit form
-                _showOrderSuccessDialog(context);
-              },
-              child: const Text(
-                'Continue to Payment',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF05001E),
+                    Color(0xFF120046),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF05001E).withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: CupertinoButton(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                onPressed: () {
+                  // Submit form
+                  _showOrderSuccessDialog(context);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      CupertinoIcons.arrow_right_circle_fill,
+                      color: CupertinoColors.white,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      'Continue to Payment',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: CupertinoColors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -308,52 +367,59 @@ class SendPackageTab extends StatelessWidget {
             );
         }
       },
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 24,
+              ),
             ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    color: CupertinoColors.systemGrey,
-                    fontSize: 14,
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      color: CupertinoColors.systemGrey,
+                      fontSize: 14,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          CupertinoButton(
-            padding: EdgeInsets.zero,
-            child: const Icon(
-              CupertinoIcons.chevron_right,
-              color: CupertinoColors.systemGrey,
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                CupertinoIcons.chevron_right,
+                color: color,
+                size: 16,
+              ),
             ),
-            onPressed: null, // The gesture detector handles the tap
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -369,10 +435,17 @@ class SendPackageTab extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: CupertinoColors.white,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF5E62).withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Icon(
               icon,
