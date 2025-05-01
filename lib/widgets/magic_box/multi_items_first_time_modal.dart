@@ -29,6 +29,7 @@ class MultiItemsFirstTimeMagicBoxModal {
       context: context,
       barrierDismissible: true, // Allow dismissing by tapping outside
       barrierColor: Colors.black87,
+      barrierLabel: 'Magic Box Modal',
       transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (_, __, ___) => const SizedBox.shrink(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
