@@ -1,25 +1,20 @@
-// lib/screens/auth/login_screen.dart
-import 'package:e_commerce_app/widgets/auth/social_login_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:e_commerce_app/widgets/shared/header_delegate.dart';
-import 'package:e_commerce_app/screen/home_screen.dart';
-import 'package:e_commerce_app/widgets/auth/social_login_buttons.dart';
-import 'package:e_commerce_app/screen/auth/signup_screen.dart';
-import 'package:e_commerce_app/screen/auth/forgot_password_screen.dart';
+import 'package:e_commerce_app/screen/auth/login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> with SingleTickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _obscurePassword = true;
-  bool _isLoggingIn = false;
+  bool _isSubmitting = false;
+  bool _emailSent = false;
+  String? _errorMessage;
   late AnimationController _animationController;
   late Animation<double> _fadeInAnimation;
   late Animation<Offset> _slideAnimation;
@@ -63,19 +58,30 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   @override
   void dispose() {
     _emailController.dispose();
-    _passwordController.dispose();
     _animationController.dispose();
     super.dispose();
   }
 
-  Widget _buildTextField({
-    required String label,
-    required TextEditingController controller,
-    bool isPassword = false,
-    String? placeholder,
-    IconData? prefixIcon,
-    IconData? suffixIcon,
-  }) {
+  bool _validateEmail() {
+    final email = _emailController.text.trim();
+    
+    if (email.isEmpty) {
+      setState(() => _errorMessage = 'Please enter your email address');
+      return false;
+    }
+    
+    // Basic email validation regex
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(email)) {
+      setState(() => _errorMessage = 'Please enter a valid email address');
+      return false;
+    }
+    
+    setState(() => _errorMessage = null);
+    return true;
+  }
+
+  Widget _buildTextField() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
@@ -92,9 +98,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
+          const Text(
+            'EMAIL',
+            style: TextStyle(
               color: CupertinoColors.systemGrey,
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -102,19 +108,16 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           ),
           Row(
             children: [
-              if (prefixIcon != null) ...[
-                Icon(
-                  prefixIcon,
-                  color: CupertinoColors.systemGrey,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-              ],
+              const Icon(
+                CupertinoIcons.mail,
+                color: CupertinoColors.systemGrey,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
               Expanded(
                 child: CupertinoTextField.borderless(
-                  controller: controller,
-                  obscureText: isPassword && _obscurePassword,
-                  placeholder: placeholder,
+                  controller: _emailController,
+                  placeholder: 'Enter your email',
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   style: const TextStyle(
                     color: Color(0xFF05001E),
@@ -128,21 +131,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   ),
                 ),
               ),
-              if (isPassword)
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
-                  child: Icon(
-                    _obscurePassword
-                        ? CupertinoIcons.eye
-                        : CupertinoIcons.eye_slash,
-                    color: CupertinoColors.activeOrange,
-                  ),
-                ),
             ],
           ),
         ],
@@ -150,25 +138,46 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 
-  Widget _buildLoginButton() {
+  Widget _buildSendButton() {
     return GestureDetector(
-      onTap: _isLoggingIn 
-          ? null 
+      onTap: _isSubmitting
+          ? null
           : () async {
-              setState(() {
-                _isLoggingIn = true;
-              });
+              if (_validateEmail()) {
+                setState(() {
+                  _isSubmitting = true;
+                  _errorMessage = null;
+                });
 
-              // Simulate login delay for animation
-              await Future.delayed(const Duration(milliseconds: 1500));
+                // Simulate API call delay
+                await Future.delayed(const Duration(milliseconds: 1500));
 
-              if (mounted) {
-                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                  CupertinoPageRoute(
-                    builder: (context) => const HomeScreen(),
-                  ),
-                  (route) => false, // This removes all previous routes
-                );
+                setState(() {
+                  _isSubmitting = false;
+                  _emailSent = true;
+                });
+
+                // Show success dialog
+                if (mounted) {
+                  showCupertinoDialog(
+                    context: context,
+                    builder: (context) => CupertinoAlertDialog(
+                      title: const Text('Reset Link Sent'),
+                      content: Text(
+                        'We\'ve sent a password reset link to ${_emailController.text}. Please check your email.',
+                      ),
+                      actions: [
+                        CupertinoDialogAction(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.pop(context); // Close dialog
+                            Navigator.pop(context); // Return to login
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                }
               }
             },
       child: Container(
@@ -193,10 +202,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           ],
         ),
         child: Center(
-          child: _isLoggingIn
+          child: _isSubmitting
               ? const CupertinoActivityIndicator(color: CupertinoColors.white)
               : const Text(
-                  'Login',
+                  'Send Reset Link',
                   style: TextStyle(
                     color: CupertinoColors.white,
                     fontSize: 18,
@@ -233,6 +242,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               pinned: true,
               delegate: HeaderDelegate(
                 showProfile: false,
+                showBackButton: true,
                 fontSize: 64,
                 extent: 250,
                 title: 'Aval',
@@ -246,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   children: [
                     const SizedBox(height: 16),
                     const Text(
-                      'Welcome Back',
+                      'Forgot Password',
                       style: TextStyle(
                         color: Color(0xFF05001E),
                         fontSize: 28,
@@ -254,60 +264,32 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
                     ),
                     const Text(
-                      'Sign in to continue shopping',
+                      'Enter your email to receive a password reset link',
                       style: TextStyle(
                         color: CupertinoColors.systemGrey,
                         fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 32),
-                    _buildTextField(
-                      label: 'EMAIL',
-                      controller: _emailController,
-                      placeholder: 'Enter your email',
-                      prefixIcon: CupertinoIcons.mail,
-                    ),
-                    const SizedBox(height: 20),
-                    _buildTextField(
-                      label: 'PASSWORD',
-                      controller: _passwordController,
-                      isPassword: true,
-                      placeholder: 'Enter your password',
-                      prefixIcon: CupertinoIcons.lock,
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => const ForgotPasswordScreen(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            'Forgot password?',
-                            style: TextStyle(
-                              color: CupertinoColors.activeOrange,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                    _buildTextField(),
+                    if (_errorMessage != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        _errorMessage!,
+                        style: const TextStyle(
+                          color: CupertinoColors.destructiveRed,
+                          fontSize: 14,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                     const SizedBox(height: 32),
-                    _buildLoginButton(),
+                    _buildSendButton(),
                     const SizedBox(height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          'Don\'t have an account? ',
+                          'Remember your password? ',
                           style: TextStyle(
                             color: CupertinoColors.systemGrey,
                             fontSize: 14,
@@ -316,15 +298,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         CupertinoButton(
                           padding: EdgeInsets.zero,
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => const SignupScreen(),
-                              ),
-                            );
+                            Navigator.pop(context);
                           },
                           child: const Text(
-                            'Sign Up',
+                            'Sign In',
                             style: TextStyle(
                               color: CupertinoColors.activeOrange,
                               fontSize: 14,
@@ -335,7 +312,46 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ],
                     ),
                     const SizedBox(height: 16),
-                    SocialLoginButtons(),
+                    // Show helpful information
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: CupertinoColors.systemGrey6,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                CupertinoIcons.info_circle_fill,
+                                color: CupertinoColors.activeOrange,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              const Text(
+                                'Need help?',
+                                style: TextStyle(
+                                  color: Color(0xFF05001E),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            '• The reset link will expire after 24 hours\n• Check your spam folder if you don\'t see the email\n• Contact support if you still need assistance',
+                            style: TextStyle(
+                              color: CupertinoColors.systemGrey,
+                              fontSize: 14,
+                              height: 1.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -345,4 +361,4 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       ),
     );
   }
-}
+} 

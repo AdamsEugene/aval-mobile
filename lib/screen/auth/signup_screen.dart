@@ -1,25 +1,25 @@
-// lib/screens/auth/login_screen.dart
-import 'package:e_commerce_app/widgets/auth/social_login_drawer.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:e_commerce_app/widgets/shared/header_delegate.dart';
-import 'package:e_commerce_app/screen/home_screen.dart';
+import 'package:e_commerce_app/screen/auth/login_screen.dart';
 import 'package:e_commerce_app/widgets/auth/social_login_buttons.dart';
-import 'package:e_commerce_app/screen/auth/signup_screen.dart';
-import 'package:e_commerce_app/screen/auth/forgot_password_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderStateMixin {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
-  bool _isLoggingIn = false;
+  bool _obscureConfirmPassword = true;
+  bool _isSigningUp = false;
+  bool _agreedToTerms = false;
   late AnimationController _animationController;
   late Animation<double> _fadeInAnimation;
   late Animation<Offset> _slideAnimation;
@@ -62,8 +62,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -113,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               Expanded(
                 child: CupertinoTextField.borderless(
                   controller: controller,
-                  obscureText: isPassword && _obscurePassword,
+                  obscureText: isPassword && (label == 'PASSWORD' ? _obscurePassword : _obscureConfirmPassword),
                   placeholder: placeholder,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   style: const TextStyle(
@@ -133,11 +135,15 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   padding: EdgeInsets.zero,
                   onPressed: () {
                     setState(() {
-                      _obscurePassword = !_obscurePassword;
+                      if (label == 'PASSWORD') {
+                        _obscurePassword = !_obscurePassword;
+                      } else {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      }
                     });
                   },
                   child: Icon(
-                    _obscurePassword
+                    (label == 'PASSWORD' ? _obscurePassword : _obscureConfirmPassword)
                         ? CupertinoIcons.eye
                         : CupertinoIcons.eye_slash,
                     color: CupertinoColors.activeOrange,
@@ -150,59 +156,57 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 
-  Widget _buildLoginButton() {
+  Widget _buildSignupButton() {
     return GestureDetector(
-      onTap: _isLoggingIn 
+      onTap: _isSigningUp || !_agreedToTerms
           ? null 
           : () async {
               setState(() {
-                _isLoggingIn = true;
+                _isSigningUp = true;
               });
 
-              // Simulate login delay for animation
+              // Simulate signup delay for animation
               await Future.delayed(const Duration(milliseconds: 1500));
 
               if (mounted) {
-                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                  CupertinoPageRoute(
-                    builder: (context) => const HomeScreen(),
-                  ),
-                  (route) => false, // This removes all previous routes
-                );
+                Navigator.of(context).pop();
               }
             },
-      child: Container(
-        width: double.infinity,
-        height: 56,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color(0xFF05001E),
-              CupertinoColors.activeOrange,
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          borderRadius: BorderRadius.circular(28),
-          boxShadow: [
-            BoxShadow(
-              color: CupertinoColors.activeOrange.withOpacity(0.3),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
+      child: Opacity(
+        opacity: _agreedToTerms ? 1.0 : 0.6,
+        child: Container(
+          width: double.infinity,
+          height: 56,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFF05001E),
+                CupertinoColors.activeOrange,
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
             ),
-          ],
-        ),
-        child: Center(
-          child: _isLoggingIn
-              ? const CupertinoActivityIndicator(color: CupertinoColors.white)
-              : const Text(
-                  'Login',
-                  style: TextStyle(
-                    color: CupertinoColors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+            borderRadius: BorderRadius.circular(28),
+            boxShadow: [
+              BoxShadow(
+                color: CupertinoColors.activeOrange.withOpacity(0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: Center(
+            child: _isSigningUp
+                ? const CupertinoActivityIndicator(color: CupertinoColors.white)
+                : const Text(
+                    'Create Account',
+                    style: TextStyle(
+                      color: CupertinoColors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
+          ),
         ),
       ),
     );
@@ -233,6 +237,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               pinned: true,
               delegate: HeaderDelegate(
                 showProfile: false,
+                showBackButton: true,
                 fontSize: 64,
                 extent: 250,
                 title: 'Aval',
@@ -246,7 +251,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   children: [
                     const SizedBox(height: 16),
                     const Text(
-                      'Welcome Back',
+                      'Create Account',
                       style: TextStyle(
                         color: Color(0xFF05001E),
                         fontSize: 28,
@@ -254,13 +259,20 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
                     ),
                     const Text(
-                      'Sign in to continue shopping',
+                      'Sign up to start shopping',
                       style: TextStyle(
                         color: CupertinoColors.systemGrey,
                         fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 32),
+                    _buildTextField(
+                      label: 'NAME',
+                      controller: _nameController,
+                      placeholder: 'Enter your full name',
+                      prefixIcon: CupertinoIcons.person,
+                    ),
+                    const SizedBox(height: 20),
                     _buildTextField(
                       label: 'EMAIL',
                       controller: _emailController,
@@ -272,42 +284,90 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       label: 'PASSWORD',
                       controller: _passwordController,
                       isPassword: true,
-                      placeholder: 'Enter your password',
+                      placeholder: 'Create a password',
                       prefixIcon: CupertinoIcons.lock,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
+                    _buildTextField(
+                      label: 'CONFIRM PASSWORD',
+                      controller: _confirmPasswordController,
+                      isPassword: true,
+                      placeholder: 'Confirm your password',
+                      prefixIcon: CupertinoIcons.lock_fill,
+                    ),
+                    const SizedBox(height: 20),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         CupertinoButton(
                           padding: EdgeInsets.zero,
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => const ForgotPasswordScreen(),
-                              ),
-                            );
+                            setState(() {
+                              _agreedToTerms = !_agreedToTerms;
+                            });
                           },
-                          child: const Text(
-                            'Forgot password?',
-                            style: TextStyle(
-                              color: CupertinoColors.activeOrange,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                          child: Container(
+                            width: 24,
+                            height: 24,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: _agreedToTerms 
+                                    ? CupertinoColors.activeOrange
+                                    : CupertinoColors.systemGrey,
+                                width: 2,
+                              ),
+                              color: _agreedToTerms 
+                                  ? CupertinoColors.activeOrange
+                                  : CupertinoColors.white,
+                            ),
+                            child: _agreedToTerms
+                                ? const Icon(
+                                    CupertinoIcons.check_mark,
+                                    size: 16,
+                                    color: CupertinoColors.white,
+                                  )
+                                : null,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: RichText(
+                            text: const TextSpan(
+                              style: TextStyle(
+                                color: CupertinoColors.systemGrey,
+                                fontSize: 14,
+                              ),
+                              children: [
+                                TextSpan(text: 'I agree to the '),
+                                TextSpan(
+                                  text: 'Terms of Service',
+                                  style: TextStyle(
+                                    color: CupertinoColors.activeOrange,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                TextSpan(text: ' and '),
+                                TextSpan(
+                                  text: 'Privacy Policy',
+                                  style: TextStyle(
+                                    color: CupertinoColors.activeOrange,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 32),
-                    _buildLoginButton(),
+                    _buildSignupButton(),
                     const SizedBox(height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          'Don\'t have an account? ',
+                          'Already have an account? ',
                           style: TextStyle(
                             color: CupertinoColors.systemGrey,
                             fontSize: 14,
@@ -316,15 +376,15 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         CupertinoButton(
                           padding: EdgeInsets.zero,
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) => const SignupScreen(),
+                                builder: (context) => const LoginScreen(),
                               ),
                             );
                           },
                           child: const Text(
-                            'Sign Up',
+                            'Sign In',
                             style: TextStyle(
                               color: CupertinoColors.activeOrange,
                               fontSize: 14,
@@ -345,4 +405,4 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       ),
     );
   }
-}
+} 

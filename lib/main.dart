@@ -1,10 +1,31 @@
 import 'package:e_commerce_app/screen/auth/login_screen.dart';
 import 'package:e_commerce_app/screen/splash_screen.dart';
+// Commented out until proper Firebase configuration is set up
+// import 'package:e_commerce_app/services/firebase_options.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
-// import 'package:e_commerce_app/screen/home_screen.dart';
-
-void main() => runApp(const PageScaffoldApp());
+// Modified main function to handle Firebase initialization gracefully
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Firebase initialization is commented out until proper configuration
+  // try {
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
+  //   if (kDebugMode) {
+  //     print('Firebase initialized successfully');
+  //   }
+  // } catch (e) {
+  //   if (kDebugMode) {
+  //     print('Error initializing Firebase: $e');
+  //   }
+  // }
+  
+  runApp(const PageScaffoldApp());
+}
 
 class PageScaffoldApp extends StatelessWidget {
   const PageScaffoldApp({super.key});

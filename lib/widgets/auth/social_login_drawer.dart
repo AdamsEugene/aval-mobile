@@ -21,13 +21,13 @@ class SocialLoginDrawer extends StatelessWidget {
         fontWeight: FontWeight.w600,
         onTap: () => (),
       ),
-      child: const SocialLoginButtons(insideDrawer: true),
+      child: SocialLoginButtons(insideDrawer: true),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return const BaseDrawer(
+    return BaseDrawer(
       height: 340,
       child: SocialLoginButtons(insideDrawer: true),
     );
