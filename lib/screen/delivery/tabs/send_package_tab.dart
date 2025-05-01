@@ -5,6 +5,9 @@ import 'package:e_commerce_app/screen/delivery/drawers/cross_region_drawer.dart'
 import 'package:e_commerce_app/screen/delivery/drawers/ecommerce_shipping_drawer.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/consolidated_delivery_drawer.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/special_transport_drawer.dart';
+import 'package:e_commerce_app/screen/delivery/drawers/route_service_drawer.dart';
+import 'package:e_commerce_app/screen/delivery/drawers/full_vehicle_logistics_drawer.dart';
+import 'package:e_commerce_app/screen/delivery/drawers/special_goods_drawer.dart';
 import 'package:e_commerce_app/widgets/delivery/package_form.dart';
 
 class SendPackageTab extends StatelessWidget {
@@ -268,6 +271,24 @@ class SendPackageTab extends StatelessWidget {
             showCupertinoModalPopup(
               context: context,
               builder: (context) => const SpecialTransportDrawer(),
+            );
+            break;
+          case 'Route Service':
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) => const RouteServiceDrawer(),
+            );
+            break;
+          case 'Full Vehicle Logistics':
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) => const FullVehicleLogisticsDrawer(),
+            );
+            break;
+          case 'Special Goods':
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) => const SpecialGoodsDrawer(),
             );
             break;
           default:
