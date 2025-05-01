@@ -1,0 +1,6 @@
+Consolidated Delivery (Special delivery cases, optimal security)
+Service picks packages along route (caveat -- slow and cheap)
+Logistics -> requesting a whole car or a van to pick goods ( look into https://yango.com)
+Special goods delivery ->( eg. medical deliveries -- valuable and delicate)
+Special human carriage -> ambulance service , pregnant women, school kids , old and
+aged, disabled, visually impaired

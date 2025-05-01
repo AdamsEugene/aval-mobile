@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/local_delivery_drawer.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/cross_region_drawer.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/ecommerce_shipping_drawer.dart';
+import 'package:e_commerce_app/screen/delivery/drawers/consolidated_delivery_drawer.dart';
+import 'package:e_commerce_app/screen/delivery/drawers/special_transport_drawer.dart';
 import 'package:e_commerce_app/widgets/delivery/package_form.dart';
 
 class SendPackageTab extends StatelessWidget {
@@ -99,6 +101,97 @@ class SendPackageTab extends StatelessWidget {
             ),
           ),
         ),
+        
+        // New Specialized Delivery Options Section
+        const SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          sliver: SliverToBoxAdapter(
+            child: Text(
+              'Specialized Delivery Options',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: CupertinoColors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: CupertinoColors.systemGrey.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                _buildSpecializedOption(
+                  context: context,
+                  icon: CupertinoIcons.shield_fill,
+                  title: 'Consolidated Delivery',
+                  description: 'Special delivery cases with optimal security',
+                  color: const Color(0xFF4CAF50),
+                ),
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  color: CupertinoColors.systemGrey5,
+                ),
+                _buildSpecializedOption(
+                  context: context,
+                  icon: CupertinoIcons.map_fill,
+                  title: 'Route Service',
+                  description: 'Service picks packages along route (slow and cheap)',
+                  color: const Color(0xFF2196F3),
+                ),
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  color: CupertinoColors.systemGrey5,
+                ),
+                _buildSpecializedOption(
+                  context: context,
+                  icon: CupertinoIcons.car_fill,
+                  title: 'Full Vehicle Logistics',
+                  description: 'Request a whole car or van for goods transportation',
+                  color: const Color(0xFF9C27B0),
+                ),
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  color: CupertinoColors.systemGrey5,
+                ),
+                _buildSpecializedOption(
+                  context: context,
+                  icon: CupertinoIcons.bandage_fill,
+                  title: 'Special Goods',
+                  description: 'Medical deliveries, valuable and delicate items',
+                  color: const Color(0xFFFF5722),
+                ),
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  color: CupertinoColors.systemGrey5,
+                ),
+                _buildSpecializedOption(
+                  context: context,
+                  icon: CupertinoIcons.person_2_fill,
+                  title: 'Special Transport',
+                  description: 'Ambulance, pregnant women, school kids, elderly, disabled',
+                  color: const Color(0xFFFFC107),
+                ),
+              ],
+            ),
+          ),
+        ),
+        
         const SliverPadding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           sliver: SliverToBoxAdapter(
@@ -151,6 +244,96 @@ class SendPackageTab extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSpecializedOption({
+    required BuildContext context,
+    required IconData icon,
+    required String title,
+    required String description,
+    required Color color,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        // Show appropriate drawer based on title
+        switch (title) {
+          case 'Consolidated Delivery':
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) => const ConsolidatedDeliveryDrawer(),
+            );
+            break;
+          case 'Special Transport':
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) => const SpecialTransportDrawer(),
+            );
+            break;
+          default:
+            // Show under development message for other options
+            showCupertinoDialog(
+              context: context,
+              builder: (BuildContext context) => CupertinoAlertDialog(
+                title: const Text('Coming Soon'),
+                content: Text('$title feature is under development'),
+                actions: [
+                  CupertinoDialogAction(
+                    child: const Text('OK'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            );
+        }
+      },
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  style: const TextStyle(
+                    color: CupertinoColors.systemGrey,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: const Icon(
+              CupertinoIcons.chevron_right,
+              color: CupertinoColors.systemGrey,
+            ),
+            onPressed: null, // The gesture detector handles the tap
+          ),
+        ],
+      ),
     );
   }
 
