@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
+  // Mock unread notifications count
+  final int _unreadNotifications = 3;
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -129,17 +132,47 @@ class MoreScreen extends StatelessWidget {
                         builder: (context) => const NotificationsDrawer(),
                       );
                     },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        CupertinoIcons.bell,
-                        color: CupertinoColors.white,
-                        size: 20,
-                      ),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: CupertinoColors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            CupertinoIcons.bell,
+                            color: CupertinoColors.white,
+                            size: 20,
+                          ),
+                        ),
+                        if (_unreadNotifications > 0)
+                          Positioned(
+                            top: -5,
+                            right: -5,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFFF5252),
+                                shape: BoxShape.circle,
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Text(
+                                _unreadNotifications > 9 ? '9+' : '$_unreadNotifications',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 12),

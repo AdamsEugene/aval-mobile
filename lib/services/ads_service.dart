@@ -19,7 +19,7 @@ class AdsService {
       description: 'Enjoy exclusive discounts on our new spring collection. '
           'Use the promo code below to get 30% off on your next purchase. '
           'Limited time offer!',
-      imageUrl: 'assets/images/promo/spring_sale.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1593642634402-b0eb5e2eebc9?q=80&w=1000',
       buttonText: 'Shop the Collection',
       promoCode: 'SPRING30',
       discount: 30.0,
@@ -33,7 +33,7 @@ class AdsService {
       description:
           'As a new customer, you\'re eligible for a special 20% discount '
           'on your first order. Explore our collection and find something you\'ll love!',
-      imageUrl: 'assets/images/promo/welcome_gift.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=1000',
       buttonText: 'Start Shopping',
       promoCode: 'WELCOME20',
       discount: 20.0,
@@ -47,7 +47,7 @@ class AdsService {
       description: 'Experience the thrill of our Premium Magic Box! '
           'Packed with 5 exclusive items worth over \$100, available for just \$39.99. '
           'Limited stock available!',
-      imageUrl: 'assets/images/promo/magic_box.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000',
       buttonText: 'Get Your Box',
       discount: 60.0,
       expiryDate: DateTime.now().add(const Duration(days: 3)),
@@ -59,7 +59,7 @@ class AdsService {
       description:
           'This weekend only: Free shipping on all orders, no minimum purchase required. '
           'Shop now and save on delivery costs!',
-      imageUrl: 'assets/images/promo/free_shipping.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1607962837359-5e7e89f86776?q=80&w=1000',
       buttonText: 'Shop Now',
       promoCode: 'FREESHIP',
       expiryDate: DateTime.now().add(const Duration(days: 2)),

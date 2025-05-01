@@ -103,9 +103,12 @@ class BaseDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get safe area insets
+    final safeAreaTop = MediaQuery.of(context).padding.top;
+    
     return Container(
       height: height,
-      padding: padding ?? const EdgeInsets.only(top: 16),
+      padding: padding ?? EdgeInsets.only(top: 16 + safeAreaTop),
       decoration: BoxDecoration(
         color: backgroundColor ?? CupertinoColors.white,
         borderRadius: borderRadius ??
@@ -137,7 +140,10 @@ class BaseDrawer extends StatelessWidget {
                     if (leadingAction != null)
                       GestureDetector(
                         onTap: leadingAction!.onTap,
-                        child: leadingAction!.build(),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                          child: leadingAction!.build(),
+                        ),
                       )
                     else
                       const SizedBox(width: 24, height: 24),
@@ -145,7 +151,10 @@ class BaseDrawer extends StatelessWidget {
                     if (trailingAction != null)
                       GestureDetector(
                         onTap: trailingAction!.onTap,
-                        child: trailingAction!.build(),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                          child: trailingAction!.build(),
+                        ),
                       )
                     else
                       const SizedBox(width: 24, height: 24),
