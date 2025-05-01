@@ -19,8 +19,7 @@ class AdsService {
       description: 'Enjoy exclusive discounts on our new spring collection. '
           'Use the promo code below to get 30% off on your next purchase. '
           'Limited time offer!',
-      imageUrl:
-          'https://via.placeholder.com/600x300/FF5722/FFFFFF?text=Spring+Sale',
+      imageUrl: 'assets/images/promo/spring_sale.jpg',
       buttonText: 'Shop the Collection',
       promoCode: 'SPRING30',
       discount: 30.0,
@@ -34,8 +33,7 @@ class AdsService {
       description:
           'As a new customer, you\'re eligible for a special 20% discount '
           'on your first order. Explore our collection and find something you\'ll love!',
-      imageUrl:
-          'https://via.placeholder.com/600x300/2196F3/FFFFFF?text=Welcome+Gift',
+      imageUrl: 'assets/images/promo/welcome_gift.jpg',
       buttonText: 'Start Shopping',
       promoCode: 'WELCOME20',
       discount: 20.0,
@@ -49,8 +47,7 @@ class AdsService {
       description: 'Experience the thrill of our Premium Magic Box! '
           'Packed with 5 exclusive items worth over \$100, available for just \$39.99. '
           'Limited stock available!',
-      imageUrl:
-          'https://via.placeholder.com/600x300/9C27B0/FFFFFF?text=Premium+Magic+Box',
+      imageUrl: 'assets/images/promo/magic_box.jpg',
       buttonText: 'Get Your Box',
       discount: 60.0,
       expiryDate: DateTime.now().add(const Duration(days: 3)),
@@ -62,8 +59,7 @@ class AdsService {
       description:
           'This weekend only: Free shipping on all orders, no minimum purchase required. '
           'Shop now and save on delivery costs!',
-      imageUrl:
-          'https://via.placeholder.com/600x300/4CAF50/FFFFFF?text=Free+Shipping',
+      imageUrl: 'assets/images/promo/free_shipping.jpg',
       buttonText: 'Shop Now',
       promoCode: 'FREESHIP',
       expiryDate: DateTime.now().add(const Duration(days: 2)),

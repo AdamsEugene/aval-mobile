@@ -67,7 +67,7 @@ class ProductService {
               ?.map((image) => image.toString())
               .toList() ??
           [],
-      'thumbnail': rawProduct['thumbnail'] ?? 'https://via.placeholder.com/150',
+      'thumbnail': rawProduct['thumbnail'] ?? 'assets/images/product_placeholder.jpg',
     };
   }
 

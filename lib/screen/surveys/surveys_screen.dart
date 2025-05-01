@@ -2,6 +2,7 @@
 import 'package:e_commerce_app/screen/surveys/tabs/available_tab.dart';
 import 'package:e_commerce_app/screen/surveys/tabs/completed_tab.dart';
 import 'package:e_commerce_app/screen/surveys/tabs/rewards_tab.dart';
+import 'package:e_commerce_app/screen/surveys/tabs/incomplete_tab.dart';
 import 'package:e_commerce_app/widgets/shared/bottom_tab_iso.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
@@ -62,6 +63,11 @@ class _SurveysScreenState extends State<SurveysScreen> {
       data: 'available',
     ),
     CustomTabItem(
+      icon: CupertinoIcons.time,
+      label: 'Incomplete',
+      data: 'incomplete',
+    ),
+    CustomTabItem(
       icon: CupertinoIcons.checkmark_circle,
       label: 'Completed',
       data: 'completed',
@@ -78,8 +84,10 @@ class _SurveysScreenState extends State<SurveysScreen> {
       case 0:
         return 'R&D Surveys';
       case 1:
-        return 'Completed Research';
+        return 'Incomplete Surveys';
       case 2:
+        return 'Completed Research';
+      case 3:
         return 'Research Rewards';
       default:
         return 'R&D Program';
@@ -112,13 +120,28 @@ class _SurveysScreenState extends State<SurveysScreen> {
             },
           ),
           HeaderAction(
+            icon: CupertinoIcons.info_circle,
+            onPressed: () {
+              _showIncompleteInfoDialog(context);
+            },
+          ),
+        ];
+      case 2:
+        return [
+          HeaderAction(
+            icon: CupertinoIcons.search,
+            onPressed: () {
+              // Handle search
+            },
+          ),
+          HeaderAction(
             icon: CupertinoIcons.calendar,
             onPressed: () {
               // Handle date filter
             },
           ),
         ];
-      case 2:
+      case 3:
         return [
           HeaderAction(
             icon: CupertinoIcons.info_circle,
@@ -155,10 +178,12 @@ class _SurveysScreenState extends State<SurveysScreen> {
       _selectedNavIndex = index;
       if (_bottomNavItems[index].data == 'available') {
         _selectedTabIndex = 0;
-      } else if (_bottomNavItems[index].data == 'completed') {
+      } else if (_bottomNavItems[index].data == 'incomplete') {
         _selectedTabIndex = 1;
-      } else if (_bottomNavItems[index].data == 'rewards') {
+      } else if (_bottomNavItems[index].data == 'completed') {
         _selectedTabIndex = 2;
+      } else if (_bottomNavItems[index].data == 'rewards') {
+        _selectedTabIndex = 3;
       }
     });
 
@@ -168,197 +193,282 @@ class _SurveysScreenState extends State<SurveysScreen> {
   }
   
   void _showFilterDialog(BuildContext context) {
+    // Create temporary variables to hold selections until applied
+    String tempCategory = _selectedCategory;
+    String tempIndustry = _selectedIndustry;
+    
     showCupertinoModalPopup(
       context: context,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        padding: const EdgeInsets.all(16),
+      builder: (BuildContext context) => Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        padding: const EdgeInsets.all(20),
         decoration: const BoxDecoration(
           color: CupertinoColors.systemBackground,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Filter Surveys',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(CupertinoIcons.xmark_circle_fill),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Industry',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 120,
-              child: CupertinoScrollbar(
-                child: ListView.builder(
-                  itemCount: _industries.length,
-                  itemBuilder: (context, index) {
-                    final industry = _industries[index];
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedIndustry = industry;
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                        decoration: BoxDecoration(
-                          color: _selectedIndustry == industry 
-                              ? const Color(0xFFE5F6FF) 
-                              : CupertinoColors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                industry,
-                                style: TextStyle(
-                                  color: _selectedIndustry == industry 
-                                      ? const Color(0xFF0077CC) 
-                                      : CupertinoColors.black,
-                                  fontWeight: _selectedIndustry == industry 
-                                      ? FontWeight.w600 
-                                      : FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                            if (_selectedIndustry == industry)
-                              const Icon(
-                                CupertinoIcons.check_mark,
-                                color: Color(0xFF0077CC),
-                                size: 18,
-                              ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Survey Type',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 120,
-              child: CupertinoScrollbar(
-                child: ListView.builder(
-                  itemCount: _categories.length,
-                  itemBuilder: (context, index) {
-                    final category = _categories[index];
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedCategory = category;
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                        decoration: BoxDecoration(
-                          color: _selectedCategory == category 
-                              ? const Color(0xFFE5F6FF) 
-                              : CupertinoColors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                category,
-                                style: TextStyle(
-                                  color: _selectedCategory == category 
-                                      ? const Color(0xFF0077CC) 
-                                      : CupertinoColors.black,
-                                  fontWeight: _selectedCategory == category 
-                                      ? FontWeight.w600 
-                                      : FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                            if (_selectedCategory == category)
-                              const Icon(
-                                CupertinoIcons.check_mark,
-                                color: Color(0xFF0077CC),
-                                size: 18,
-                              ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            const Spacer(),
-            Row(
-              children: [
-                Expanded(
-                  child: CupertinoButton(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    color: const Color(0xFFF2F2F2),
-                    onPressed: () {
-                      setState(() {
-                        _selectedCategory = 'All';
-                        _selectedIndustry = 'All Industries';
-                      });
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      'Reset Filters',
+                // Header with title and close button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Filter Surveys',
                       style: TextStyle(
-                        color: Color(0xFF666666),
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: CupertinoColors.systemGrey6,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Icon(
+                          CupertinoIcons.xmark,
+                          size: 16,
+                          color: CupertinoColors.systemGrey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                
+                // Filter sections container
+                Expanded(
+                  child: CupertinoScrollbar(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Industry section
+                          _buildFilterSectionHeader('Industry', 'Select the industry you\'re interested in'),
+                          const SizedBox(height: 12),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: CupertinoColors.systemGrey6,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: _industries.length,
+                              separatorBuilder: (context, index) => const Divider(
+                                height: 1,
+                                indent: 16,
+                                endIndent: 16,
+                              ),
+                              itemBuilder: (context, index) {
+                                final industry = _industries[index];
+                                return CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    setModalState(() {
+                                      tempIndustry = industry;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            industry,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: tempIndustry == industry 
+                                                ? const Color(0xFF0077CC) 
+                                                : CupertinoColors.black,
+                                              fontWeight: tempIndustry == industry 
+                                                ? FontWeight.w600 
+                                                : FontWeight.normal,
+                                            ),
+                                          ),
+                                        ),
+                                        if (tempIndustry == industry)
+                                          Container(
+                                            padding: const EdgeInsets.all(2),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF0077CC),
+                                              borderRadius: BorderRadius.circular(12),
+                                            ),
+                                            child: const Icon(
+                                              CupertinoIcons.checkmark,
+                                              color: CupertinoColors.white,
+                                              size: 16,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // Survey Type section
+                          _buildFilterSectionHeader('Survey Type', 'Choose the type of surveys to view'),
+                          const SizedBox(height: 12),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: CupertinoColors.systemGrey6,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: _categories.length,
+                              separatorBuilder: (context, index) => const Divider(
+                                height: 1,
+                                indent: 16,
+                                endIndent: 16,
+                              ),
+                              itemBuilder: (context, index) {
+                                final category = _categories[index];
+                                return CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    setModalState(() {
+                                      tempCategory = category;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            category,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: tempCategory == category 
+                                                ? const Color(0xFF0077CC) 
+                                                : CupertinoColors.black,
+                                              fontWeight: tempCategory == category 
+                                                ? FontWeight.w600 
+                                                : FontWeight.normal,
+                                            ),
+                                          ),
+                                        ),
+                                        if (tempCategory == category)
+                                          Container(
+                                            padding: const EdgeInsets.all(2),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF0077CC),
+                                              borderRadius: BorderRadius.circular(12),
+                                            ),
+                                            child: const Icon(
+                                              CupertinoIcons.checkmark,
+                                              color: CupertinoColors.white,
+                                              size: 16,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: CupertinoButton(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    color: const Color(0xFF05001E),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Apply'),
-                  ),
+                
+                const SizedBox(height: 20),
+                
+                // Action buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: CupertinoButton(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        color: const Color(0xFFF5F5F5),
+                        borderRadius: BorderRadius.circular(12),
+                        onPressed: () {
+                          setState(() {
+                            _selectedCategory = 'All';
+                            _selectedIndustry = 'All Industries';
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Reset Filters',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF666666),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: CupertinoButton(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        color: const Color(0xFF05001E),
+                        borderRadius: BorderRadius.circular(12),
+                        onPressed: () {
+                          setState(() {
+                            _selectedCategory = tempCategory;
+                            _selectedIndustry = tempIndustry;
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Apply',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ],
+            );
+          }
         ),
       ),
+    );
+  }
+  
+  Widget _buildFilterSectionHeader(String title, String subtitle) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          subtitle,
+          style: const TextStyle(
+            fontSize: 14,
+            color: CupertinoColors.systemGrey,
+          ),
+        ),
+      ],
     );
   }
   
@@ -419,6 +529,35 @@ class _SurveysScreenState extends State<SurveysScreen> {
             '\n• Gift cards to popular retailers'
             '\n• Early access to new products'
             '\n• Premium service upgrades'
+          ),
+        ),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            isDefaultAction: true,
+            child: const Text('Got It'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showIncompleteInfoDialog(BuildContext context) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text('Incomplete Surveys'),
+        content: const Padding(
+          padding: EdgeInsets.only(top: 12.0),
+          child: Text(
+            'These are surveys you\'ve started but haven\'t completed yet. You can continue where you left off and complete them to earn rewards.\n\n'
+            'Benefits of completing your surveys:\n'
+            '• Earn full reward points\n'
+            '• Contribute valuable feedback\n'
+            '• Unlock higher-tier survey opportunities\n'
+            '• Maintain your survey completion rate'
           ),
         ),
         actions: [
@@ -630,6 +769,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
                       index: _selectedTabIndex,
                       children: const [
                         AvailableSurveysTab(),
+                        IncompleteSurveysTab(),
                         CompletedSurveysTab(),
                         SurveyRewardsTab(),
                       ],

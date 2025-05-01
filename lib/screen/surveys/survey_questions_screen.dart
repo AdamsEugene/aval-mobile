@@ -33,12 +33,14 @@ class SurveyQuestionsScreen extends StatefulWidget {
   final String title;
   final String category;
   final String reward;
+  final int startingQuestionIndex;
   
   const SurveyQuestionsScreen({
     super.key,
     required this.title,
     required this.category,
     required this.reward,
+    this.startingQuestionIndex = 0,
   });
 
   @override
@@ -46,7 +48,7 @@ class SurveyQuestionsScreen extends StatefulWidget {
 }
 
 class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
-  int _currentQuestionIndex = 0;
+  late int _currentQuestionIndex;
   bool _isSurveyComplete = false;
   final TextEditingController _textController = TextEditingController();
   final List<SurveyQuestion> _questions = [];
@@ -55,6 +57,7 @@ class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
   void initState() {
     super.initState();
     _loadQuestions();
+    _currentQuestionIndex = widget.startingQuestionIndex;
   }
   
   @override
@@ -858,10 +861,19 @@ class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
         content: const Padding(
           padding: EdgeInsets.only(top: 12.0),
           child: Text(
-            'Your progress will be lost and no rewards will be earned. Are you sure you want to exit?',
+            'Do you want to save your progress and continue later?',
           ),
         ),
         actions: [
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              // Exit without saving
+              Navigator.of(context).pop(); // Close dialog
+              Navigator.of(context).pop(); // Exit to previous screen
+            },
+            child: const Text('Exit Without Saving'),
+          ),
           CupertinoDialogAction(
             onPressed: () {
               Navigator.of(context).pop(); // Close dialog
@@ -869,15 +881,37 @@ class _SurveyQuestionsScreenState extends State<SurveyQuestionsScreen> {
             child: const Text('Cancel'),
           ),
           CupertinoDialogAction(
-            isDestructiveAction: true,
+            isDefaultAction: true,
             onPressed: () {
+              // Save progress and exit
+              _saveProgress();
               Navigator.of(context).pop(); // Close dialog
               Navigator.of(context).pop(); // Exit to previous screen
             },
-            child: const Text('Exit'),
+            child: const Text('Save & Exit'),
           ),
         ],
       ),
     );
+  }
+  
+  void _saveProgress() {
+    // In a real app, this would save the progress to a backend or local storage
+    // For this demo, we're just simulating that it's saved
+    
+    // You can add a visual indicator that progress is saved
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Your progress has been saved!'),
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 2),
+      ),
+    );
+    
+    // Here you would save:
+    // 1. The survey identifier
+    // 2. The current question index
+    // 3. All answered questions
+    // 4. Timestamp for when it was saved
   }
 } 

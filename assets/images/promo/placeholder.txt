@@ -1,0 +1,9 @@
+This directory contains promotional images for the app.
+
+The following placeholder images should be added here:
+- spring_sale.jpg
+- welcome_gift.jpg
+- magic_box.jpg
+- free_shipping.jpg
+
+Replace with actual images in production. 

@@ -1,0 +1,3 @@
+This directory contains placeholder images for the app.
+
+Replace with actual images in production. 
