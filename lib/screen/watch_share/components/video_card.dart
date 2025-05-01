@@ -1,5 +1,6 @@
 // lib/screens/watch_share/components/video_card.dart
 import 'package:flutter/cupertino.dart';
+import '../video_player_screen.dart';
 
 class VideoCard extends StatelessWidget {
   final String username;
@@ -95,7 +96,21 @@ class VideoCard extends StatelessWidget {
 
           // Video Thumbnail
           GestureDetector(
-            onTap: onTap,
+            onTap: () {
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (context) => VideoPlayerScreen(
+                    username: username,
+                    title: title,
+                    description: description,
+                    likes: likes,
+                    comments: comments,
+                    reward: reward,
+                    isVerified: false,
+                  ),
+                ),
+              );
+            },
             child: AspectRatio(
               aspectRatio: 1,
               child: Container(

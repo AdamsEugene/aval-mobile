@@ -1,5 +1,6 @@
 // lib/screens/watch_share/components/rewards_summary.dart
 import 'package:flutter/cupertino.dart';
+import 'rewards_progress_screen.dart';
 
 class RewardsSummary extends StatelessWidget {
   final String totalEarned;
@@ -51,23 +52,72 @@ class RewardsSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildRewardStat(
-              'Total Earned', totalEarned, CupertinoIcons.bitcoin),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _buildRewardStat(
-              'Videos', videosWatched, CupertinoIcons.play_circle),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child:
-              _buildRewardStat('Streak', daysStreak, CupertinoIcons.flame_fill),
-        ),
-      ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => RewardsProgressScreen(
+              totalEarned: totalEarned,
+              videosWatched: videosWatched,
+              daysStreak: daysStreak,
+            ),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: _buildRewardStat(
+                    'Total Earned', totalEarned, CupertinoIcons.bitcoin),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildRewardStat(
+                    'Videos', videosWatched, CupertinoIcons.play_circle),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child:
+                    _buildRewardStat('Streak', daysStreak, CupertinoIcons.flame_fill),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 6,
+              ),
+              decoration: BoxDecoration(
+                color: CupertinoColors.white.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'View detailed progress',
+                    style: TextStyle(
+                      color: CupertinoColors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Icon(
+                    CupertinoIcons.chevron_right,
+                    size: 12,
+                    color: CupertinoColors.white.withOpacity(0.8),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

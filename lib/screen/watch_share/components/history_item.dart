@@ -1,5 +1,6 @@
 // lib/screens/watch_share/components/history_item.dart
 import 'package:flutter/cupertino.dart';
+import 'history_detail_screen.dart';
 
 class HistoryItem extends StatelessWidget {
   final String title;
@@ -18,7 +19,17 @@ class HistoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => HistoryDetailScreen(
+              title: title,
+              watchDate: time,
+              reward: reward,
+            ),
+          ),
+        );
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(

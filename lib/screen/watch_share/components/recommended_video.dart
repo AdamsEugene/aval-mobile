@@ -1,5 +1,6 @@
 // lib/screens/watch_share/components/recommended_video.dart
 import 'package:flutter/cupertino.dart';
+import '../video_player_screen.dart';
 
 class RecommendedVideo extends StatelessWidget {
   final String username;
@@ -28,7 +29,21 @@ class RecommendedVideo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => VideoPlayerScreen(
+              username: username,
+              title: title,
+              description: description,
+              likes: likes,
+              comments: '100',
+              reward: reward,
+              isVerified: isVerified,
+            ),
+          ),
+        );
+      },
       child: Container(
         height: 120,
         decoration: BoxDecoration(

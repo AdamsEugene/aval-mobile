@@ -1,5 +1,6 @@
 // lib/screens/watch_share/components/reward_card.dart
 import 'package:flutter/cupertino.dart';
+import 'reward_redemption_screen.dart';
 
 class RewardCard extends StatelessWidget {
   final String title;
@@ -22,7 +23,19 @@ class RewardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => RewardRedemptionScreen(
+              title: title,
+              coins: coins,
+              description: description,
+              progress: progress,
+              isLocked: isLocked,
+            ),
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: CupertinoColors.white,
