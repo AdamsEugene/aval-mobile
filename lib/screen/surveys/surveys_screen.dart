@@ -116,7 +116,12 @@ class _SurveysScreenState extends State<SurveysScreen> {
           HeaderAction(
             icon: CupertinoIcons.search,
             onPressed: () {
-              // Handle search
+              // Switch to incomplete tab and let it handle search internally
+              setState(() {
+                _selectedTabIndex = 1;
+                _selectedNavIndex = 2;  // Index for the incomplete tab in bottom nav
+              });
+              // The IncompleteSurveysTab now has its own search buttons
             },
           ),
           HeaderAction(
@@ -131,7 +136,12 @@ class _SurveysScreenState extends State<SurveysScreen> {
           HeaderAction(
             icon: CupertinoIcons.search,
             onPressed: () {
-              // Handle search
+              // Switch to completed tab and let it handle search internally
+              setState(() {
+                _selectedTabIndex = 2;
+                _selectedNavIndex = 3;  // Index for the completed tab in bottom nav
+              });
+              // The CompletedSurveysTab will handle the search
             },
           ),
           HeaderAction(

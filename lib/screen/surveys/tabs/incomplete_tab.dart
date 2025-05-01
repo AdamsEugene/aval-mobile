@@ -84,80 +84,323 @@ class _IncompleteSurveysTabState extends State<IncompleteSurveysTab> {
       'totalQuestions': 7,
     },
   ];
+  
+  // For search functionality
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
+  List<Map<String, dynamic>> _filteredSurveys = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredSurveys = _incompleteSurveys;
+    _searchController.addListener(_filterSurveys);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_filterSurveys);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterSurveys() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredSurveys = _incompleteSurveys;
+      } else {
+        _filteredSurveys = _incompleteSurveys.where((survey) {
+          return survey['title'].toLowerCase().contains(query) || 
+                 survey['category'].toLowerCase().contains(query) ||
+                 survey['description'].toLowerCase().contains(query);
+        }).toList();
+      }
+    });
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _isSearching = !_isSearching;
+      if (!_isSearching) {
+        _searchController.clear();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        // Stats Summary
-        SliverToBoxAdapter(
-          child: Container(
-            margin: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xFF6448FE),
-                        Color(0xFF5FC3E4),
-                      ],
+    return Stack(
+      children: [
+        CustomScrollView(
+          slivers: [
+            // App bar with search button
+            SliverToBoxAdapter(
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                decoration: BoxDecoration(
+                  color: _isSearching ? CupertinoColors.systemBlue.withOpacity(0.1) : CupertinoColors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: CupertinoColors.systemGrey5,
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
                     ),
-                    borderRadius: BorderRadius.circular(16),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _isSearching 
+                    ? const Text(
+                      'Search Mode',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: CupertinoColors.activeBlue,
+                      ),
+                    )
+                    : const Text(
+                      'Incomplete Surveys',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: _isSearching ? CupertinoColors.destructiveRed : CupertinoColors.activeBlue,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: CupertinoButton(
+                        padding: const EdgeInsets.all(8),
+                        onPressed: _toggleSearch,
+                        child: Icon(
+                          _isSearching ? CupertinoIcons.xmark : CupertinoIcons.search,
+                          size: 20,
+                          color: CupertinoColors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            
+            // Search bar (when searching)
+            if (_isSearching)
+              SliverToBoxAdapter(
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.systemBlue.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: CupertinoColors.activeBlue.withOpacity(0.3), width: 2),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF6448FE).withOpacity(0.3),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
+                        color: CupertinoColors.systemGrey5,
+                        blurRadius: 5,
+                        offset: const Offset(0, 2),
                       ),
                     ],
                   ),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(child: _buildStatItem('Total\nIncomplete', '${_incompleteSurveys.length}')),
-                      _buildDivider(),
-                      Expanded(child: _buildStatItem('Awaiting\nSubmission', '${_incompleteSurveys.length}')),
-                      _buildDivider(),
-                      Expanded(
-                        child: _buildStatItem(
-                          'Potential\nPoints', 
-                          '${_incompleteSurveys.fold(0, (sum, survey) => sum + int.parse(survey['reward']))}'
-                        )
+                      const Text(
+                        'Search Incomplete Surveys',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: CupertinoColors.activeBlue,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      CupertinoSearchTextField(
+                        controller: _searchController,
+                        placeholder: 'Type to search...',
+                        prefixIcon: const Icon(CupertinoIcons.search, size: 20),
+                        suffixIcon: const Icon(CupertinoIcons.xmark_circle_fill, size: 20),
+                        suffixMode: OverlayVisibilityMode.editing,
+                        onSuffixTap: () => _searchController.clear(),
+                        style: const TextStyle(fontSize: 16),
+                        backgroundColor: CupertinoColors.white,
+                        autocorrect: false,
+                        onChanged: (value) {
+                          // Explicit call to filter when text changes
+                          _filterSurveys();
+                          print("Search text changed: $value");
+                        },
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
+              
+            // Stats Summary
+            SliverToBoxAdapter(
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Stats card
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFF6448FE),
+                            Color(0xFF5FC3E4),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF6448FE).withOpacity(0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(child: _buildStatItem('Total\nIncomplete', '${_incompleteSurveys.length}')),
+                          _buildDivider(),
+                          Expanded(child: _buildStatItem('Awaiting\nSubmission', '${_incompleteSurveys.length}')),
+                          _buildDivider(),
+                          Expanded(
+                            child: _buildStatItem(
+                              'Potential\nPoints', 
+                              '${_incompleteSurveys.fold(0, (sum, survey) => sum + int.parse(survey['reward']))}'
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    // Search button below stats card for better visibility
+                    if (!_isSearching)
+                      Container(
+                        margin: const EdgeInsets.only(top: 16),
+                        child: CupertinoButton(
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          color: CupertinoColors.activeBlue,
+                          borderRadius: BorderRadius.circular(10),
+                          onPressed: _toggleSearch,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(CupertinoIcons.search, size: 18),
+                              SizedBox(width: 8),
+                              Text(
+                                'Search Incomplete Surveys',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            
+            // Empty state message when no results are found
+            if (_filteredSurveys.isEmpty)
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        CupertinoIcons.search,
+                        size: 50,
+                        color: CupertinoColors.systemGrey,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No matching surveys found',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: CupertinoColors.systemGrey.darkColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Try adjusting your search',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: CupertinoColors.systemGrey.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+            // Incomplete Surveys List (filtered)
+            if (_filteredSurveys.isNotEmpty)
+              SliverPadding(
+                padding: const EdgeInsets.all(16),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final survey = _filteredSurveys[index];
+                      return _buildIncompleteSurvey(
+                        title: survey['title'],
+                        progress: survey['progress'],
+                        date: survey['date'],
+                        reward: survey['reward'],
+                        category: survey['category'],
+                        description: survey['description'],
+                        duration: survey['duration'],
+                        currentQuestionIndex: survey['currentQuestionIndex'],
+                        totalQuestions: survey['totalQuestions'],
+                      );
+                    },
+                    childCount: _filteredSurveys.length,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        
+        // Floating action button for search
+        if (!_isSearching)
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: GestureDetector(
+              onTap: _toggleSearch,
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: CupertinoColors.activeBlue,
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CupertinoColors.activeBlue.withOpacity(0.4),
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  CupertinoIcons.search,
+                  color: CupertinoColors.white,
+                  size: 28,
+                ),
+              ),
             ),
           ),
-        ),
-        // Incomplete Surveys List
-        SliverPadding(
-          padding: const EdgeInsets.all(16),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final survey = _incompleteSurveys[index];
-                return _buildIncompleteSurvey(
-                  title: survey['title'],
-                  progress: survey['progress'],
-                  date: survey['date'],
-                  reward: survey['reward'],
-                  category: survey['category'],
-                  description: survey['description'],
-                  duration: survey['duration'],
-                  currentQuestionIndex: survey['currentQuestionIndex'],
-                  totalQuestions: survey['totalQuestions'],
-                );
-              },
-              childCount: _incompleteSurveys.length,
-            ),
-          ),
-        ),
       ],
     );
   }
