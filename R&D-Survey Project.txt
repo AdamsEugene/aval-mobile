@@ -1,0 +1,479 @@
+R&D-Survey Project (CONCEPT NOTE/USE CASE)
+SOFTWARW AS A MICRO SERVICE(SAAMS)
+PROBLEM STATEMENTS:
+The need for Research and Development (R&D) has become a necessary tool contributing to a
+huge improvement in the various sectors of a businesses in a variety of ways not limited to:
+1. Innovation and Competitive Advantage
+•Survey enables businesses to develop new products, services, or processes, keeping
+them ahead of competitors.
+•Innovation helps differentiate offerings, making the business more attractive to
+customers.
+2. Improved Efficiency and Cost Reduction
+•Developing more efficient production methods or technologies can reduce operational
+costs.
+•Survey can optimize resource use, leading to long-term savings.
+3. Market Expansion
+•Survey allows businesses to enter new markets with products tailored to local needs or
+trends.
+•It supports diversification, reducing reliance on a single product or market.
+4. Customer Satisfaction
+•By understanding customer needs and feedback through survey, businesses can
+improve product quality and user experience.
+•This leads to increased customer loyalty and positive brand reputation.
+5. Revenue Growth
+•New products can open additional revenue streams.
+•Enhanced or improved products can command higher prices or reach more customers.
+6. Attracting Investment
+signals long-term growth potential.
+•Investors are more likely to support businesses with a strong R&D focus because it
+7. Compliance and Sustainability
+•R&D and Survey can help businesses meet regulatory requirements or environmental
+standards through cleaner, safer technologies.
+As a great driving tool behind many success stories of several businesses across the world,
+many other had not been able to replicate an effective methodologies to handle their R&D and
+Surveys as it’s based on accurate data collection via field and virtual means which involves
+direct or indirect interaction with people(Online/On field) of different environment.
+Deploying field Enumerators/Research in such unfamiliar and unknown environment
+sometimes posse a great survival risk and challenge affecting the accuracy of authentic/organic
+data collection methodologies.
+This project is therefore designed with the rightful technologies and tool as part of the
+microservices of the AVAL Ecommerce project to ensure high efficiency and effective R&D data
+collection to help position all organizations, businesses and services providers to enhance and
+better their day to day quality controls activities and compliance to match up with the
+competitive market trends and maximize revenue.
+AIM/SOLUTION:
+• To ensure a well-designed survey methodologies
+• To create effective data collection strategies for effective R&D for businesses and
+Organizations
+• To create residual income for the unemployed
+• To cutdown the risk involved in having Survey Administrator / Data Collector in
+unfamiliar environments for research
+• To cut down huge cost and Time involved in surveys
+• ETC.-------Many more
+STAKEHOLDERS:
+Amin(Aval):
+• System administrators that runs and controls the entire system
+Survey Sponsor / Client:
+• The individual or organization that commissions the survey.
+• Sets objectives, provides funding, and uses the results for decision-making
+Survey Agencies:
+• The individual or organization that accepts floating surveys commissioned by Survey
+Sponsor. (Must Run through admins certification and compliance process to visible on
+the system)
+Survey Designer / Researcher(AI):
+• Collaborate with stakeholders to design surveys that capture relevant and measurable
+data
+• Designs the questionnaire and methodology.
+• Ensure questions are clear, unbiased, and structured for easy analysis.
+and aligned with objectives.
+• Designs training modules
+• Design Qualification modules
+• Set KPI for extra rewards
+• Help determine sample size and sampling methods.
+• Set up and test AI tools.
+• Monitor data collection progress and troubleshoot issues.
+• Ensure data integrity and completeness during collection.
+• Identify and handle missing, duplicate, or inconsistent responses.
+• Standardize data formats (e.g., dates, categorical labels).
+• Code open-ended responses if needed.
+Pay Master / Remuneration Designer:
+• Designs payment structure per the various tasks
+• Designs incentives and Rewards system based on performance.
+Survey Administrator / Data Collector(AI/HI):
+• Distributes the survey (online, phone, in-person, etc.).
+• Ensures proper sampling and accurate data collection.
+Respondents / Participants:
+• The people who answer the survey questions.
+• Their responses form the basis of the survey data.
+Data Analysts / Statisticians(AI):
+• Process and analyze the collected data.
+• Draw conclusions and present findings.
+Report Writers / Presenters(AI):
+• Translate data into reports, visualizations, and recommendations.
+• Communicate insights to stakeholders.
+Ethics / Review Boards (AI-Discuss):
+• Ensure the survey complies with ethical standards, especially in academic or medical
+research.
+Trainers:
+• Train Survey Administrator / Data Collector on complex surveys that requires special
+training modules
+Supervisors(Discuss if necessary):
+• Comes into function in special cases where Re-recruits comes into play
+TECHNOLOGY:
+*AI:
+• Kasada-Place Call to administer questionnaires
+• Questionnaire Wizard-To design all possible questions based on set objectives
+• Forms and Tools Wizards-Design all types of forms and available tool to design all types
+of questionnaires
+*Google Proximity Beacon
+*GPS Location
+*Radar -To See live movements of field Survey Administrator / Data Collector
+*Payment System
+*Web (For relevant stakeholders)
+*Mobile App (For Survey Administrator / Data Collector, Respondents / Participants and
+*relevant stakeholders)
+*Languages:
+• Golang
+• Java
+*Chat
+*Notification Dashboards
+*QR Code Scanner
+*SMS Alert/Notifications
+*Rating and Review system for rating and reviewing amongst all stakeholder members
+*Multi-Language System
+SIMULATION:
+USE CASES
+Amin(Aval):
+Survey Sponsor / Client:
+***Onboarding/Registration Process***
+-MTZ
+-Goes to the web platform/system and select registration
+-Register as Individual, Business or Organization with details -MTZ
+-Sets objectives in a form of problem statement
+-Sponsor selects Survey Area :
+• Country
+• Region
+• City
+• District
+• Town
+• Zones
+• Geo-Fencing
+-Sponsor set’s dedicated Project budget and payment terms and breakdowns
+-Sponsor set Survey category (Eg.: Environmental Protection, Air Pollution, Etc.)
+-Sponsor sets payment structure according to work progress
+-Sets Project Timelines (Duration)
+-Uploads Training/Reference materials where necessary
+-Sponsor fund their account wallet (Bition) on the system
+-Sponsor then publish the project which goes to float on the platform of the Survey Agencies
+Survey Agencies:
+***Onboarding/Registration Process***
+-MTZ
+- Agency gets onto the Web Platform and select “Survey Agency” as Registration option
+-Registers with the following details:
+• Business/Company Name
+• Location (Country, Region, City, District, Town, Zone, etc.)
+• Business Registration
+• Business Profile (Must follow a template since it will be displayed on the Timeline of the
+Agency’s account like ad DP of a sort)
+• CV of expertise (Survey Designer / Researcher, Pay Master/Remuneration
+Designer/Accountant, Data Analysts / Statisticians, Report Writers / Presenters,
+Trainers, Ethics / Review Boards, Senior Supervisors, etc.)
+***Gigs/Survey Projects (Demographics Based) on the Float***
+-Survey Agent upon seeing the published survey project from Sponsor with basic details
+-Agency clicks to see full details of project including Sets objectives and timelines
+-Agency upon satisfactory review clicks on “Accepted” to lock the project to their dashboard.
+-The agency then prepare a complete survey plan (Including: Questionnaire, Demographics,
+Zoning, Training, Secondary Qualifications, T&C, Timelines, Survey Administrator / Data
+Collector recruitment and Deployment, KPI Rewards, Geo-fencing, and all necessary
+Algorithms, etc. ) in accordance with the set objectives of the sponsor for review and
+approval by sponsor to meet the payment terms of the sponsor
+-Ones Agency receives payment the project is then commenced and Sponsor can track the
+status of the project on daily basis via the available tools with a tracking code with
+incremental reporting system
+-The project then runs through the stipulated plans with accepted T&C till finish
+-A detailed report is then packaged for the sponsor
+-Rating and Review is exchange between Sponsor and Agency
+NOTE:
+*Published projects comes with a display Title, country, name of Sponsor, category of survey
+(Eg.: Environmental Protection, Air Pollution, Etc.) the total dedicated budget for the project
+*There must be some grace period for the agency to decline survey acceptance after accepting
+after which there will be no reversal
+*The Sponsor has the right to take off published survey within the grace period for review
+(Discuss) before the approval by Systems Admin
+***Gigs/Survey Projects (Non-Demographics Based/General) on the Float***
+This happens to be one of survey type where sponsor seeks for general public opinion
+-Survey Agent upon seeing the published survey project from Sponsor with basic details
+-Agency clicks to see full details of project including Sets objectives and timelines
+-Agency upon satisfactory review clicks on “Accepted” to lock the project to their dashboard.
+-The agency then prepare a complete survey plan (Including: Questionnaire, General
+Demographics, General Secondary Qualifications, General T&C, Timelines, General Public as
+respondent, Standard Rewards, etc. ) in accordance with the set objectives of the sponsor
+for review and approval by sponsor to meet the payment terms of the sponsor
+-Ones Agency receives payment the project is then commenced and Sponsor can track the
+status of the project on daily basis via the available tools with a tracking code with
+incremental reporting system
+-The project then runs through the stipulated plans with accepted T&C till finish
+-A detailed report is then packaged for the sponsor
+-Rating and Review is exchange between Sponsor and Agency
+Survey Designer / Researcher(AI/HI):
+-Designer enters the dashboard of the Agency to study the Sets objectives
+-Designs the questionnaire and methodology by creating and designing all possible forms
+using available regular tools or by using Form Wizard (An AI Tool to handle all kinds of
+Forms Designs-Agency has to buy into their tools arsenals)-MTZ .
+-Designer ensures questions are valid, unbiased, and aligned with objectives Standard.
+-Designs training modules (with incentives and rewards where possible) on special occasion
+where training is required for Survey Administrators before dispatching
+-Design Primary and Secondary Qualification modules to be able to select the right Survey
+Administrators for the job
+-Set KPI reward points for extra rewards
+-Sets Remuneration points for payment rewards
+-Sets Timeline for the survey questionnaire administration/Respondent (Finishing with in
+time forms part of the KPI Reward for Survey administrators and Respondents)
+-Designer sets all necessary demographics, monitoring tools, KPI Reward points and AI tools
+-Designs how products (Tangible and Intangible) should be introduced to the field (Online
+and in-person)
+NOTE:
+*Agency can demand for materials from Sponsor to train Survey Administrators where
+necessary
+*There must be a common grounds for Sponsors and agency to communicate (Chat)
+*All communications must be internal for the purpose of dispute resolutions, No out of
+platform communication
+Pay Master / Remuneration Designer:
+-Design remunerations quota to match remuneration point set by Survey Designer
+-Design KPI reward quota for KPI Reward points
+-Handles all other cash related transactions (Eg.: In a situation where physical products are
+involved)
+NOTE:
+Remunerations usually designed to covers all inclusive stakeholders of the project (Eg.: Survey
+Administrators, Respondents, On-Field Supervisors, Etc.)
+Survey Administrator / Data Collector(Online ):
+Survey Gigs appears on the Dashboard of the Survey Administrator based on demographics
+and other criteria set by the Survey Designer of the Agency
+-Same process as that of Respondent
+NOTE:
+*Survey Administrators too can see Gigs on their dashboard as Respondent also do
+Respondents / Participants (Online Case)
+Survey Gigs appears on the Dashboard of the Respondent based on demographics and other
+criteria set by the Survey Designer of the Agency
+***Onboarding/Registration Process***
+- The Respondents gets onto the Aval Platform account and navigate to the Micro-Services
+zone to locate Survey ( A user sees a display of common/General surveys ) and navigate to
+Registration
+-Select on registration choose Respondent
+-Registers with the following details:
+• Bio Data
+• Academics Qualification
+• Marital Status
+• Other Important Demographic Info
+• Location (Country, Region, City, District, Town, Zone, etc.)
+• A brief Personal Profile (Must follow a template since it will be displayed on the
+Timeline of the individual’s account like a DP of a sort)
+• CV to prove expertise (Can employ CV wizard to build one or Upload one in PDF)
+• Advise on other info (Discuss)
+-Respondent see a display of the request and click open to see summary info of the survey
+(Category, Etc.) including Primary Reward (Cash/Bition) and KPI Reward points with
+rewards.
+-Survey Administrator had option to Accept or Decline the Survey Gig
+-Upon acceptance, the a secondary qualification questionnaire from agency opens to be
+walked through
+-Upon success, the T&C comes next for respondent to read and accept or decline
+-Upon acceptance, the survey questionnaire begins and runs through to the end as the
+system monitors the speed and accuracy of the respondents.
+-System acknowledges respondents and grants primary reward in accordance with speed
+and accuracy plus KPI rewards.
+-A referral link can be available for respondent to share via WhatsApp, SMS and email.
+NOTE:
+*Survey Gig only display a nice banner with survey name and agency logo including the initial
+payout reward and Timeline to finish a survey and other few details
+*Secondary Qualification form is a short and distinct questionnaire to pick the most qualified
+respondent (Judgement by the system algorithm can decline a respondent at this stage)
+*Individual can apply for account approval in order to receive highly paid Gigs-MTZ
+Respondents / Participants (In-Person/Over Phone Case)
+In this case a Survey Administrator does all the questionnaire administration with the
+Respondent (Question & Answers) -Usually on the field
+-The Survey administrator read intro and T&C of the project with Respondent’s benefit (If
+available) and it will be at the discretion of the respondent to participate
+-The Respondent has option to Accept or Decline the exercise
+-Upon acceptance, a secondary qualification questionnaire from agency opens to be walked
+through with Respondent
+-Upon success, the T&C comes next for respondent to read and accept or decline
+-Upon acceptance, the survey questionnaire begins and runs through to the end as the
+system monitors the speed and accuracy of the respondents.
+-System acknowledges respondents and grants primary reward in accordance with speed
+and accuracy plus KPI rewards.
+-A referral link can be available for respondent to share via WhatsApp, SMS and email in a
+case where the Respondent handles the process himself or herself via a share link.
+NOTE:
+The Survey Administrator administer the questionnaires to the Respondent either from his or
+her device or share a generated link (With Survey administrator’s code) to the respondent via
+WhatsApp, SMS and email to his or her device whilst Survey Administrator only provide
+assistance or guidance (in-person or Phone) per the Set objective of the sponsor and the design
+of the Designer)
+Data Analysts / Statisticians:
+Here the Data Analyst has a choice to either use our AI Tools or Regular Manual Tools
+Manual Tools
+-Use statistical tools (Excel, SPSS, R, Python, etc.) to analyze survey results.
+-Calculate descriptive stats (mean, median, frequency) and inferential stats significance testing).
+-Segment results by demographics or other variables.
+(correlation,
+AI Tools
+Admin’s Powerful AI tools will be available for use throughout the entire Data Analytics process
+(Agency need to purchase into their arsenals of AI Tools )
+Report Writers / Presenters:
+Here the Report Writer has a choice to either use our AI Tools or Regular Manual Tools
+Manual Tools
+-Use report tools (Excel, SPSS, R, Python, etc.) to design report based on Data Analytical results.
+AI Tools
+Admin’s Powerful AI tools will be available for use throughout the entire Report Writing process
+(Agency need to purchase into their arsenals of AI Tools )
+-Reporting & Visualization.
+-Create clear charts, tables, and dashboards to present findings.
+-Write analytical summaries and provide insights to stakeholders.
+-Highlight trends, patterns, and actionable insights.
+Ethics / Review Boards:
+Here the Report Writer has a choice to either use our AI Tools or handle Manually
+Manual Tools
+-The Agency uses his internal members to achieve the needed result
+AI Tools
+Admin’s Powerful AI tools will be available for use throughout the entire Ethics / Review Boards
+process (Agency need to purchase into their arsenals of AI Tools )
+-Recommendations & Decision Support
+-Help decision-makers understand what the data reveals.
+-Offer data-driven recommendations based on survey findings.
+Trainers:
+Trainers within the Agencies acts as module trainers in training the Survey Administrators
+-Upon the Trainer getting to know the training modules designed by the Designer, the Trainer
+build training manuals
+-Trainer trains Survey Administrators per the scheduled timelines
+NOTE:
+-This usually occurs in situations where the nature of survey from the Sponsor involves
+Products or Services
+-The system must allow Survey Administrators to subscribe to training
+-Agency must be able to use the system to create training for Survey Administrators to
+subscribe, after which the Agency connects the survey Gig for trained Survey Administrators
+to subscribe to the actual survey
+-Training can be virtual (On Zoom or any other virtual platforms) or in-premise per the module
+design of the Agency
+-The Survey Administrator must get access to details of the training when Gig appears on their
+dash (Type of Industry, Duration, Incentive, Etc)
+Supervisors(Discuss if necessary):
+Supervisor role will be needed in some occasions where Survey Administrators need to work and
+report to a supervisor.
+NOTE:
+Systems Admin must consider the role of a supervisor
+MONETIZATION:
+*The use of available AI Tools (Eg.: ….)
+*Premium Accounts for all stakeholders (Agencies, Survey Administrators, Respondents, Etc.)
+*
+EMPLOYMENT AN OTHER OPPORTUNITIES:
+*Earn from home privilege
+*Extra income source for students
+*Job opportunities for marketing agencies
+*Income for all
+*Opportunities for Businesses and Organizations to penetrate into the unknown
+GENERAL NOTE:
+-Agent after setting up full survey project publishes the project in the system for approval
+-Upon approval a project tracking code is generated which updates the sponsor’s dashboard for
+tracking the progress of work
+- Most of Systems Admin’s payment deductions are automatic except otherwise
+-System must allow long term/continuous survey (Eg.: Annual Survey Gig where Data Collection
+happens on monthly basis)
+INDUSTRIES:
+Healthcare
+Education
+Consumer Goods
+NGO
+NPO
+Professional Services
+Retail & E-commerce
+Hospitality & Tourism
+Government & Public Sector
+Technology & Software
+Finance & Banking
+Telecommunications
+Manufacturing
+Media & Entertainment
+Fashion
+Real Estate/Shelter
+Pharmaceuticals & Biotechnology
+Automotive
+Aerospace & Defense
+Energy
+Consumer Electronics
+Chemicals & Materials
+Medical Devices
+Food & Beverage
+Environment
+Areas of Survey under INDUSTRIES:
+1. Pharmaceuticals & Biotechnology
+• Developing new drugs and therapies
+• Clinical trials and regulatory testing
+• Genetic engineering and personalized medicine
+2. Technology & Software
+• Artificial Intelligence and Machine Learning
+• Cybersecurity
+• Software development and cloud infrastructure
+• User experience (UX) testing
+• Beta testing feedback
+• Product-market fit surveys
+3. Automotive
+• Electric vehicles (EVs)
+• Autonomous driving technology
+• Fuel efficiency and safety improvements
+4. Aerospace & Defense
+• Aircraft design and aerodynamics
+• Satellite and space exploration tech
+• Advanced weaponry and surveillance systems
+5. Energy
+• Renewable energy (solar, wind, biofuel)
+• Battery and storage solutions
+• Energy efficiency and smart grids
+6. Consumer Electronics
+• Smartphones, wearables, and home devices
+• User interface innovations
+• Hardware miniaturization
+7. Chemicals & Materials
+• Advanced polymers and composites
+• Sustainable and biodegradable materials
+• Industrial and agricultural chemicals
+8. Medical Devices
+• Diagnostic tools and imaging equipment
+• Minimally invasive surgical devices
+• Implantable technologies
+9. Telecommunications
+• 5G and next-gen networks
+• Internet of Things (IoT) innovations
+• Network infrastructure and security
+• Service quality surveys
+• Customer churn analysis
+• Network performance feedback
+10. Food & Beverage
+• Nutritional science and fortified foods
+• Sustainable packaging
+• Flavor and shelf-life enhancement
+1. Healthcare
+• Patient satisfaction surveys
+• Market research for new treatments
+• Employee satisfaction within hospitals
+2. Education
+• Student and parent satisfaction
+• Course and faculty evaluation
+• Alumni feedback
+3. Retail & E-commerce
+• Customer satisfaction (CSAT)
+• Net Promoter Score (NPS)
+• Product feedback and usability
+4. Hospitality & Tourism
+• Guest satisfaction surveys
+• Experience and service feedback
+• Post-stay or post-visit evaluations
+5. Government & Public Sector
+• Census and demographic surveys
+• Public opinion polls
+• Community feedback on services
+• Utilities
+7. Finance & Banking
+• Customer satisfaction
+• Product/service usage surveys
+• Risk and market perception studies
+9. Manufacturing
+• Supplier satisfaction
+• Product quality surveys
+• Employee feedback
+10. Media & Entertainment
+• Audience preferences
+• Content feedback
+• Brand perception surveys
+SMIMILAR /RIVAL PROJECTS:
+*https://www.surveymonkey.com
+*Google Forms
+*Jotform
+*Survey Sparrow
+*QuestionPro
+FRONT END FEATURES
+To be discussed with UI/UX-Front-end Designer
+PROJECT DEVELOPMENT PARTNERS (Co-Owners)
+• Jonathan-Backend Architect and Developer
+• Adams-Front End Architect and Developer
+• Richard-UI/UX aesthetics Designer
+• David-Project Originator/Concept Develop
