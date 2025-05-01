@@ -466,7 +466,8 @@ class _CompletedSurveysTabState extends State<CompletedSurveysTab> {
   }) {
     return GestureDetector(
       onTap: () {
-        // Handle survey details tap
+        // Navigate to a detail screen that shows the completed survey's responses
+        _showCompletedSurveyDetails(title, category, description, date, reward);
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
@@ -590,6 +591,279 @@ class _CompletedSurveysTabState extends State<CompletedSurveysTab> {
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  void _showCompletedSurveyDetails(
+    String title,
+    String category,
+    String description,
+    String date,
+    String reward,
+  ) {
+    // Mock data for survey responses
+    final List<Map<String, dynamic>> responses = [
+      {
+        'question': 'How would you rate the overall usability?',
+        'answer': '4/5',
+        'type': 'Rating'
+      },
+      {
+        'question': 'What improvements would you suggest?',
+        'answer': 'Better navigation and more intuitive controls',
+        'type': 'Text'
+      },
+      {
+        'question': 'Would you recommend this product to others?',
+        'answer': 'Yes',
+        'type': 'Yes/No'
+      },
+      {
+        'question': 'Which features did you find most useful?',
+        'answer': 'Search functionality, Filtering options',
+        'type': 'Multiple Choice'
+      },
+    ];
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
+          color: CupertinoColors.systemBackground,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with title and close button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: CupertinoColors.systemGrey6,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Icon(
+                      CupertinoIcons.xmark,
+                      size: 16,
+                      color: CupertinoColors.systemGrey,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            // Survey metadata
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF8F0),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFFFFE0C0), width: 1),
+              ),
+              child: Column(
+                children: [
+                  _buildInfoRow('Category', category),
+                  const SizedBox(height: 8),
+                  _buildInfoRow('Date Completed', date),
+                  const SizedBox(height: 8),
+                  _buildInfoRow('Reward Points Earned', reward),
+                  const SizedBox(height: 8),
+                  _buildInfoRow('Description', description),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Your Responses heading
+            const Text(
+              'Your Responses',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            
+            // Responses list
+            Expanded(
+              child: CupertinoScrollbar(
+                child: ListView.separated(
+                  itemCount: responses.length,
+                  separatorBuilder: (context, index) => Container(
+                    height: 1,
+                    color: CupertinoColors.systemGrey5,
+                  ),
+                  itemBuilder: (context, index) {
+                    final response = responses[index];
+                    return Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: CupertinoColors.systemOrange.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  response['type'],
+                                  style: const TextStyle(
+                                    color: CupertinoColors.activeOrange,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            response['question'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            response['answer'],
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: CupertinoColors.systemGrey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            
+            // Footer with share/export button
+            Container(
+              margin: const EdgeInsets.only(top: 16),
+              child: CupertinoButton(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                color: CupertinoColors.activeOrange,
+                borderRadius: BorderRadius.circular(10),
+                onPressed: () {
+                  // Export or share response
+                  Navigator.pop(context);
+                  _showExportOptionsDialog();
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(CupertinoIcons.share, size: 18),
+                    SizedBox(width: 8),
+                    Text(
+                      'Export Responses',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 120,
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              color: CupertinoColors.systemGrey,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  void _showExportOptionsDialog() {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text('Export Responses'),
+        content: const Padding(
+          padding: EdgeInsets.only(top: 12.0),
+          child: Text(
+            'Choose how you would like to export your survey responses.'
+          ),
+        ),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+              // Handle PDF export
+            },
+            child: const Text('Export as PDF'),
+          ),
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+              // Handle email export
+            },
+            child: const Text('Email Responses'),
+          ),
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            isDestructiveAction: true,
+            child: const Text('Cancel'),
+          ),
+        ],
       ),
     );
   }
