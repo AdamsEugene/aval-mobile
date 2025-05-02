@@ -21,6 +21,7 @@ import 'package:e_commerce_app/widgets/shared/main_banner_carousel.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
 import 'package:e_commerce_app/widgets/shared/main_search_bar.dart';
 import 'package:e_commerce_app/widgets/product_carousel/product_carousel.dart';
+import 'package:e_commerce_app/screen/promotion/promotion_details_screen.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
@@ -347,35 +348,35 @@ class _HomeContentState extends State<HomeContent>
                       ],
                     ),
 
-                    const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                    // const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
-                    // Limited Edition boxes with unique item counts
-                    const MagicBoxCarousel(
-                      title: 'Limited Edition',
-                      boxes: [
-                        MagicBoxTheme(
-                          title: 'Collector\'s Box',
-                          price: 59.99,
-                          startColor: Color(0xFF141E30),
-                          endColor: Color(0xFF243B55),
-                          itemCount: 3, // 3 collector items
-                        ),
-                        MagicBoxTheme(
-                          title: 'Luxury Surprise',
-                          price: 99.99,
-                          startColor: Color(0xFFBC4E9C),
-                          endColor: Color(0xFFF80759),
-                          itemCount: 2, // 2 luxury items
-                        ),
-                        MagicBoxTheme(
-                          title: 'Elite Box',
-                          price: 79.99,
-                          startColor: Color(0xFF000428),
-                          endColor: Color(0xFF004E92),
-                          itemCount: 4, // 4 elite items
-                        ),
-                      ],
-                    ),
+                    // // Limited Edition boxes with unique item counts
+                    // const MagicBoxCarousel(
+                    //   title: 'Limited Edition',
+                    //   boxes: [
+                    //     MagicBoxTheme(
+                    //       title: 'Collector\'s Box',
+                    //       price: 59.99,
+                    //       startColor: Color(0xFF141E30),
+                    //       endColor: Color(0xFF243B55),
+                    //       itemCount: 3, // 3 collector items
+                    //     ),
+                    //     MagicBoxTheme(
+                    //       title: 'Luxury Surprise',
+                    //       price: 99.99,
+                    //       startColor: Color(0xFFBC4E9C),
+                    //       endColor: Color(0xFFF80759),
+                    //       itemCount: 2, // 2 luxury items
+                    //     ),
+                    //     MagicBoxTheme(
+                    //       title: 'Elite Box',
+                    //       price: 79.99,
+                    //       startColor: Color(0xFF000428),
+                    //       endColor: Color(0xFF004E92),
+                    //       itemCount: 4, // 4 elite items
+                    //     ),
+                    //   ],
+                    // ),
 
                     const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
@@ -396,14 +397,59 @@ class _HomeContentState extends State<HomeContent>
                       categories: ['Home & Living'],
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                    const AdsBanner(),
+                    
+                    // Ads Banner with tap handler
+                    AdsBanner(
+                      onAdTap: (int index) {
+                        // Get the ad data for the tapped banner
+                        final ad = _adsService.availableAds[index % _adsService.availableAds.length];
+                        
+                        // Navigate to the promotion details screen
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => PromotionDetailsScreen(
+                              title: ad.title,
+                              description: ad.description,
+                              color: const Color(0xFFF9A826), // Default color if needed
+                              imageUrl: ad.imageUrl,
+                              promoCode: ad.promoCode,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    
                     const SliverToBoxAdapter(child: SizedBox(height: 24)),
                     const ProductCarousel(
                       ourChoice: true,
                       categories: ['Groceries'],
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                    const AdsBanner(),
+                    
+                    // Second ads banner
+                    AdsBanner(
+                      onAdTap: (int index) {
+                        // Get the ad data for the tapped banner (using a different index to show variety)
+                        final adIndex = (index + 2) % _adsService.availableAds.length;
+                        final ad = _adsService.availableAds[adIndex];
+                        
+                        // Navigate to the promotion details screen
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => PromotionDetailsScreen(
+                              title: ad.title,
+                              description: ad.description,
+                              color: const Color(0xFF2A93D5), // Different color for variety
+                              imageUrl: ad.imageUrl,
+                              promoCode: ad.promoCode,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    
                     const SliverToBoxAdapter(child: SizedBox(height: 24)),
                     const ProductCarousel(
                       isPromo: true,
@@ -417,7 +463,7 @@ class _HomeContentState extends State<HomeContent>
                       categories: ['Aval Choice'],
                       isProductTile: true,
                     ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 12)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
                     // Product grid with loading state
                     snapshot.connectionState == ConnectionState.waiting
