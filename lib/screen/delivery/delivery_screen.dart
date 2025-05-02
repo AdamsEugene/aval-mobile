@@ -8,6 +8,7 @@ import 'package:e_commerce_app/widgets/shared/bottom_tab_iso.dart';
 import 'package:e_commerce_app/widgets/shared/main_header.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/notification_drawer.dart';
 import 'package:e_commerce_app/screen/delivery/drawers/scan_package_drawer.dart';
+import 'package:e_commerce_app/screen/delivery/delivery_features_screen.dart';
 
 class DeliveryScreen extends StatefulWidget {
   const DeliveryScreen({super.key});
@@ -65,6 +66,18 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   List<HeaderAction> _getHeaderActions() {
     return [
+      HeaderAction(
+        icon: CupertinoIcons.star_fill,
+        onPressed: () {
+          // Open delivery features screen
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => const DeliveryFeaturesScreen(),
+            ),
+          );
+        },
+        badgeCount: 5, // New feature notification
+      ),
       HeaderAction(
         icon: CupertinoIcons.qrcode_viewfinder,
         onPressed: () {
